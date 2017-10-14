@@ -41,14 +41,17 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 5, this);
         latView = (TextView) findViewById(R.id.latDisplay);
         longView = (TextView) findViewById(R.id.longDisplay);
+
+        latView.setText((new DecimalFormat(".#####").format(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude())));
+        longView.setText((new DecimalFormat(".#####").format(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLongitude())));
     }
 
     @Override
     public void onLocationChanged(Location location) {
         //lat = location.getLatitude();
         //longt = location.getLongitude();
-        latView.setText((new DecimalFormat(".#####").format(location.getLatitude())).toString());
-        longView.setText((new DecimalFormat(".#####").format(location.getLongitude())).toString());
+        latView.setText((new DecimalFormat(".#####").format(location.getLatitude())));
+        longView.setText((new DecimalFormat(".#####").format(location.getLongitude())));
 
     }
 
