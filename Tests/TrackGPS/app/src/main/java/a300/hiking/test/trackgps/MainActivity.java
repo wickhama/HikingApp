@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         longView = (TextView) findViewById(R.id.longDisplay);
     }
 
-    //This is a comment ^^
+    
     @Override
     public void onLocationChanged(Location location) {
         //lat = location.getLatitude();
