@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         longView.setText((new DecimalFormat(".#####").format(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLongitude())));
     }
 
-    //This is a comment ^^
+    
     @Override
     public void onLocationChanged(Location location) {
         //lat = location.getLatitude();
