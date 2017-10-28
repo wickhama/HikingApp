@@ -1,4 +1,4 @@
-package com.arc.menuthing;
+package com.arc.menutest;
 
 import org.junit.Test;
 

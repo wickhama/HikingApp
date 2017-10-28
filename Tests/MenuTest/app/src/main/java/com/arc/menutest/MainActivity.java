@@ -1,4 +1,4 @@
-package com.arc.menuthing;
+package com.arc.menutest;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
