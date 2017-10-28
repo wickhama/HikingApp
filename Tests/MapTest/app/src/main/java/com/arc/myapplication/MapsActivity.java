@@ -25,8 +25,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
 
     private LocationManager locationManager;
-    private double lat;
-    private double longt;
     private TextView latView;
     private TextView longView;
 
@@ -52,8 +50,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             return;
         }
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 5, this);
-        latView = (TextView) findViewById(R.id.latDisplay);
-        longView = (TextView) findViewById(R.id.longDisplay);
+        latView = findViewById(R.id.latDisplay);
+        longView = findViewById(R.id.longDisplay);
 
         latView.setText((new DecimalFormat(".#####").format(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude())));
         longView.setText((new DecimalFormat(".#####").format(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLongitude())));

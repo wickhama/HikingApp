@@ -1,5 +1,4 @@
-package com.example.stupidgpsthing;
-
+package com.arc.arc_trails;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -21,10 +20,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.text.DecimalFormat;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener {
+public class TrailActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener {
     public static final int locReqNum = 99;
     //String locProvider;
-  //  private GoogleMap mMap;
+    private GoogleMap mMap;
     private LocationManager locationManager;
     private TextView latView;
     private TextView longView;
@@ -32,7 +31,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
+        setContentView(R.layout.activity_trail);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -42,7 +41,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        if (checkLocationPermission()) {
+
+    // This stuff can be added after we get the latitude/longitude display working
+
+ /*       if (checkLocationPermission()) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 5, this);
                 latView = findViewById(R.id.latDisplay);
@@ -52,7 +54,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 longView.setText((new DecimalFormat(".#####").format(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLongitude())));
             }
         }
-    }
+    }*/
 
 
     /**
@@ -96,13 +98,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .create().show();
             }
             else {*/
-                //just request the damn permission
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, locReqNum);
+        //just request the damn permission
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, locReqNum);
             /*}
             return false;
         }
         else {*/
-            return true;
+        return true;
         //}
     }
 
@@ -123,6 +125,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onProviderDisabled(String s) {
+
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
 
     }
 }

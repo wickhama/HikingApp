@@ -1,8 +1,66 @@
-<fragment xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:map="http://schemas.android.com/apk/res-auto"
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/map"
-    android:name="com.google.android.gms.maps.SupportMapFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.stupidgpsthing.MapsActivity" />
+    tools:context="com.example.stupidgpsthing.MapsActivity">
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:map="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="395dp"
+        android:layout_height="407dp"
+        tools:context="com.arc.myapplication.MapsActivity"
+        map:layout_constraintLeft_toLeftOf="parent"
+        map:layout_constraintTop_toTopOf="parent"
+        map:layout_constraintRight_toRightOf="parent"
+        map:layout_constraintHorizontal_bias="0.428" />
+
+    <TextView
+        android:id="@+id/latLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Latitude:"
+        android:textSize="30sp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/map"
+        app:layout_constraintRight_toRightOf="@+id/longLabel" />
+
+    <TextView
+        android:id="@+id/longLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Longitude:"
+        android:textSize="30sp"
+        android:layout_marginLeft="32dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/latLabel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="32dp" />
+
+    <TextView
+        android:id="@+id/latDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="latitude"
+        android:textSize="30sp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <TextView
+        android:id="@+id/longDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:text="longitude"
+        android:textSize="30sp"
+        app:layout_constraintLeft_toRightOf="@+id/longLabel"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBaseline_toBaselineOf="@+id/longLabel" />
+</android.support.constraint.ConstraintLayout>
