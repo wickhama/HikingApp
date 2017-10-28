@@ -18,7 +18,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.text.DecimalFormat;
 
 public class TrailActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener {
     public static final int locReqNum = 99;
@@ -40,6 +39,7 @@ public class TrailActivity extends FragmentActivity implements OnMapReadyCallbac
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+    }
 
 
     // This stuff can be added after we get the latitude/longitude display working
@@ -66,21 +66,6 @@ public class TrailActivity extends FragmentActivity implements OnMapReadyCallbac
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        GoogleMap mMap;
-        mMap = googleMap;
-
-        // Add a marker in user location
-        if (checkLocationPermission()) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                mMap.setMyLocationEnabled(true);
-                LatLng myLocation = new LatLng(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude(), locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLongitude());
-                mMap.addMarker(new MarkerOptions().position(myLocation).title("Starting Location"));
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
-            }
-        }
-    }
 
     public boolean checkLocationPermission() {
         /*if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -130,6 +115,16 @@ public class TrailActivity extends FragmentActivity implements OnMapReadyCallbac
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
 
+        // Add a marker in user location
+        if (checkLocationPermission()) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                mMap.setMyLocationEnabled(true);
+                LatLng myLocation = new LatLng(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude(), locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLongitude());
+                mMap.addMarker(new MarkerOptions().position(myLocation).title("Starting Location"));
+                mMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
+            }
+        }
     }
 }
