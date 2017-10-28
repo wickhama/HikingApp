@@ -1,10 +1,13 @@
 package com.arc.arc_trails;
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -21,7 +24,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class TrailActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener {
     public static final int locReqNum = 99;
-    //String locProvider;
+    String locProvider;
     private GoogleMap mMap;
     private LocationManager locationManager;
     private TextView latView;
@@ -34,7 +37,7 @@ public class TrailActivity extends FragmentActivity implements OnMapReadyCallbac
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        //locProvider = locationManager.getBestProvider(new Criteria(), false);
+        locProvider = locationManager.getBestProvider(new Criteria(), false);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -110,7 +113,8 @@ public class TrailActivity extends FragmentActivity implements OnMapReadyCallbac
 
     @Override
     public void onProviderDisabled(String s) {
-        boolean locEnable = checkLocationPermission();
+        //Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+        //startActivity(intent);
     }
 
     @Override
@@ -122,6 +126,7 @@ public class TrailActivity extends FragmentActivity implements OnMapReadyCallbac
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 mMap.setMyLocationEnabled(true);
                 LatLng myLocation = new LatLng(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude(), locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLongitude());
+                mMap.addMarker(new MarkerOptions().position(myLocation).title("Starting Location"));
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 15));
             }
         }

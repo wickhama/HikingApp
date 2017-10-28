@@ -24,7 +24,7 @@ import java.text.DecimalFormat;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener {
     public static final int locReqNum = 99;
     //String locProvider;
-  //  private GoogleMap mMap;
+    private GoogleMap mMap;
     private LocationManager locationManager;
     private TextView latView;
     private TextView longView;
