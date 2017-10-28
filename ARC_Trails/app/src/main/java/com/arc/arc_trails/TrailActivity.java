@@ -110,7 +110,7 @@ public class TrailActivity extends FragmentActivity implements OnMapReadyCallbac
 
     @Override
     public void onProviderDisabled(String s) {
-
+        boolean locEnable = checkLocationPermission();
     }
 
     @Override
@@ -122,8 +122,7 @@ public class TrailActivity extends FragmentActivity implements OnMapReadyCallbac
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                 mMap.setMyLocationEnabled(true);
                 LatLng myLocation = new LatLng(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude(), locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLongitude());
-                mMap.addMarker(new MarkerOptions().position(myLocation).title("Starting Location"));
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 15));
             }
         }
     }
