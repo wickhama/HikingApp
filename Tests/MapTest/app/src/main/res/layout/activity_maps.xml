@@ -47,13 +47,13 @@
         android:id="@+id/latDisplay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        android:textSize="30sp"
-        app:layout_constraintLeft_toRightOf="@+id/latLabel"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBaseline_toBaselineOf="@+id/latLabel" />
+        android:text="Undefined"
+        android:textSize="30sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/latLabel"
+        app:layout_constraintLeft_toRightOf="@+id/latLabel"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <TextView
         android:id="@+id/longDisplay"
@@ -61,9 +61,9 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:text="TextView"
+        android:text="Undefined"
         android:textSize="30sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/longLabel"
         app:layout_constraintLeft_toRightOf="@+id/longLabel"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBaseline_toBaselineOf="@+id/longLabel" />
+        app:layout_constraintRight_toRightOf="parent" />
 </android.support.constraint.ConstraintLayout>
