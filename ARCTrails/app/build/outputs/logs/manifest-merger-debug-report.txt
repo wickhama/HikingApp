@@ -1,0 +1,198 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml:2:1-44:12
+INJECTED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml:2:1-44:12
+INJECTED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml:2:1-44:12
+INJECTED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml:2:1-44:12
+MERGED from [com.android.support:appcompat-v7:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\appcompat-v7-26.0.0-alpha1.aar\4d5340b297703c1edeb9f1a075913404\AndroidManifest.xml:17:1-31:12
+MERGED from [com.google.android.gms:play-services-maps:11.0.4] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\play-services-maps-11.0.4.aar\d0229e3b23078c3bc712593cc8e0f6bc\AndroidManifest.xml:16:1-25:12
+MERGED from [com.android.support:animated-vector-drawable:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-26.0.0-alpha1.aar\6ca028adf45e1226dd46c8c2f4a98ea0\AndroidManifest.xml:17:1-28:12
+MERGED from [com.android.support:support-vector-drawable:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-26.0.0-alpha1.aar\037f0da4994af9d0aeaecb4d7b1003cd\AndroidManifest.xml:17:1-28:12
+MERGED from [com.google.android.gms:play-services-base:11.0.4] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\play-services-base-11.0.4.aar\b74d4c1dc8e590392b458b930fa404f7\AndroidManifest.xml:16:1-21:12
+MERGED from [com.google.android.gms:play-services-tasks:11.0.4] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\play-services-tasks-11.0.4.aar\033ba144b17e1ef0fd8f50573aef5fb6\AndroidManifest.xml:2:1-5:12
+MERGED from [com.google.android.gms:play-services-basement:11.0.4] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\play-services-basement-11.0.4.aar\b2a4eb50fc8e21564acba7f0f75a1cee\AndroidManifest.xml:16:1-23:12
+MERGED from [com.android.support:support-v4:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-v4-26.0.0-alpha1.aar\21c21b91aa5dae3cfbdb64af96bd489d\AndroidManifest.xml:17:1-31:12
+MERGED from [com.android.support:support-media-compat:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-media-compat-26.0.0-alpha1.aar\ad17fd8641eea96b955710b9d46c4155\AndroidManifest.xml:17:1-31:12
+MERGED from [com.android.support:support-fragment:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-fragment-26.0.0-alpha1.aar\69860bad8a4cbc2144caf17718b0d56c\AndroidManifest.xml:17:1-31:12
+MERGED from [com.android.support:support-core-utils:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-core-utils-26.0.0-alpha1.aar\f0c5091460bd9452dfe9388a164027ad\AndroidManifest.xml:17:1-31:12
+MERGED from [com.android.support:support-core-ui:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-core-ui-26.0.0-alpha1.aar\bef491490daab1792f9defb8f9e931e8\AndroidManifest.xml:17:1-31:12
+MERGED from [com.android.support:support-compat:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-compat-26.0.0-alpha1.aar\41668d7da07a97309a8de3076ffe01fd\AndroidManifest.xml:17:1-31:12
+INJECTED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml:2:1-44:12
+INJECTED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml:2:1-44:12
+INJECTED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml:2:1-44:12
+	package
+		ADDED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml:3:5-38
+		INJECTED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml
+		ADDED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml:2:1-44:12
+		INJECTED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml
+	android:versionCode
+		INJECTED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml
+		ADDED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml:2:1-44:12
+		INJECTED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml:2:11-69
+uses-permission#android.permission.ACCESS_FINE_LOCATION
+ADDED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml:10:5-79
+	android:name
+		ADDED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml:10:22-76
+uses-permission#android.permission.ACCESS_COARSE_LOCATION
+ADDED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml:11:5-80
+	android:name
+		ADDED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml:11:22-78
+application
+ADDED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml:13:5-42:19
+MERGED from [com.android.support:appcompat-v7:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\appcompat-v7-26.0.0-alpha1.aar\4d5340b297703c1edeb9f1a075913404\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:appcompat-v7:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\appcompat-v7-26.0.0-alpha1.aar\4d5340b297703c1edeb9f1a075913404\AndroidManifest.xml:29:5-20
+MERGED from [com.google.android.gms:play-services-maps:11.0.4] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\play-services-maps-11.0.4.aar\d0229e3b23078c3bc712593cc8e0f6bc\AndroidManifest.xml:24:5-19
+MERGED from [com.google.android.gms:play-services-maps:11.0.4] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\play-services-maps-11.0.4.aar\d0229e3b23078c3bc712593cc8e0f6bc\AndroidManifest.xml:24:5-19
+MERGED from [com.android.support:animated-vector-drawable:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-26.0.0-alpha1.aar\6ca028adf45e1226dd46c8c2f4a98ea0\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:animated-vector-drawable:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-26.0.0-alpha1.aar\6ca028adf45e1226dd46c8c2f4a98ea0\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:support-vector-drawable:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-26.0.0-alpha1.aar\037f0da4994af9d0aeaecb4d7b1003cd\AndroidManifest.xml:26:5-20
+MERGED from [com.android.support:support-vector-drawable:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-26.0.0-alpha1.aar\037f0da4994af9d0aeaecb4d7b1003cd\AndroidManifest.xml:26:5-20
+MERGED from [com.google.android.gms:play-services-base:11.0.4] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\play-services-base-11.0.4.aar\b74d4c1dc8e590392b458b930fa404f7\AndroidManifest.xml:18:5-20:19
+MERGED from [com.google.android.gms:play-services-base:11.0.4] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\play-services-base-11.0.4.aar\b74d4c1dc8e590392b458b930fa404f7\AndroidManifest.xml:18:5-20:19
+MERGED from [com.google.android.gms:play-services-tasks:11.0.4] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\play-services-tasks-11.0.4.aar\033ba144b17e1ef0fd8f50573aef5fb6\AndroidManifest.xml:4:5-19
+MERGED from [com.google.android.gms:play-services-tasks:11.0.4] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\play-services-tasks-11.0.4.aar\033ba144b17e1ef0fd8f50573aef5fb6\AndroidManifest.xml:4:5-19
+MERGED from [com.google.android.gms:play-services-basement:11.0.4] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\play-services-basement-11.0.4.aar\b2a4eb50fc8e21564acba7f0f75a1cee\AndroidManifest.xml:19:5-21:19
+MERGED from [com.google.android.gms:play-services-basement:11.0.4] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\play-services-basement-11.0.4.aar\b2a4eb50fc8e21564acba7f0f75a1cee\AndroidManifest.xml:19:5-21:19
+MERGED from [com.android.support:support-v4:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-v4-26.0.0-alpha1.aar\21c21b91aa5dae3cfbdb64af96bd489d\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-v4:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-v4-26.0.0-alpha1.aar\21c21b91aa5dae3cfbdb64af96bd489d\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-media-compat:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-media-compat-26.0.0-alpha1.aar\ad17fd8641eea96b955710b9d46c4155\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-media-compat:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-media-compat-26.0.0-alpha1.aar\ad17fd8641eea96b955710b9d46c4155\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-fragment:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-fragment-26.0.0-alpha1.aar\69860bad8a4cbc2144caf17718b0d56c\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-fragment:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-fragment-26.0.0-alpha1.aar\69860bad8a4cbc2144caf17718b0d56c\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-utils:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-core-utils-26.0.0-alpha1.aar\f0c5091460bd9452dfe9388a164027ad\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-utils:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-core-utils-26.0.0-alpha1.aar\f0c5091460bd9452dfe9388a164027ad\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-ui:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-core-ui-26.0.0-alpha1.aar\bef491490daab1792f9defb8f9e931e8\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-core-ui:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-core-ui-26.0.0-alpha1.aar\bef491490daab1792f9defb8f9e931e8\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-compat:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-compat-26.0.0-alpha1.aar\41668d7da07a97309a8de3076ffe01fd\AndroidManifest.xml:29:5-20
+MERGED from [com.android.support:support-compat:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-compat-26.0.0-alpha1.aar\41668d7da07a97309a8de3076ffe01fd\AndroidManifest.xml:29:5-20
+	android:supportsRtl
+		ADDED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml:18:9-35
+	android:label
+		ADDED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml:16:9-41
+	android:roundIcon
+		ADDED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml:17:9-54
+	android:icon
+		ADDED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml:15:9-43
+	android:allowBackup
+		ADDED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml:14:9-35
+	android:theme
+		ADDED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml:19:9-40
+meta-data#com.google.android.geo.API_KEY
+ADDED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml:29:9-31:55
+	android:value
+		ADDED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml:31:13-52
+	android:name
+		ADDED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml:30:13-58
+activity#com.arctrails.arctrails.MapsActivity
+ADDED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml:33:9-41:20
+	android:label
+		ADDED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml:35:13-56
+	android:name
+		ADDED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml:34:13-41
+intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
+ADDED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml:36:13-40:29
+action#android.intent.action.MAIN
+ADDED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml:37:17-69
+	android:name
+		ADDED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml:37:25-66
+category#android.intent.category.LAUNCHER
+ADDED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml:39:17-77
+	android:name
+		ADDED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml:39:27-74
+uses-sdk
+INJECTED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml
+INJECTED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml
+MERGED from [com.android.support:appcompat-v7:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\appcompat-v7-26.0.0-alpha1.aar\4d5340b297703c1edeb9f1a075913404\AndroidManifest.xml:21:5-23:78
+MERGED from [com.android.support:appcompat-v7:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\appcompat-v7-26.0.0-alpha1.aar\4d5340b297703c1edeb9f1a075913404\AndroidManifest.xml:21:5-23:78
+MERGED from [com.google.android.gms:play-services-maps:11.0.4] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\play-services-maps-11.0.4.aar\d0229e3b23078c3bc712593cc8e0f6bc\AndroidManifest.xml:23:5-43
+MERGED from [com.google.android.gms:play-services-maps:11.0.4] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\play-services-maps-11.0.4.aar\d0229e3b23078c3bc712593cc8e0f6bc\AndroidManifest.xml:23:5-43
+MERGED from [com.android.support:animated-vector-drawable:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-26.0.0-alpha1.aar\6ca028adf45e1226dd46c8c2f4a98ea0\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:animated-vector-drawable:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-26.0.0-alpha1.aar\6ca028adf45e1226dd46c8c2f4a98ea0\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-26.0.0-alpha1.aar\037f0da4994af9d0aeaecb4d7b1003cd\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-26.0.0-alpha1.aar\037f0da4994af9d0aeaecb4d7b1003cd\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-base:11.0.4] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\play-services-base-11.0.4.aar\b74d4c1dc8e590392b458b930fa404f7\AndroidManifest.xml:17:5-43
+MERGED from [com.google.android.gms:play-services-base:11.0.4] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\play-services-base-11.0.4.aar\b74d4c1dc8e590392b458b930fa404f7\AndroidManifest.xml:17:5-43
+MERGED from [com.google.android.gms:play-services-tasks:11.0.4] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\play-services-tasks-11.0.4.aar\033ba144b17e1ef0fd8f50573aef5fb6\AndroidManifest.xml:3:5-43
+MERGED from [com.google.android.gms:play-services-tasks:11.0.4] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\play-services-tasks-11.0.4.aar\033ba144b17e1ef0fd8f50573aef5fb6\AndroidManifest.xml:3:5-43
+MERGED from [com.google.android.gms:play-services-basement:11.0.4] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\play-services-basement-11.0.4.aar\b2a4eb50fc8e21564acba7f0f75a1cee\AndroidManifest.xml:17:5-43
+MERGED from [com.google.android.gms:play-services-basement:11.0.4] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\play-services-basement-11.0.4.aar\b2a4eb50fc8e21564acba7f0f75a1cee\AndroidManifest.xml:17:5-43
+MERGED from [com.android.support:support-v4:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-v4-26.0.0-alpha1.aar\21c21b91aa5dae3cfbdb64af96bd489d\AndroidManifest.xml:21:5-23:54
+MERGED from [com.android.support:support-v4:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-v4-26.0.0-alpha1.aar\21c21b91aa5dae3cfbdb64af96bd489d\AndroidManifest.xml:21:5-23:54
+MERGED from [com.android.support:support-media-compat:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-media-compat-26.0.0-alpha1.aar\ad17fd8641eea96b955710b9d46c4155\AndroidManifest.xml:21:5-23:63
+MERGED from [com.android.support:support-media-compat:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-media-compat-26.0.0-alpha1.aar\ad17fd8641eea96b955710b9d46c4155\AndroidManifest.xml:21:5-23:63
+MERGED from [com.android.support:support-fragment:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-fragment-26.0.0-alpha1.aar\69860bad8a4cbc2144caf17718b0d56c\AndroidManifest.xml:21:5-23:60
+MERGED from [com.android.support:support-fragment:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-fragment-26.0.0-alpha1.aar\69860bad8a4cbc2144caf17718b0d56c\AndroidManifest.xml:21:5-23:60
+MERGED from [com.android.support:support-core-utils:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-core-utils-26.0.0-alpha1.aar\f0c5091460bd9452dfe9388a164027ad\AndroidManifest.xml:21:5-23:61
+MERGED from [com.android.support:support-core-utils:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-core-utils-26.0.0-alpha1.aar\f0c5091460bd9452dfe9388a164027ad\AndroidManifest.xml:21:5-23:61
+MERGED from [com.android.support:support-core-ui:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-core-ui-26.0.0-alpha1.aar\bef491490daab1792f9defb8f9e931e8\AndroidManifest.xml:21:5-23:58
+MERGED from [com.android.support:support-core-ui:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-core-ui-26.0.0-alpha1.aar\bef491490daab1792f9defb8f9e931e8\AndroidManifest.xml:21:5-23:58
+MERGED from [com.android.support:support-compat:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-compat-26.0.0-alpha1.aar\41668d7da07a97309a8de3076ffe01fd\AndroidManifest.xml:21:5-23:58
+MERGED from [com.android.support:support-compat:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-compat-26.0.0-alpha1.aar\41668d7da07a97309a8de3076ffe01fd\AndroidManifest.xml:21:5-23:58
+INJECTED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml
+INJECTED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml
+	tools:overrideLibrary
+		ADDED from [com.android.support:appcompat-v7:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\appcompat-v7-26.0.0-alpha1.aar\4d5340b297703c1edeb9f1a075913404\AndroidManifest.xml:23:9-75
+	android:targetSdkVersion
+		INJECTED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml
+		ADDED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml
+		ADDED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\CaLePegasus\Documents\CPSC300\GitHub\HikingApp\ARCTrails\app\src\main\AndroidManifest.xml
+meta-data#android.support.VERSION
+ADDED from [com.android.support:appcompat-v7:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\appcompat-v7-26.0.0-alpha1.aar\4d5340b297703c1edeb9f1a075913404\AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:animated-vector-drawable:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-26.0.0-alpha1.aar\6ca028adf45e1226dd46c8c2f4a98ea0\AndroidManifest.xml:22:5-24:41
+MERGED from [com.android.support:animated-vector-drawable:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-26.0.0-alpha1.aar\6ca028adf45e1226dd46c8c2f4a98ea0\AndroidManifest.xml:22:5-24:41
+MERGED from [com.android.support:support-vector-drawable:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-26.0.0-alpha1.aar\037f0da4994af9d0aeaecb4d7b1003cd\AndroidManifest.xml:22:5-24:41
+MERGED from [com.android.support:support-vector-drawable:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-26.0.0-alpha1.aar\037f0da4994af9d0aeaecb4d7b1003cd\AndroidManifest.xml:22:5-24:41
+MERGED from [com.android.support:support-v4:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-v4-26.0.0-alpha1.aar\21c21b91aa5dae3cfbdb64af96bd489d\AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:support-v4:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-v4-26.0.0-alpha1.aar\21c21b91aa5dae3cfbdb64af96bd489d\AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:support-media-compat:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-media-compat-26.0.0-alpha1.aar\ad17fd8641eea96b955710b9d46c4155\AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:support-media-compat:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-media-compat-26.0.0-alpha1.aar\ad17fd8641eea96b955710b9d46c4155\AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:support-fragment:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-fragment-26.0.0-alpha1.aar\69860bad8a4cbc2144caf17718b0d56c\AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:support-fragment:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-fragment-26.0.0-alpha1.aar\69860bad8a4cbc2144caf17718b0d56c\AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:support-core-utils:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-core-utils-26.0.0-alpha1.aar\f0c5091460bd9452dfe9388a164027ad\AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:support-core-utils:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-core-utils-26.0.0-alpha1.aar\f0c5091460bd9452dfe9388a164027ad\AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:support-core-ui:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-core-ui-26.0.0-alpha1.aar\bef491490daab1792f9defb8f9e931e8\AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:support-core-ui:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-core-ui-26.0.0-alpha1.aar\bef491490daab1792f9defb8f9e931e8\AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:support-compat:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-compat-26.0.0-alpha1.aar\41668d7da07a97309a8de3076ffe01fd\AndroidManifest.xml:25:5-27:41
+MERGED from [com.android.support:support-compat:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\support-compat-26.0.0-alpha1.aar\41668d7da07a97309a8de3076ffe01fd\AndroidManifest.xml:25:5-27:41
+	android:value
+		ADDED from [com.android.support:appcompat-v7:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\appcompat-v7-26.0.0-alpha1.aar\4d5340b297703c1edeb9f1a075913404\AndroidManifest.xml:27:9-38
+	android:name
+		ADDED from [com.android.support:appcompat-v7:26.0.0-alpha1] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\appcompat-v7-26.0.0-alpha1.aar\4d5340b297703c1edeb9f1a075913404\AndroidManifest.xml:26:9-47
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from [com.google.android.gms:play-services-maps:11.0.4] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\play-services-maps-11.0.4.aar\d0229e3b23078c3bc712593cc8e0f6bc\AndroidManifest.xml:19:5-78
+	android:name
+		ADDED from [com.google.android.gms:play-services-maps:11.0.4] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\play-services-maps-11.0.4.aar\d0229e3b23078c3bc712593cc8e0f6bc\AndroidManifest.xml:19:22-76
+uses-permission#android.permission.INTERNET
+ADDED from [com.google.android.gms:play-services-maps:11.0.4] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\play-services-maps-11.0.4.aar\d0229e3b23078c3bc712593cc8e0f6bc\AndroidManifest.xml:20:5-66
+	android:name
+		ADDED from [com.google.android.gms:play-services-maps:11.0.4] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\play-services-maps-11.0.4.aar\d0229e3b23078c3bc712593cc8e0f6bc\AndroidManifest.xml:20:22-64
+uses-feature#0x00020000
+ADDED from [com.google.android.gms:play-services-maps:11.0.4] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\play-services-maps-11.0.4.aar\d0229e3b23078c3bc712593cc8e0f6bc\AndroidManifest.xml:21:5-77
+	android:glEsVersion
+		ADDED from [com.google.android.gms:play-services-maps:11.0.4] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\play-services-maps-11.0.4.aar\d0229e3b23078c3bc712593cc8e0f6bc\AndroidManifest.xml:21:19-51
+	android:required
+		ADDED from [com.google.android.gms:play-services-maps:11.0.4] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\play-services-maps-11.0.4.aar\d0229e3b23078c3bc712593cc8e0f6bc\AndroidManifest.xml:21:52-75
+activity#com.google.android.gms.common.api.GoogleApiActivity
+ADDED from [com.google.android.gms:play-services-base:11.0.4] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\play-services-base-11.0.4.aar\b74d4c1dc8e590392b458b930fa404f7\AndroidManifest.xml:19:9-172
+	android:exported
+		ADDED from [com.google.android.gms:play-services-base:11.0.4] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\play-services-base-11.0.4.aar\b74d4c1dc8e590392b458b930fa404f7\AndroidManifest.xml:19:146-170
+	android:theme
+		ADDED from [com.google.android.gms:play-services-base:11.0.4] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\play-services-base-11.0.4.aar\b74d4c1dc8e590392b458b930fa404f7\AndroidManifest.xml:19:86-145
+	android:name
+		ADDED from [com.google.android.gms:play-services-base:11.0.4] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\play-services-base-11.0.4.aar\b74d4c1dc8e590392b458b930fa404f7\AndroidManifest.xml:19:19-85
+meta-data#com.google.android.gms.version
+ADDED from [com.google.android.gms:play-services-basement:11.0.4] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\play-services-basement-11.0.4.aar\b2a4eb50fc8e21564acba7f0f75a1cee\AndroidManifest.xml:20:9-121
+	android:value
+		ADDED from [com.google.android.gms:play-services-basement:11.0.4] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\play-services-basement-11.0.4.aar\b2a4eb50fc8e21564acba7f0f75a1cee\AndroidManifest.xml:20:66-119
+	android:name
+		ADDED from [com.google.android.gms:play-services-basement:11.0.4] C:\Users\CaLePegasus\.gradle\caches\transforms-1\files-1.1\play-services-basement-11.0.4.aar\b2a4eb50fc8e21564acba7f0f75a1cee\AndroidManifest.xml:20:20-65
