@@ -26,8 +26,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     //String locProvider;
     private GoogleMap mMap;
     private LocationManager locationManager;
-    private TextView latView;
-    private TextView longView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,16 +40,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        if (checkLocationPermission()) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 2000, 5, this);
-                latView = findViewById(R.id.latDisplay);
-                longView = findViewById(R.id.longDisplay);
-
-                latView.setText((new DecimalFormat(".#####").format(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude())));
-                longView.setText((new DecimalFormat(".#####").format(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLongitude())));
-            }
-        }
     }
 
 
@@ -80,30 +68,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    public boolean checkLocationPermission() {
-        /*if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            //if they want an explanation
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-                //Need to add this to GUI to resolve the errors**************
-                //these will turn into their respective popup counterparts
-                new AlertDialog.Builder(this).setTitle(R.string.title_location_permission).setMessage(R.string.text_location_permission).setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        //user prompt
-                        ActivityCompat.requestPermissions(MapsActivity.this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, locReqNum);
-                    }
-                })
-                .create().show();
-            }
-            else {*/
-                //just request the damn permission
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, locReqNum);
-            /*}
-            return false;
+    private void getLocationPermission() {
+    /*
+     * Request location permission, so that we can get the location of the
+     * device. The result of the permission request is handled by a callback,
+     * onRequestPermissionsResult.
+     */
+        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mLocationPermissionGranted = true;
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
         }
-        else {*/
-            return true;
-        //}
     }
 
     @Override

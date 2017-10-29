@@ -123,7 +123,7 @@ public class TrailActivity extends FragmentActivity implements OnMapReadyCallbac
         // Add a marker in user location
         if (checkLocationPermission()) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-             //   mMap.setMyLocationEnabled(true);
+                mMap.setMyLocationEnabled(true);
                 LatLng myLocation = new LatLng(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude(), locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLongitude());
                 mMap.addMarker(new MarkerOptions().position(myLocation).title("Starting Location"));
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLocation, 15));
