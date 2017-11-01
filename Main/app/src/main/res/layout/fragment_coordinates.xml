@@ -22,25 +22,19 @@
         android:text="@string/longtitude"
         android:visibility="visible" />
 
-    <EditText
+    <TextView
         android:id="@+id/latitude"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_column="1"
         android:layout_row="0"
-        android:ems="10"
-        android:inputType="number"
-        android:text="0.0"
-        android:textAlignment="textEnd" />
+        android:text="0.0" />
 
-    <EditText
+    <TextView
         android:id="@+id/longtitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_column="1"
         android:layout_row="1"
-        android:ems="10"
-        android:inputType="number"
-        android:text="0.0"
-        android:textAlignment="textEnd" />
+        android:text="0.0" />
 </GridLayout>
