@@ -38,7 +38,7 @@ public class Coordinates extends Fragment implements LocationListener{
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_coordinates, container, false);        // Inflate the layout for this fragment
         latView = (TextView) view.findViewById(R.id.latitude);
-        longView = (TextView) view.findViewById(R.id.longtitude);
+        longView = (TextView) view.findViewById(R.id.longitude);
 
         return view;
     }
