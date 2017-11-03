@@ -29,6 +29,13 @@
             </intent-filter>
         </activity>
         <!--
+            Added this meta-data to call the gradle scripts I added. I followed a turorial online to do so. Feel free
+            to comment out the below section and try to run the code without it if it doesn't work for you. -Caleigh
+        -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
              Note that the API key is linked to the encryption key used to sign the APK.

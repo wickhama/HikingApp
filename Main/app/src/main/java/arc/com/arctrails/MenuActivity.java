@@ -21,6 +21,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapsInitializer;
@@ -28,8 +29,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-//import com.google.android.gms.location.places.Places;
-//import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Places;
 
 
 public class MenuActivity extends AppCompatActivity
@@ -51,7 +51,7 @@ public class MenuActivity extends AppCompatActivity
 
         /* Current Location Addition: Modified by Caleigh */
 
-        // mGeoDataClient = Places.getGeoDataClient(this, null);
+        GeoDataClient mGeoDataClient = Places.getGeoDataClient(this, null);
        // mPlaceDetectionClient = Places.getPlaceDetectionClient(this, null);
        // mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
