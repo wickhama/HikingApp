@@ -1,14 +1,17 @@
 package arc.com.arctrails;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +21,7 @@ import android.widget.TextView;
 import static java.lang.String.format;
 
 
-public class Coordinates extends Fragment implements LocationListener{
+public class Coordinates extends Fragment implements LocationListener {
 
     private LocationManager locationManager;
     private TextView latView, longView;
@@ -29,8 +32,7 @@ public class Coordinates extends Fragment implements LocationListener{
     public void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
 
-        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, this);
+        beginTracking();
     }
 
     @Override
@@ -41,6 +43,17 @@ public class Coordinates extends Fragment implements LocationListener{
         longView = (TextView) view.findViewById(R.id.longitude);
 
         return view;
+    }
+
+    public void beginTracking() {
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, this);
+
+        onLocationChanged(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
     }
 
     @Override

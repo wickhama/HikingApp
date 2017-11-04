@@ -60,6 +60,7 @@ public class MenuActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         // Retrieve location and camera position from saved instance state.
         if (savedInstanceState != null) {
             mLastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION);
@@ -174,6 +175,7 @@ public class MenuActivity extends AppCompatActivity
         }
         updateLocationUI();
         getDeviceLocation();
+        ((Coordinates)getSupportFragmentManager().findFragmentById(R.id.coorinates)).beginTracking();
     }
     // End permissions
 
