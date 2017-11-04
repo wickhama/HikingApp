@@ -1,6 +1,5 @@
 package arc.com.arctrails;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
@@ -23,8 +22,6 @@ import android.view.MenuItem;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.GeoDataClient;
-import com.google.android.gms.location.places.PlaceDetectionClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapsInitializer;
@@ -32,8 +29,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.location.places.Places;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
@@ -48,10 +43,6 @@ public class MenuActivity extends AppCompatActivity
     private LocationManager locationManager;
     private Location mLastKnownLocation;
     private CameraPosition mCameraPosition;
-
-    // The entry points to the Places API.
-    private GeoDataClient mGeoDataClient;
-    private PlaceDetectionClient mPlaceDetectionClient;
 
     // The entry point to the Fused Location Provider.
     private FusedLocationProviderClient mFusedLocationProviderClient;
@@ -74,16 +65,13 @@ public class MenuActivity extends AppCompatActivity
             mLastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION);
             mCameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION);
         }
+
         setContentView(R.layout.activity_menu);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         /* Current Location Addition: Modified by Caleigh */
-
-        mGeoDataClient = Places.getGeoDataClient(this, null);
-       // mPlaceDetectionClient = Places.getPlaceDetectionClient(this, null);
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-
         /*  End Caleigh Modifications */
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -95,14 +83,17 @@ public class MenuActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        // More Caleigh map additions
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locProvider = locationManager.getBestProvider(new Criteria(), false);
+        // End Caleigh map additions
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
 
+    // The following is for the menu
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -148,7 +139,9 @@ public class MenuActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-    /* Caleigh Permissions */
+    // End menu stuff
+
+    // Permissions
     private void getLocationPermission() {
     /*
      * Request location permission, so that we can get the location of the
@@ -180,8 +173,9 @@ public class MenuActivity extends AppCompatActivity
             }
         }
         updateLocationUI();
+        getDeviceLocation();
     }
-    /* End Caleigh Permissions */
+    // End permissions
 
 
     /**
@@ -197,19 +191,15 @@ public class MenuActivity extends AppCompatActivity
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         getLocationPermission();
-        updateLocationUI();
-        getDeviceLocation();
         MapsInitializer.initialize(getApplicationContext());
 
-        updateLocationUI();
-        getDeviceLocation();
     }
-    /* Added by Caleigh */
+    // Gets the blue dot for the map
     private void getDeviceLocation() {
-            /*
-     * Get the best and most recent location of the device, which may be null in rare
-     * cases when a location is not available.
-     */
+        /*
+        * Get the best and most recent location of the device, which may be null in rare
+        * cases when a location is not available.
+        */
         try {
             if (mLocationPermissionGranted) {
                 Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
@@ -235,6 +225,11 @@ public class MenuActivity extends AppCompatActivity
             Log.e("Exception: %s", e.getMessage());
         }
     }
+
+    /* set the location controls on the map. If the user has granted location permission, enable the My Location
+     * layer and the related control on the map, otherwise disable the layer and the control, and set the current
+     * location to null
+     */
     private void updateLocationUI() {
         if (mMap == null) {
             return;
@@ -243,11 +238,12 @@ public class MenuActivity extends AppCompatActivity
             if (mLocationPermissionGranted) {
                 mMap.setMyLocationEnabled(true);
                 mMap.getUiSettings().setMyLocationButtonEnabled(true);
-            } else {
+            }
+            else {
                 mMap.setMyLocationEnabled(false);
                 mMap.getUiSettings().setMyLocationButtonEnabled(false);
                 mLastKnownLocation = null;
-                getLocationPermission();
+              //  getLocationPermission();
             }
         } catch (SecurityException e)  {
             Log.e("Exception: %s", e.getMessage());
