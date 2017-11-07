@@ -83,6 +83,7 @@ public class MenuActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        //noinspection StatementWithEmptyBody
         if (id == R.id.nav_manage) {
             //TODO: actually add things to the menu
         }

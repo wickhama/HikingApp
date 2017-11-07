@@ -14,7 +14,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -28,16 +27,10 @@ public class CustomMapFragment extends SupportMapFragment implements
 
     String locProvider;
     private GoogleMap mMap;
-    private LocationManager locationManager;
     private Location mLastKnownLocation;
-    private CameraPosition mCameraPosition;
 
     // The entry point to the Fused Location Provider.
     private FusedLocationProviderClient mFusedLocationProviderClient;
-
-    // A default location (Sydney, Australia) and default zoom to use when location permission is
-    // not granted.
-    private final LatLng mDefaultLocation = new LatLng(-33.8523341, 151.2106085);
     private static final int DEFAULT_ZOOM = 15;
 
     private static final String KEY_CAMERA_POSITION = "camera_position";
@@ -63,17 +56,11 @@ public class CustomMapFragment extends SupportMapFragment implements
         // Retrieve location and camera position from saved instance state.
         if (savedInstanceState != null) {
             mLastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION);
-            mCameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION);
         }
 
-        /* Current Location Addition: Modified by Caleigh */
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
-        /*  End Caleigh Modifications */
-
-        // More Caleigh map additions
-        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        locProvider = locationManager.getBestProvider(new Criteria(), false);
-        // End Caleigh map additions
+        LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        locProvider = locationManager != null ? locationManager.getBestProvider(new Criteria(), false) : null;
         // Get notified when the map is ready to be used
         getMapAsync(this);
     }
@@ -100,12 +87,11 @@ public class CustomMapFragment extends SupportMapFragment implements
         getDeviceLocation();
     }
 
-    // Gets the blue dot for the map
+    /** Gets the blue dot for the map
+     * - Get the best and most recent location of the device, which may be null in rare
+     * cases when a location is not available.
+     */
     private void getDeviceLocation() {
-        /*
-        * Get the best and most recent location of the device, which may be null in rare
-        * cases when a location is not available.
-        */
         try {
             if (mRequestListener.hasPermission()) {
                 Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();
@@ -121,7 +107,6 @@ public class CustomMapFragment extends SupportMapFragment implements
                         } else {
                             Log.d(TAG, "Current location is null. Using defaults.");
                             Log.e(TAG, "Exception: %s", task.getException());
-                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mDefaultLocation, DEFAULT_ZOOM));
                             mMap.getUiSettings().setMyLocationButtonEnabled(false);
                         }
                     }
@@ -132,7 +117,7 @@ public class CustomMapFragment extends SupportMapFragment implements
         }
     }
 
-    /* set the location controls on the map. If the user has granted location permission, enable the My Location
+    /** set the location controls on the map. If the user has granted location permission, enable the My Location
      * layer and the related control on the map, otherwise disable the layer and the control, and set the current
      * location to null
      */
