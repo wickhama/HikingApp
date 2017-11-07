@@ -1,17 +1,13 @@
 package arc.com.arctrails;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,8 +46,8 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_coordinates, container, false);        // Inflate the layout for this fragment
-        latView = (TextView) view.findViewById(R.id.latitude);
-        longView = (TextView) view.findViewById(R.id.longitude);
+        latView = view.findViewById(R.id.latitude);
+        longView = view.findViewById(R.id.longitude);
 
         return view;
     }
@@ -64,12 +60,14 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
     public void onPermissionResult(boolean result) {
         if(result) {
             locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            //read warning for requestLocationUpdates; tells us this may be null
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, this);
 
             onLocationChanged(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
         }
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void onLocationChanged(Location location) {
         latView.setText(format("%.5f", location.getLatitude()));
