@@ -21,18 +21,29 @@ import android.widget.TextView;
 import static java.lang.String.format;
 
 
-public class Coordinates extends Fragment implements LocationListener {
+public class Coordinates extends Fragment implements LocationListener, LocationPermissionListener {
 
     private LocationManager locationManager;
     private TextView latView, longView;
+    private LocationRequestListener mRequestListener;
 
-    //TODO: input missing permissions for requestLocationUpdates
-    @SuppressLint("MissingPermission")
+    @Override
+    public void onAttach(Context context)
+    {
+        super.onAttach(context);
+        try {
+            mRequestListener = (LocationRequestListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement LocationRequestListener");
+        }
+    }
+
     @Override
     public void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
 
-        beginTracking();
+        mRequestListener.requestPermission(this);
     }
 
     @Override
@@ -45,15 +56,18 @@ public class Coordinates extends Fragment implements LocationListener {
         return view;
     }
 
-    public void beginTracking() {
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, this);
+    /*
+     * Once permission has been granted, we can begin tracking coordinates
+     */
+    @Override
+    @SuppressLint("MissingPermission")
+    public void onPermissionResult(boolean result) {
+        if(result) {
+            locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, this);
 
-        onLocationChanged(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
+            onLocationChanged(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
+        }
     }
 
     @Override
