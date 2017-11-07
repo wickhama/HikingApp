@@ -83,15 +83,18 @@ public class CustomMapFragment extends SupportMapFragment implements
     @Override
     public void onPermissionResult(boolean result)
     {
-        updateLocationUI();
-        getDeviceLocation();
+        if(result)
+        {
+            moveCameraLocation();
+            updateLocationUI();
+        }
     }
 
     /** Gets the blue dot for the map
      * - Get the best and most recent location of the device, which may be null in rare
      * cases when a location is not available.
      */
-    private void getDeviceLocation() {
+    private void moveCameraLocation() {
         try {
             if (mRequestListener.hasPermission()) {
                 Task<Location> locationResult = mFusedLocationProviderClient.getLastLocation();

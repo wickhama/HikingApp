@@ -37,18 +37,13 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
     }
 
     @Override
-    public void onCreate(Bundle savedInstance) {
-        super.onCreate(savedInstance);
-
-        mRequestListener.requestPermission(this);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_coordinates, container, false);   // Inflate the layout for this fragment
         latView = view.findViewById(R.id.latitude);
         longView = view.findViewById(R.id.longitude);
+
+        mRequestListener.requestPermission(this);
 
         return view;
     }
@@ -72,11 +67,12 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
         }
     }
 
-    @SuppressLint("DefaultLocale")
     @Override
     public void onLocationChanged(Location location) {
-        latView.setText(format("%.5f", location.getLatitude()));
-        longView.setText(format("%5f", location.getLongitude()));
+        if(location != null) {
+            latView.setText(format("%.5f", location.getLatitude()));
+            longView.setText(format("%.5f", location.getLongitude()));
+        }
     }
 
     @Override

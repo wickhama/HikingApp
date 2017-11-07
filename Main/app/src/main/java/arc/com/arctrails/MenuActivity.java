@@ -148,6 +148,7 @@ public class MenuActivity extends AppCompatActivity
                 // If request is cancelled, the result arrays are empty.
                 permissionResult = (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED);
+
             }
         }
         for(LocationPermissionListener listener: mListeners)
