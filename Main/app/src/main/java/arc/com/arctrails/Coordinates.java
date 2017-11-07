@@ -60,10 +60,11 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
     public void onPermissionResult(boolean result) {
         if(result) {
             locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-            //read warning for requestLocationUpdates; tells us this may be null
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, this);
-
-            onLocationChanged(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
+            // Added to double-check that location is available ~Caleigh
+            if (locationManager != null) {
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, this);
+                onLocationChanged(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
+            }
         }
     }
 
