@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
@@ -21,45 +20,59 @@ import android.widget.TextView;
 import static java.lang.String.format;
 
 
-public class Coordinates extends Fragment implements LocationListener {
+public class Coordinates extends Fragment implements LocationListener, LocationPermissionListener {
 
-    private LocationManager locationManager;
     private TextView latView, longView;
+    private LocationRequestListener mRequestListener;
 
-    //TODO: input missing permissions for requestLocationUpdates
-    @SuppressLint("MissingPermission")
     @Override
-    public void onCreate(Bundle savedInstance) {
-        super.onCreate(savedInstance);
-
-        beginTracking();
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mRequestListener = (LocationRequestListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement LocationRequestListener");
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_coordinates, container, false);        // Inflate the layout for this fragment
-        latView = (TextView) view.findViewById(R.id.latitude);
-        longView = (TextView) view.findViewById(R.id.longitude);
+        View view = inflater.inflate(R.layout.fragment_coordinates, container, false);   // Inflate the layout for this fragment
+        latView = view.findViewById(R.id.latitude);
+        longView = view.findViewById(R.id.longitude);
+
+        mRequestListener.requestPermission(this);
 
         return view;
     }
 
-    public void beginTracking() {
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            return;
+    /*
+     * Once permission has been granted, we can begin tracking coordinates
+     */
+    @Override
+    public void onPermissionResult(boolean result) {
+        if (result) {
+            LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            // Added to double-check that location is available ~Caleigh
+            if (locationManager != null) {
+                if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, this);
+                onLocationChanged(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
+            }
         }
-        locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, this);
-
-        onLocationChanged(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
     }
 
     @Override
     public void onLocationChanged(Location location) {
-        latView.setText(format("%.5f", location.getLatitude()));
-        longView.setText(format("%5f", location.getLongitude()));
+        if(location != null) {
+            latView.setText(format("%.5f", location.getLatitude()));
+            longView.setText(format("%.5f", location.getLongitude()));
+        }
     }
 
     @Override
