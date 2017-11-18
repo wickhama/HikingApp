@@ -67,7 +67,6 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
         }
     }
 
-    @SuppressLint("DefaultLocale")
     @Override
     public void onLocationChanged(Location location) {
         if(location != null) {
