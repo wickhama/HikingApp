@@ -1,6 +1,7 @@
 package arc.com.arctrails;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -15,6 +16,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
@@ -141,7 +143,6 @@ public class CustomMapFragment extends SupportMapFragment implements
                 mMap.setMyLocationEnabled(false);
                 mMap.getUiSettings().setMyLocationButtonEnabled(false);
                 mLastKnownLocation = null;
-                //  getLocationPermission();
             }
         } catch (SecurityException e)  {
             Log.e("Exception: %s", e.getMessage());
@@ -157,7 +158,17 @@ public class CustomMapFragment extends SupportMapFragment implements
             super.onSaveInstanceState(outState);
         }
     }
-    public void drawPath(ArrayList<Waypoint> coords) {
-
+    /**
+     * Draw a trail from an arrayList of waypoints and update camera to the start of the trail.
+     * @param latLongs
+     */
+    public void drawPath(ArrayList<Waypoint> latLongs) {
+        int len = latLongs.size();
+        LatLng start = new LatLng(latLongs.get(0).getLatitude(), latLongs.get(0).getLongitude());
+        for (int i=0; i<len; ++i) {
+            LatLng iLatLng = new LatLng(latLongs.get(i).getLatitude(),latLongs.get(i).getLongitude());
+            mMap.addPolyline((new PolylineOptions()).add(iLatLng).width(5).color(Color.GREEN).geodesic(true));
+        }
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(start, DEFAULT_ZOOM));
     }
 }
