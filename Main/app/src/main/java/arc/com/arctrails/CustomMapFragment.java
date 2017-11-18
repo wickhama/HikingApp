@@ -20,9 +20,12 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import org.alternativevision.gpx.beans.GPX;
+import org.alternativevision.gpx.beans.Track;
 import org.alternativevision.gpx.beans.Waypoint;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class CustomMapFragment extends SupportMapFragment implements
         OnMapReadyCallback, LocationPermissionListener
@@ -159,16 +162,26 @@ public class CustomMapFragment extends SupportMapFragment implements
         }
     }
     /**
-     * Draw a trail from an arrayList of waypoints and update camera to the start of the trail.
-     * @param latLongs
+     * Draw a path from an arrayList of waypoints and update camera to the start of the trail.
+     * @param points
      */
-    public void drawPath(ArrayList<Waypoint> latLongs) {
-        int len = latLongs.size();
-        LatLng start = new LatLng(latLongs.get(0).getLatitude(), latLongs.get(0).getLongitude());
+    public void drawPath(ArrayList<Waypoint> points) {
+        int len = points.size();
         for (int i=0; i<len; ++i) {
-            LatLng iLatLng = new LatLng(latLongs.get(i).getLatitude(),latLongs.get(i).getLongitude());
+            LatLng iLatLng = new LatLng(points.get(i).getLatitude(),points.get(i).getLongitude());
             mMap.addPolyline((new PolylineOptions()).add(iLatLng).width(5).color(Color.GREEN).geodesic(true));
         }
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(start, DEFAULT_ZOOM));
+    }
+
+    /**
+     * Draw a trail from a hashset of paths in a GPX file
+     * @param trail
+     */
+    public void makeTrail(GPX trail) {
+        HashSet<Track> tracks;
+        tracks = trail.getTracks();
+        for (Track t : tracks) {
+            drawPath(t.getTrackPoints());
+        }
     }
 }
