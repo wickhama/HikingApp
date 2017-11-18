@@ -96,6 +96,7 @@ public class CustomMapFragment extends SupportMapFragment implements
         {
             moveCameraLocation();
             updateLocationUI();
+            makeTrail(GPXFile.getGPX("test1_1.gpx"));
         }
     }
 
