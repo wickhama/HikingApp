@@ -4,9 +4,13 @@ package arc.com.arctrails;
  * Created by SamTheTurdBurgler on 2017-11-18.
  */
 
-public class NavigationTrails {
+public class GPXFiles {
 
-    public void addTrailButtons() {
+    public void readFile() {
         
+    }
+
+    public void writeFile() {
+
     }
 }
