@@ -6,7 +6,6 @@
       <module fileurl="file://$PROJECT_DIR$/Main.iml" filepath="$PROJECT_DIR$/Main.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/log4j/log4j.iml" filepath="$PROJECT_DIR$/log4j/log4j.iml" />
-      <module fileurl="file://C:\Code\Studio\HikingApp\Main\log4j\log4j.iml" filepath="C:\Code\Studio\HikingApp\Main\log4j\log4j.iml" />
     </modules>
   </component>
 </project>
