@@ -18,6 +18,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import org.alternativevision.gpx.beans.Waypoint;
+
+import java.util.ArrayList;
+
 public class CustomMapFragment extends SupportMapFragment implements
         OnMapReadyCallback, LocationPermissionListener
 {
@@ -152,5 +156,8 @@ public class CustomMapFragment extends SupportMapFragment implements
             outState.putParcelable(KEY_LOCATION, mLastKnownLocation);
             super.onSaveInstanceState(outState);
         }
+    }
+    public void drawPath(ArrayList<Waypoint> coords) {
+
     }
 }
