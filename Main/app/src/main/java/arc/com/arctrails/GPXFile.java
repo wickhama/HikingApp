@@ -1,12 +1,16 @@
 package arc.com.arctrails;
 
+import android.content.Context;
+
 import org.alternativevision.gpx.GPXParser;
 import org.alternativevision.gpx.beans.GPX;
 import org.alternativevision.gpx.beans.Waypoint;
 import org.xml.sax.SAXException;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -19,11 +23,13 @@ import javax.xml.parsers.ParserConfigurationException;
 public class GPXFile {
 
     //Returns the GPX object of the file parsed
-    public static GPX getGPX(String filename) {
+    public static GPX getGPX(String filename, Context context) {
         GPXParser gpxParser = new GPXParser();
         FileInputStream in = null;
+
+        File file = new File(context.getExternalFilesDir(null), filename);
         try {
-            in = new FileInputStream(filename);
+            in = new FileInputStream(file);
             if(in != null) {
                 GPX gpx = gpxParser.parseGPX(in);
                 return gpx;
@@ -41,7 +47,7 @@ public class GPXFile {
         return null;
     }
 
-    public static void  writeGPXFile(String trackName, String description, ArrayList<Double[]> trackPoints) {
+    public static void  writeGPXFile(String trackName, String description, ArrayList<Double[]> trackPoints, Context context) {
         ArrayList<Waypoint> track = new ArrayList<Waypoint>();
         for(Double[] list : trackPoints) {
             Waypoint point = new Waypoint();
@@ -49,7 +55,16 @@ public class GPXFile {
             point.setLongitude(list[1]);
             track.add(point);
         }
-        
+
+        File file = new File(context.getExternalFilesDir(null), trackName);
+        FileOutputStream out;
+        try {
+            out = new FileOutputStream(file);
+            GPX gpx = new GPX();
+            //gpx.
+        } catch(FileNotFoundException e) {
+
+        }
     }
 
 }
