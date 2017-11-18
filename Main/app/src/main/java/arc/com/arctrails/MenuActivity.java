@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.alternativevision.gpx.GPXParser;
 
 public class MenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -31,6 +32,8 @@ public class MenuActivity extends AppCompatActivity
 
         //Adds Files into phone storage - aw
         initAssets.initAssets(this);
+
+        GPXParser test = new GPXParser();
 
         mListeners = new HashSet<>();
 
