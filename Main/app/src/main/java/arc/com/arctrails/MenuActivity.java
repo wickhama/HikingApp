@@ -29,6 +29,9 @@ public class MenuActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //Adds Files into phone storage - aw
+        initAssets.initAssets(this);
+
         mListeners = new HashSet<>();
 
         setContentView(R.layout.activity_menu);

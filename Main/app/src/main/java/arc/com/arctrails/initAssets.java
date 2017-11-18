@@ -17,7 +17,7 @@ import java.io.OutputStream;
 
 public class initAssets {
 
-    public initAssets(Context context) {
+    public static void initAssets(Context context) {
         AssetManager assetManager = context.getAssets();
         String[] files = null;
         String output = "";
@@ -62,7 +62,7 @@ public class initAssets {
         }
     }
 
-    private void copyFiles(InputStream in, OutputStream out) throws IOException{
+    private static void copyFiles(InputStream in, OutputStream out) throws IOException{
         byte[] buffer = new byte[1024];
         int read;
         while((read = in.read(buffer)) != -1) {
