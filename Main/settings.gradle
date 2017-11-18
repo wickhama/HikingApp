@@ -1,1 +1,1 @@
-include ':app', ':GPXParser'
+include ':GPXParser', ':app', ':log4j'

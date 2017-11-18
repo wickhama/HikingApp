@@ -1,0 +1,2 @@
+configurations.maybeCreate("default")
+artifacts.add("default", file('log4j-1.2.16.jar'))
