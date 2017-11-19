@@ -20,7 +20,7 @@
         app:srcCompat="@mipmap/ic_launcher_round" />
 
     <fragment
-        android:id="@+id/coorinates"
+        android:id="@+id/coordinates"
         android:name="arc.com.arctrails.Coordinates"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

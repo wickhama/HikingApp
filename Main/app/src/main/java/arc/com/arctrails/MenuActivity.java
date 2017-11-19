@@ -1,5 +1,7 @@
 package arc.com.arctrails;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 
 import android.os.Bundle;
@@ -10,11 +12,14 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import org.alternativevision.gpx.beans.GPX;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -31,9 +36,15 @@ public class MenuActivity extends AppCompatActivity
     public static final int MENU_STOP_RECORD = 1;
     public static final int MENU_SETTINGS = 2;
 
+    public static final int DATA_REQUEST_CODE = 0;
+    public static final int NEW_TRAIL_REQUEST_CODE = 1;
+
+    public static final String EXTRA_FILE_NAME = "arc.com.arctrails.filename";
+
     private Set<LocationPermissionListener> mListeners;
     private ArrayList<File> mTrailFiles;
     private boolean isRecording;
+    private ArrayList<Double[]> recordedData = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,13 +97,9 @@ public class MenuActivity extends AppCompatActivity
         menu.clear();
 
         if(!isRecording)
-        {
             menu.add(Menu.NONE,MENU_START_RECORD,Menu.NONE,"Start Recording");
-        }
         else
-        {
             menu.add(Menu.NONE,MENU_STOP_RECORD,Menu.NONE,"Stop Recording");
-        }
         menu.add(Menu.NONE,MENU_SETTINGS,Menu.NONE,"Settings");
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
@@ -104,18 +111,57 @@ public class MenuActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+        Coordinates location;
 
         switch (id){
             case MENU_START_RECORD:
+                location = (Coordinates) getSupportFragmentManager().findFragmentById(R.id.coordinates);
+                location.record();
+
                 isRecording = true;
                 return true;
             case MENU_STOP_RECORD:
-                isRecording = false;
+                tryStopRecording();
                 return true;
             case MENU_SETTINGS:
+                //TODO:come up with some settings for people to change
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void tryStopRecording()
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Finish Recording")
+                .setMessage("Are you sure you want to finish this trail?");
+
+        builder.setPositiveButton(android.R.string.yes,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Coordinates location = (Coordinates) getSupportFragmentManager()
+                                .findFragmentById(R.id.coordinates);
+                        //stop recording
+                        recordedData = location.stopRecord();
+                        //get other GPX data
+                        Intent intent = new Intent(MenuActivity.this, NewTrailActivity.class);
+                        startActivityForResult(intent,NEW_TRAIL_REQUEST_CODE);
+
+                        isRecording = false;
+                    }
+                });
+
+        builder.setNegativeButton(android.R.string.no,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //do nothing if they dont want to finish
+                    }
+                });
+
+        builder.setIcon(android.R.drawable.ic_dialog_alert);
+        builder.show();
     }
 
     public void buildSideMenu()
@@ -144,11 +190,42 @@ public class MenuActivity extends AppCompatActivity
         int id = item.getItemId();
 
         File trailFile = mTrailFiles.get(id);
-        //TODO: Create an Activity that shows details
+        Intent intent = new Intent(this, TrailDataActivity.class);
+        intent.putExtra(EXTRA_FILE_NAME, trailFile.getName());
+        startActivityForResult(intent,DATA_REQUEST_CODE);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if(requestCode == NEW_TRAIL_REQUEST_CODE)
+        {
+            if(resultCode == NewTrailActivity.RESULT_SAVE)
+            {
+                String name = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_NAME);
+                String description = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_DESCRIPTION);
+                if(recordedData != null)
+                    GPXFile.writeGPXFile(name,description,recordedData,this);
+                recordedData = null;
+                buildSideMenu();
+            }
+        }
+        else if(requestCode == DATA_REQUEST_CODE)
+        {
+            if(resultCode == TrailDataActivity.RESULT_START)
+            {
+                String fileName = data.getStringExtra(TrailDataActivity.EXTRA_FILE_NAME);
+                GPX trail = GPXFile.getGPX(fileName,this);
+                CustomMapFragment map = (CustomMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+                map.makeTrail(trail);
+            }
+            if(resultCode == TrailDataActivity.RESULT_DELETE)
+                buildSideMenu();
+        }
     }
     // End menu stuff
 

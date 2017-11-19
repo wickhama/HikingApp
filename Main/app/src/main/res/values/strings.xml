@@ -11,4 +11,13 @@
     <string name="navigation_menu_wrench">Tools</string>
     <string name="latitude">Latitude : </string>
     <string name="longitude">Longitude : </string>
+
+    <string name="title_activity_trail_data">Trail Info</string>
+    <string name="trail_data_start">Start</string>
+    <string name="trail_data_delete">Delete</string>
+
+    <string name="title_activity_new_trail">Create a New Trail</string>
+    <string name="new_trail_name">Trail Name</string>
+    <string name="new_trail_description">Description</string>
+    <string name="new_trail_save">Save</string>
 </resources>
