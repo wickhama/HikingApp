@@ -14,6 +14,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
+import java.io.File;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,7 +28,13 @@ public class MenuActivity extends AppCompatActivity
                     LocationRequestListener{
 
     public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 99;
+    public static final int MENU_START_RECORD = 0;
+    public static final int MENU_STOP_RECORD = 1;
+    public static final int MENU_SETTINGS = 2;
+
     private Set<LocationPermissionListener> mListeners;
+    private ArrayList<File> mTrailFiles;
+    private boolean isRecording;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +43,9 @@ public class MenuActivity extends AppCompatActivity
         //Adds Files into phone storage - aw
         initAssets.initAssets(this);
 
-        GPXParser test = new GPXParser();
-
         mListeners = new HashSet<>();
+        mTrailFiles = new ArrayList<>();
+        isRecording = false;
 
         setContentView(R.layout.activity_menu);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -49,6 +59,8 @@ public class MenuActivity extends AppCompatActivity
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        buildSideMenu();
     }
 
     // The following is for the menu
@@ -63,8 +75,19 @@ public class MenuActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onPrepareOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+        menu.clear();
+
+        if(!isRecording)
+        {
+            menu.add(Menu.NONE,MENU_START_RECORD,Menu.NONE,"Start Recording");
+        }
+        else
+        {
+            menu.add(Menu.NONE,MENU_STOP_RECORD,Menu.NONE,"Stop Recording");
+        }
+        menu.add(Menu.NONE,MENU_SETTINGS,Menu.NONE,"Settings");
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
@@ -76,12 +99,37 @@ public class MenuActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id){
+            case MENU_START_RECORD:
+                isRecording = true;
+                return true;
+            case MENU_STOP_RECORD:
+                isRecording = false;
+                return true;
+            case MENU_SETTINGS:
+                return true;
         }
-
         return super.onOptionsItemSelected(item);
+    }
+
+    public void buildSideMenu()
+    {
+        NavigationView navView = findViewById(R.id.nav_view);
+        Menu menu = navView.getMenu();
+
+        menu.clear();
+        mTrailFiles.clear();
+
+        File dir = getExternalFilesDir(null);
+        for(File trailFile: dir.listFiles())
+        {
+            String[] tokens = trailFile.getName().split("\\.");
+            if(tokens.length == 2 && tokens[1].equals("gpx")) {
+                int id = mTrailFiles.size();
+                menu.add(R.id.nav_group, id, Menu.NONE, tokens[0]).setCheckable(true);
+                mTrailFiles.add(trailFile);
+            }
+        }
     }
 
     @Override
@@ -89,10 +137,8 @@ public class MenuActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        //noinspection StatementWithEmptyBody
-        if (id == R.id.nav_manage) {
-            //TODO: actually add things to the menu
-        }
+        File trailFile = mTrailFiles.get(id);
+        //TODO: Create an Activity that shows details
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

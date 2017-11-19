@@ -3,10 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="@string/navigation_menu_wrench" />
-    </group>
+    <group
+        android:id="@+id/nav_group"
+        android:checkableBehavior="single"
+        android:orderInCategory="200"/>
 </menu>
