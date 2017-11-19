@@ -27,7 +27,7 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
     private TextView latView, longView;
     private LocationRequestListener mRequestListener;
     private boolean recording;
-    private ArrayList<Double[]> trail;
+    private ArrayList<Double[]> trail = new ArrayList<Double[]>();
 
     @Override
     public void onAttach(Context context) {
