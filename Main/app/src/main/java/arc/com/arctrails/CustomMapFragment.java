@@ -1,6 +1,7 @@
 package arc.com.arctrails;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -15,8 +16,17 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+
+import org.alternativevision.gpx.beans.GPX;
+import org.alternativevision.gpx.beans.Track;
+import org.alternativevision.gpx.beans.Waypoint;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 
 public class CustomMapFragment extends SupportMapFragment implements
         OnMapReadyCallback, LocationPermissionListener
@@ -87,6 +97,7 @@ public class CustomMapFragment extends SupportMapFragment implements
         {
             moveCameraLocation();
             updateLocationUI();
+            //makeTrail(GPXFile.getGPX("test1_1.gpx"));
         }
     }
 
@@ -137,7 +148,6 @@ public class CustomMapFragment extends SupportMapFragment implements
                 mMap.setMyLocationEnabled(false);
                 mMap.getUiSettings().setMyLocationButtonEnabled(false);
                 mLastKnownLocation = null;
-                //  getLocationPermission();
             }
         } catch (SecurityException e)  {
             Log.e("Exception: %s", e.getMessage());
@@ -151,6 +161,38 @@ public class CustomMapFragment extends SupportMapFragment implements
             outState.putParcelable(KEY_CAMERA_POSITION, mMap.getCameraPosition());
             outState.putParcelable(KEY_LOCATION, mLastKnownLocation);
             super.onSaveInstanceState(outState);
+        }
+    }
+    /**
+     * Draw a path from an arrayList of waypoints and update camera to the start of the trail.
+     * @param points
+     */
+    public void drawPath(ArrayList<Waypoint> points) {
+        int len = points.size();
+        PolylineOptions polylineOptions = new PolylineOptions();
+        for (int i=0; i<len; ++i) {
+            LatLng iLatLng = new LatLng(points.get(i).getLatitude(),points.get(i).getLongitude());
+            polylineOptions.add(iLatLng).width(5).color(Color.rgb(60,195,0)).geodesic(true);
+        }
+        mMap.addPolyline(polylineOptions);
+    }
+
+    /**
+     * Draw a trail from a hashset of paths in a GPX file
+     * @param trail
+     */
+    public void makeTrail(GPX trail) {
+        HashSet<Track> tracks;
+        HashSet<Waypoint> points;
+        points = trail.getWaypoints();
+        for (Waypoint w : points) {
+            LatLng wLatLng = new LatLng(w.getLatitude(),w.getLongitude());
+            mMap.addMarker(new MarkerOptions().position(wLatLng));
+        }
+        tracks = trail.getTracks();
+        for (Track t : tracks) {
+            drawPath(t.getTrackPoints());
+
         }
     }
 }
