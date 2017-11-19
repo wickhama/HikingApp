@@ -34,6 +34,13 @@ public class MenuActivity extends AppCompatActivity
         //Adds Files into phone storage - aw
         initAssets.initAssets(this);
 
+        ArrayList<Double[]> list = new ArrayList();
+        for(int i=0; i<10; i++) {
+            Double[] waypoint = {i+3.0, 22.0};
+            list.add(waypoint);
+        }
+        GPXFile.writeGPXFile("ICanWalk", "This is a test", list, this);
+
         mListeners = new HashSet<>();
 
         setContentView(R.layout.activity_menu);

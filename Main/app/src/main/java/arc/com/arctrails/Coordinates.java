@@ -17,6 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import static java.lang.String.format;
 
 
@@ -24,6 +26,8 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
 
     private TextView latView, longView;
     private LocationRequestListener mRequestListener;
+    private boolean recording;
+    private ArrayList<Double[]> trail;
 
     @Override
     public void onAttach(Context context) {
@@ -67,11 +71,31 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
         }
     }
 
+    //Records latitude and longitude on location change
+    public void record() {
+        trail.clear();
+        recording = true;
+    }
+
+    //stops recording and returns an ArrayList<Double[]> of points.
+    public ArrayList<Double[]> stopRecord() {
+        recording = false;
+        return trail;
+    }
+
+
     @Override
     public void onLocationChanged(Location location) {
         if(location != null) {
-            latView.setText(format("%.5f", location.getLatitude()));
-            longView.setText(format("%.5f", location.getLongitude()));
+            double lat= location.getLatitude();
+            double lon = location.getLongitude();
+
+            latView.setText(format("%.5f", lat));
+            longView.setText(format("%.5f", lon));
+            if(recording) {
+                Double[] point = {lat, lon};
+                trail.add(point);
+            }
         }
     }
 
