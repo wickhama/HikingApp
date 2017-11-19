@@ -96,7 +96,6 @@ public class CustomMapFragment extends SupportMapFragment implements
         {
             moveCameraLocation();
             updateLocationUI();
-            
         }
     }
 
@@ -171,7 +170,7 @@ public class CustomMapFragment extends SupportMapFragment implements
         PolylineOptions polylineOptions = new PolylineOptions();
         for (int i=0; i<len; ++i) {
             LatLng iLatLng = new LatLng(points.get(i).getLatitude(),points.get(i).getLongitude());
-            polylineOptions.add(iLatLng).width(5).color(Color.GREEN).geodesic(true);
+            polylineOptions.add(iLatLng).width(5).color(Color.rgb(60,195,0)).geodesic(true);
         }
         mMap.addPolyline(polylineOptions);
     }
