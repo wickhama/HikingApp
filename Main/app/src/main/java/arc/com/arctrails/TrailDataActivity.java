@@ -53,13 +53,27 @@ public class TrailDataActivity extends AppCompatActivity {
         TextView nameView = findViewById(R.id.TrailName);
         TextView descriptionView = findViewById(R.id.Description);
 
-        //there should only be one track
-        Track track = trail.getTracks().iterator().next();
-        String name = track.getName();
-        String description = track.getDescription();
+        if(trail == null){
+            nameView.setText("N/A");
+            nameView.setText("N/A");
+            showAlert("Format Error", "The chosen file was not formatted correctly.",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        setResult(RESULT_BACK);
+                        finish();
+                    }
+                });
+        }
+        else {
+            //there should only be one track
+            Track track = trail.getTracks().iterator().next();
+            String name = track.getName();
+            String description = track.getDescription();
 
-        nameView.setText(name);
-        descriptionView.setText(description);
+            nameView.setText(name);
+            descriptionView.setText(description);
+        }
     }
 
     public void onStartPressed(View view)
@@ -107,17 +121,22 @@ public class TrailDataActivity extends AppCompatActivity {
         try{
             file.delete();
         }catch(SecurityException e){
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setTitle("Security Exception")
-                    .setMessage(e.getLocalizedMessage())
-                    .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-            builder.setIcon(android.R.drawable.ic_dialog_alert);
-            builder.show();
+            showAlert("SecurityException",e.getLocalizedMessage(), new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
         }
+    }
+
+    private void showAlert(String title, String message, DialogInterface.OnClickListener onClick)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title)
+                .setMessage(message)
+                .setNeutralButton(android.R.string.ok, onClick);
+        builder.setIcon(android.R.drawable.ic_dialog_alert);
+        builder.show();
     }
 }
