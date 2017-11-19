@@ -144,9 +144,15 @@ public class MenuActivity extends AppCompatActivity
                                 .findFragmentById(R.id.coordinates);
                         //stop recording
                         recordedData = location.stopRecord();
-                        //get other GPX data
-                        Intent intent = new Intent(MenuActivity.this, NewTrailActivity.class);
-                        startActivityForResult(intent,NEW_TRAIL_REQUEST_CODE);
+                        if(recordedData.size()>0) {
+                            //get other GPX data
+                            Intent intent = new Intent(MenuActivity.this, NewTrailActivity.class);
+                            startActivityForResult(intent, NEW_TRAIL_REQUEST_CODE);
+                        }
+                        else{
+                            dialog.dismiss();
+                            showAlert("Empty trail","No location data was recorded");
+                        }
 
                         isRecording = false;
                     }
@@ -160,6 +166,21 @@ public class MenuActivity extends AppCompatActivity
                     }
                 });
 
+        builder.setIcon(android.R.drawable.ic_dialog_alert);
+        builder.show();
+    }
+
+    private void showAlert(String title, String message)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title)
+                .setMessage(message)
+                .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
         builder.setIcon(android.R.drawable.ic_dialog_alert);
         builder.show();
     }
