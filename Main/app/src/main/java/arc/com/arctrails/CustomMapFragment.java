@@ -96,7 +96,7 @@ public class CustomMapFragment extends SupportMapFragment implements
         {
             moveCameraLocation();
             updateLocationUI();
-            makeTrail(GPXFile.getGPX("test1_1.gpx"));
+            
         }
     }
 
@@ -168,10 +168,12 @@ public class CustomMapFragment extends SupportMapFragment implements
      */
     public void drawPath(ArrayList<Waypoint> points) {
         int len = points.size();
+        PolylineOptions polylineOptions = new PolylineOptions();
         for (int i=0; i<len; ++i) {
             LatLng iLatLng = new LatLng(points.get(i).getLatitude(),points.get(i).getLongitude());
-            mMap.addPolyline((new PolylineOptions()).add(iLatLng).width(5).color(Color.GREEN).geodesic(true));
+            polylineOptions.add(iLatLng).width(5).color(Color.GREEN).geodesic(true);
         }
+        mMap.addPolyline(polylineOptions);
     }
 
     /**
@@ -183,6 +185,7 @@ public class CustomMapFragment extends SupportMapFragment implements
         tracks = trail.getTracks();
         for (Track t : tracks) {
             drawPath(t.getTrackPoints());
+
         }
     }
 }
