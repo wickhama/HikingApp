@@ -82,7 +82,5 @@ public class GPXFile {
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         }
-
     }
-
 }
