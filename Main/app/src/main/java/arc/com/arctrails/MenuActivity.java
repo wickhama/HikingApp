@@ -231,7 +231,7 @@ public class MenuActivity extends AppCompatActivity
                 String name = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_NAME);
                 String description = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_DESCRIPTION);
                 if(recordedData != null)
-                    GPXFile.writeGPXFile(name,description,recordedData,this);
+                    GPXFile.writeGPXFile(name,description,recordedData,getApplicationContext());
                 recordedData = null;
                 buildSideMenu();
             }
