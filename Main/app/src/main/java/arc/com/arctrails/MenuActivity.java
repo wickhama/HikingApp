@@ -17,7 +17,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import org.alternativevision.gpx.beans.GPX;
 
@@ -53,7 +52,7 @@ public class MenuActivity extends AppCompatActivity
         //Adds Files into phone storage - aw
         initAssets.initAssets(this);
 
-        ArrayList<Double[]> list = new ArrayList();
+        ArrayList<Double[]> list = new ArrayList<>();
         for(int i=0; i<10; i++) {
             Double[] waypoint = {i+3.0, 22.0};
             list.add(waypoint);
@@ -194,13 +193,15 @@ public class MenuActivity extends AppCompatActivity
         mTrailFiles.clear();
 
         File dir = getExternalFilesDir(null);
-        for(File trailFile: dir.listFiles())
-        {
-            String[] tokens = trailFile.getName().split("\\.");
-            if(tokens.length == 2 && tokens[1].equals("gpx")) {
-                int id = mTrailFiles.size();
-                menu.add(R.id.nav_group, id, Menu.NONE, tokens[0]).setCheckable(true);
-                mTrailFiles.add(trailFile);
+        if (dir != null) {
+            for(File trailFile: dir.listFiles())
+            {
+                String[] tokens = trailFile.getName().split("\\.");
+                if(tokens.length == 2 && tokens[1].equals("gpx")) {
+                    int id = mTrailFiles.size();
+                    menu.add(R.id.nav_group, id, Menu.NONE, tokens[0]).setCheckable(true);
+                    mTrailFiles.add(trailFile);
+                }
             }
         }
     }

@@ -15,12 +15,12 @@ import java.io.OutputStream;
  * Created by SamTheTurdBurgler on 2017-11-02.
  */
 
-public class initAssets {
+class initAssets {
 
-    public static void initAssets(Context context) {
+    static void initAssets(Context context) {
         AssetManager assetManager = context.getAssets();
         String[] files = null;
-        String output = "";
+        //String output = "";
 
         //Grabs the files within assets directory
         try{

@@ -166,9 +166,8 @@ public class CustomMapFragment extends SupportMapFragment implements
     }
     /**
      * Draw a path from an arrayList of waypoints and update camera to the start of the trail.
-     * @param points
      */
-    public void drawPath(ArrayList<Waypoint> points) {
+    private void drawPath(ArrayList<Waypoint> points) {
         int len = points.size();
         PolylineOptions polylineOptions = new PolylineOptions();
         for (int i=0; i<len; ++i) {
@@ -180,7 +179,6 @@ public class CustomMapFragment extends SupportMapFragment implements
 
     /**
      * Draw a trail from a hashset of paths in a GPX file
-     * @param trail
      */
     public void makeTrail(GPX trail) {
         HashSet<Track> tracks;
