@@ -19,26 +19,26 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
 /**
- * Created by SamTheTurdBurgler on 2017-11-18.
+ * Created by Ayla Wickham
+ *  18-11-17
  */
 
-public class GPXFile {
+class GPXFile {
 
-    public static GPXParser gpxParser = new GPXParser();
+    private static GPXParser gpxParser = new GPXParser();
 
     //Returns the GPX object of the file parsed
-    public static GPX getGPX(String filename, Context context) {
+    static GPX getGPX(String filename, Context context) {
         FileInputStream in = null;
 
         File file = new File(context.getExternalFilesDir(null), filename);
         try {
             in = new FileInputStream(file);
             if(in != null) {
-                GPX gpx = gpxParser.parseGPX(in);
-                return gpx;
+                return gpxParser.parseGPX(in);
             }
         } catch(FileNotFoundException e) {
-
+        //e.printStackTrace(); should this be here?
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -50,8 +50,8 @@ public class GPXFile {
         return null;
     }
 
-    public static void  writeGPXFile(String trackName, String description, ArrayList<Double[]> trackPoints, Context context) {
-        ArrayList<Waypoint> waypoints = new ArrayList<Waypoint>();
+    static void  writeGPXFile(String trackName, String description, ArrayList<Double[]> trackPoints, Context context) {
+        ArrayList<Waypoint> waypoints = new ArrayList<>();
         for(Double[] list : trackPoints) {
             Waypoint point = new Waypoint();
             point.setLatitude(list[0]);
@@ -82,7 +82,5 @@ public class GPXFile {
         } catch (ParserConfigurationException e) {
             e.printStackTrace();
         }
-
     }
-
 }

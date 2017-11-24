@@ -1,7 +1,8 @@
 package arc.com.arctrails;
 
 /**
- * Created by ryley_000 on 2017-11-06.
+ * Created by Ryley
+ * 06-11-17
  */
 
 public interface LocationRequestListener {
