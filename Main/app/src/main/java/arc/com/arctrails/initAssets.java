@@ -17,15 +17,12 @@ import java.io.OutputStream;
 
 class initAssets {
 
-<<<<<<< HEAD
+
     /** initAssets called at beginning of startup
      *
      * @param context - Context
      */
     public static void initAssets(Context context) {
-=======
-    static void initAssets(Context context) {
->>>>>>> 318b2b15a3b6b45f1f7b9d26c8d3d10d08845c85
         AssetManager assetManager = context.getAssets();
         String[] files = null;
         //String output = "";
