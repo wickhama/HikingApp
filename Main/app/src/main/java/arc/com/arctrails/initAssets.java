@@ -17,6 +17,10 @@ import java.io.OutputStream;
 
 public class initAssets {
 
+    /** initAssets called at beginning of startup
+     *
+     * @param context - Context
+     */
     public static void initAssets(Context context) {
         AssetManager assetManager = context.getAssets();
         String[] files = null;
@@ -33,7 +37,7 @@ public class initAssets {
             OutputStream out = null;
             File outFile;
 
-            //Iterate through each file and copy to a new file in the phone's
+            //Iterate through each file and copyFile() to a new file in the phone's
             //internal storage
             for(String filename : files) {
                 try {
@@ -62,6 +66,12 @@ public class initAssets {
         }
     }
 
+    /** Copies the files from the in to the out stream
+     *
+     * @param in - InputStream
+     * @param out - OutputStream
+     * @throws IOException
+     */
     private static void copyFiles(InputStream in, OutputStream out) throws IOException{
         byte[] buffer = new byte[1024];
         int read;
