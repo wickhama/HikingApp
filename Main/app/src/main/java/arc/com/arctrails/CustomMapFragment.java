@@ -29,8 +29,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
- * @author Caleigh
- * @since 14-10-17
+ * Created by Caleigh
+ * Added for increment 1
+
  * This class contains the map and includes everything done using the google maps api.
 
  * Methods:
@@ -45,25 +46,38 @@ import java.util.HashSet;
  * makeTrail (Creates a trail using Waypoints and paths from the input GPX file)
  */
 public class CustomMapFragment extends SupportMapFragment implements
-        OnMapReadyCallback, LocationPermissionListener
-{
+        OnMapReadyCallback, LocationPermissionListener {
+    /**
+     * Instance variables mostly added by Caleigh.
+     */
+    // The TAG does nothing within the cat, but provides output on logcat within the IDE
     private static final String TAG = CustomMapFragment.class.getSimpleName();
+
+    // Added by Ryley for calling the location request fragment
     private LocationRequestListener mRequestListener;
 
+    // Defined later for storing the current location provider
     String locProvider;
+
+    // Instance for the current map
     private GoogleMap mMap;
+
+    // Instance for the user's last known location
     private Location mLastKnownLocation;
 
     // The entry point to the Fused Location Provider.
     private FusedLocationProviderClient mFusedLocationProviderClient;
+
+    // This will be the default camera zoom for the user's location
     private static final int DEFAULT_ZOOM = 15;
 
+    // Instances for saving the state before closing
     private static final String KEY_CAMERA_POSITION = "camera_position";
     private static final String KEY_LOCATION = "location";
 
     /**
-     * @author Ryley
-     * @since 14-10-17
+     * Created by Ryley
+     * Added for increment 1
 
      * This activity is called when the map fragment becomes owned by its related context
      * We needed to override this to add the location request listener so that we could
@@ -84,8 +98,8 @@ public class CustomMapFragment extends SupportMapFragment implements
     }
 
     /**
-     * @author Ryley & Caleigh
-     * @since 14-10-17
+     * Created by Ryley & Caleigh
+     * Added for increment 1
 
      * This activity is called directly after onAttach, and is needed for initial fragment creation.
      * It may be called when the activity is still being created, so we couldn't add visual assets to
@@ -111,8 +125,8 @@ public class CustomMapFragment extends SupportMapFragment implements
     }
 
     /**
-     * @author Caleigh
-     * @since 14-10-17
+     * Created by Caleigh
+     * Added for increment 1
 
      * Manipulates the map once is fully available.
      * This callback is triggered when the map is ready to be used.
@@ -129,8 +143,8 @@ public class CustomMapFragment extends SupportMapFragment implements
     }
 
     /**
-     * @author Caleigh
-     * @since 14-10-17
+     * Created by Caleigh
+     * Added for increment 1
 
      * Gets called the moment the user responds to the location permissions request. If permission
      * is granted, we add in the location-specific utilities AKA. the blue dot on the user's
@@ -149,12 +163,12 @@ public class CustomMapFragment extends SupportMapFragment implements
     }
 
     /**
-     * @author Caleigh
-     * @since 14-10-17
+     * Created by Caleigh
+     * Added for increment 1
 
-     * Creates the blue dot centred on the user's location for the map
-     * - Get the best and most recent location of the device, which may be null in rare
-     * cases when a location is not available.
+     * Creates the blue dot centred on the user's location for the map.
+     * Gets the best and most recent location of the device, which may be null in rare cases when a
+     * location is not available. We handle this with
      */
     private void moveCameraLocation() {
         try {
@@ -183,7 +197,11 @@ public class CustomMapFragment extends SupportMapFragment implements
         }
     }
 
-    /** set the location controls on the map. If the user has granted location permission, enable the My Location
+    /**
+     * Created by Caleigh
+     * Added for increment 1
+
+     * set the location controls on the map. If the user has granted location permission, enable the My Location
      * layer and the related control on the map, otherwise disable the layer and the control, and set the current
      * location to null
      */
@@ -206,6 +224,15 @@ public class CustomMapFragment extends SupportMapFragment implements
         }
     }
 
+    /**
+     * Created by Caleigh
+     * Added for increment 1
+
+     * Saves the instance and current coordinates as the user closes the app, just in case GPS or
+     * Google Play data isn't available next time app is opened.
+
+     * @param outState
+     */
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -216,7 +243,11 @@ public class CustomMapFragment extends SupportMapFragment implements
         }
     }
     /**
-     * Draw a path from an arrayList of waypoints and update camera to the start of the trail.
+     * Created by Caleigh
+     * Added for increment 3
+
+     * Draw a polyline path from an arrayList of waypoints and update camera to the start of the
+     * trail. To make it more nature-esque, I coloured the path a custom green colour.
      */
     private void drawPath(ArrayList<Waypoint> points) {
         PolylineOptions polylineOptions = new PolylineOptions();
@@ -229,7 +260,11 @@ public class CustomMapFragment extends SupportMapFragment implements
     }
 
     /**
-     * Draw a trail from a hashset of paths in a GPX file
+     * Created by Caleigh
+     * Added for increment 3
+
+     * Add the waypoints in the GPX file into the map, and call the drawPath method  to draw the
+     * paths using the coordinates from the same GPX file
      */
     public void makeTrail(GPX trail) {
         mMap.clear();
@@ -239,7 +274,7 @@ public class CustomMapFragment extends SupportMapFragment implements
         int numWaypoints = 0;
         double lat = 0;
         double lng = 0;
-        if(!points.isEmpty() || points != null) {     //Prevents crash if there are no waypoints in GPX File (aw)
+        if(!points.isEmpty() || points != null) { //Prevents crash if there are no waypoints in GPX File (aw)
             for (Waypoint w : points) {
                 LatLng wLatLng = new LatLng(w.getLatitude(), w.getLongitude());
                 mMap.addMarker(new MarkerOptions().position(wLatLng));
