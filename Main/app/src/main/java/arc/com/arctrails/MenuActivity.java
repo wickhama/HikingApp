@@ -2,9 +2,11 @@ package arc.com.arctrails;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -49,8 +51,18 @@ public class MenuActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Adds Files into phone storage - aw
-        initAssets.initAssets(this);
+        SharedPreferences wmbPreference = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean isFirstRun = wmbPreference.getBoolean("FIRSTRUN", true);
+        if (isFirstRun)
+        {
+            // Code to run once
+            SharedPreferences.Editor editor = wmbPreference.edit();
+            editor.putBoolean("FIRSTRUN", false);
+            editor.apply();
+
+            //Adds Files into phone storage - aw
+            initAssets.initAssets(this);
+        }
 
         ArrayList<Double[]> list = new ArrayList<>();
         for(int i=0; i<10; i++) {
@@ -160,7 +172,10 @@ public class MenuActivity extends AppCompatActivity
                         }
                         else{
                             dialog.dismiss();
-                            showAlert("Empty trail","No location data was recorded");
+                            showAlert(
+                                    "Empty trail",
+                                    "No location data was recorded.\n"
+                                    +"Most likely, user has not moved.");
                         }
 
                         isRecording = false;
