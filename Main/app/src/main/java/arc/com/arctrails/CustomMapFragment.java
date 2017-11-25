@@ -32,7 +32,6 @@ public class CustomMapFragment extends SupportMapFragment implements
         OnMapReadyCallback, LocationPermissionListener
 {
     private static final String TAG = CustomMapFragment.class.getSimpleName();
-
     private LocationRequestListener mRequestListener;
 
     String locProvider;
@@ -168,8 +167,8 @@ public class CustomMapFragment extends SupportMapFragment implements
      * Draw a path from an arrayList of waypoints and update camera to the start of the trail.
      */
     private void drawPath(ArrayList<Waypoint> points) {
-        int len = points.size();
         PolylineOptions polylineOptions = new PolylineOptions();
+        int len = points.size();
         for (int i=0; i<len; ++i) {
             LatLng iLatLng = new LatLng(points.get(i).getLatitude(),points.get(i).getLongitude());
             polylineOptions.add(iLatLng).width(5).color(Color.rgb(60,195,0)).geodesic(true);
@@ -181,6 +180,7 @@ public class CustomMapFragment extends SupportMapFragment implements
      * Draw a trail from a hashset of paths in a GPX file
      */
     public void makeTrail(GPX trail) {
+        mMap.clear();
         HashSet<Track> tracks;
         HashSet<Waypoint> points;
         points = trail.getWaypoints();
@@ -193,7 +193,6 @@ public class CustomMapFragment extends SupportMapFragment implements
         tracks = trail.getTracks();
         for (Track t : tracks) {
             drawPath(t.getTrackPoints());
-
         }
     }
 }
