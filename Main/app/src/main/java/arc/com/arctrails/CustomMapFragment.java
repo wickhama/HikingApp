@@ -235,11 +235,10 @@ public class CustomMapFragment extends SupportMapFragment implements
         mMap.clear();
         HashSet<Track> tracks;
         HashSet<Waypoint> points;
-        points = trail.getWaypoints();
         int numWaypoints = 0;
         double lat = 0;
         double lng = 0;
-        if(!points.isEmpty() || points != null) {     //Prevents crash if there are no waypoints in GPX File (aw)
+        if((points = trail.getWaypoints()) != null && !points.isEmpty()) {     //Prevents crash if there are no waypoints in GPX File (aw)
             for (Waypoint w : points) {
                 LatLng wLatLng = new LatLng(w.getLatitude(), w.getLongitude());
                 mMap.addMarker(new MarkerOptions().position(wLatLng));
