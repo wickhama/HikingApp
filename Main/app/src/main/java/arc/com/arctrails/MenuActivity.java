@@ -307,14 +307,17 @@ public class MenuActivity extends AppCompatActivity
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED);
     }
-    /*
+    /**
+     * Created by Caleigh, modified by Ryley
+     * Added for increment 1
+
      * Request location permission, so that we can get the location of the
      * device. The result of the permission request is handled by a callback,
      * onRequestPermissionsResult.
-     *
+
      * PermissionListener is the class requesting permission, and when permissions
-     * are accepted, calls onPermissionGranted()
-     *
+     * are accepted, calls onPermissionGranted(). This was added by Ryley.
+
      * THIS IS SYNCHRONIZED SO THAT PEOPLE CAN'T ADD THEMSELVES TO THE SET OF LISTENERS
      * JUST BEFORE THE SET GETS EMPTIED
      */
@@ -335,9 +338,12 @@ public class MenuActivity extends AppCompatActivity
             return false;
         }
     }
-    /*
-     * Alerts the listeners that permission has been granted
-     *
+    /**
+     * Created by Caleigh, modified by Ryley
+     * Added for increment 1
+
+     * Alerts the listeners that permission has been granted. Listeners added by Ryley.
+
      * THIS IS SYNCHRONIZED SO THAT PEOPLE CAN'T ADD THEMSELVES TO THE SET OF LISTENERS
      * JUST BEFORE THE SET GETS EMPTIED
      */
