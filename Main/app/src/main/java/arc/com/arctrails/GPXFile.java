@@ -20,14 +20,23 @@ import javax.xml.transform.TransformerException;
 
 /**
  * Created by Ayla Wickham
- *  18-11-17
+ *  18-11-17 Increment 3
+ *  GPX File has a static parser to prevent multiple creations of the GPX Parser
+ *  Handles all accesses and writes of GPX files using a third party GPX Library
+ *  offered by AlternativeVision
+ *  http://gpxparser.alternativevision.ro/
  */
 
 class GPXFile {
 
     private static GPXParser gpxParser = new GPXParser();
 
-    //Returns the GPX object of the file parsed
+    /** Returns the GPX object of the file parsed
+     *
+     * @param filename
+     * @param context
+     * @return
+     */
     static GPX getGPX(String filename, Context context) {
         FileInputStream in = null;
 

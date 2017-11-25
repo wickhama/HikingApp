@@ -184,9 +184,11 @@ public class CustomMapFragment extends SupportMapFragment implements
         HashSet<Track> tracks;
         HashSet<Waypoint> points;
         points = trail.getWaypoints();
-        for (Waypoint w : points) {
-            LatLng wLatLng = new LatLng(w.getLatitude(),w.getLongitude());
-            mMap.addMarker(new MarkerOptions().position(wLatLng));
+        if(!points.isEmpty()) {     //Prevents crash if there are no waypoints in GPX File (aw)
+            for (Waypoint w : points) {
+                LatLng wLatLng = new LatLng(w.getLatitude(), w.getLongitude());
+                mMap.addMarker(new MarkerOptions().position(wLatLng));
+            }
         }
         tracks = trail.getTracks();
         for (Track t : tracks) {

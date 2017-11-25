@@ -12,7 +12,8 @@ import java.io.OutputStream;
 /**initAssets
  * Copies initial GPX files to phone so they can
  * be decoded for map usage when selected.
- * Created by SamTheTurdBurgler on 2017-11-02.
+ * Created by Ayla Wickham
+ * 2017-11-02. - Increment 2
  */
 
 class initAssets {

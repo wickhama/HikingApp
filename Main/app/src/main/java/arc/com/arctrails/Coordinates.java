@@ -21,6 +21,12 @@ import java.util.ArrayList;
 
 import static java.lang.String.format;
 
+/**Coordinates displays a fragment in the side menu
+ * and shows the user's current location if permissions is granted
+ *
+ * Created by Ayla Wickham Increment 1
+ * Revised by
+ */
 
 public class Coordinates extends Fragment implements LocationListener, LocationPermissionListener {
 
@@ -29,6 +35,11 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
     private boolean recording;
     private ArrayList<Double[]> trail = new ArrayList<>();
 
+    /** Called at startup
+     * Asks for location permission to show user's GPS coordinates.
+     *
+     * @param context Context
+     */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -40,6 +51,13 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
         }
     }
 
+    /** Shows the fragment in the side menu
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -52,9 +70,10 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
         return view;
     }
 
-    /*
-     * Once permission has been granted, we can begin tracking coordinates
-     */
+    /** Once permission has been granted, we can begin tracking coordinates
+     *
+     * @param result
+     **/
     @Override
     public void onPermissionResult(boolean result) {
         if (result) {
@@ -71,13 +90,18 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
         }
     }
 
-    //Records latitude and longitude on location change
+    /**Records latitude and longitude on location change
+     * Only called when user wishes to create a new trail.
+     */
     public void record() {
         trail.clear();
         recording = true;
     }
 
-    //stops recording and returns an ArrayList<Double[]> of points.
+    /** Stops recording and returns an ArrayList<Double[]> of points.
+     *
+     * @return ArrayList<Double[]>
+     */
     public ArrayList<Double[]> stopRecord() {
         recording = false;
         return trail;
