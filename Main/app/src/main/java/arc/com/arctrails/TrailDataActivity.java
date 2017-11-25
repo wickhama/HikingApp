@@ -61,7 +61,7 @@ public class TrailDataActivity extends AppCompatActivity {
                     .setMessage("This file is formatted incorrectly.\n"
                             +"Would you like to delete this trail?");
 
-            builder.setPositiveButton("Delete",
+            builder.setPositiveButton(R.string.delete,
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
