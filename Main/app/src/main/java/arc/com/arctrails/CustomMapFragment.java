@@ -16,6 +16,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -268,26 +269,24 @@ public class CustomMapFragment extends SupportMapFragment implements
      */
     public void makeTrail(GPX trail) {
         mMap.clear();
-        HashSet<Track> tracks;
+        HashSet<Track> tracks = trail.getTracks();
         HashSet<Waypoint> points;
-        int numWaypoints = 0;
-        double lat = 0;
-        double lng = 0;
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
         // Check added to make sure there's at least 1 waypoint, added by Ayla
         if((points = trail.getWaypoints()) != null && !points.isEmpty()) {
             for (Waypoint w : points) {
                 LatLng wLatLng = new LatLng(w.getLatitude(), w.getLongitude());
+                builder.include(wLatLng);
                 mMap.addMarker(new MarkerOptions().position(wLatLng));
-                lat += w.getLatitude();
-                lng += w.getLongitude();
-                numWaypoints++;
             }
-            lat /= numWaypoints;
-            lng /= numWaypoints;
-            LatLng zLatLng = new LatLng(lat, lng);
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(zLatLng, 14));
+            LatLngBounds bounds = builder.build();
+            mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 200));
+
         }
-        tracks = trail.getTracks();
+        else {
+            LatLng zLatLng = new LatLng(tracks.iterator().next().getTrackPoints().get(0).getLatitude(),tracks.iterator().next().getTrackPoints().get(0).getLongitude());
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(zLatLng, 15));
+        }
         for (Track t : tracks) {
             drawPath(t.getTrackPoints());
         }
