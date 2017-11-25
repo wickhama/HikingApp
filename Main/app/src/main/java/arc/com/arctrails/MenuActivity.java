@@ -28,7 +28,7 @@ import java.util.Set;
 
 public class MenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-                    LocationRequestListener{
+                    LocationPermissionListener, LocationRequestListener{
 
     public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 99;
     public static final int MENU_START_RECORD = 0;
@@ -110,23 +110,33 @@ public class MenuActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        Coordinates location;
 
         switch (id){
             case MENU_START_RECORD:
-                location = (Coordinates) getSupportFragmentManager().findFragmentById(R.id.coordinates);
-                location.record();
-
-                isRecording = true;
+                requestPermission(this);
                 return true;
             case MENU_STOP_RECORD:
                 tryStopRecording();
                 return true;
             case MENU_SETTINGS:
-                //TODO:come up with some settings for people to change
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * The only time the menu needs to check for permission is to begin recording a trail
+     */
+    @Override
+    public void onPermissionResult(boolean result){
+        if(result) {
+            Coordinates location;
+
+            location = (Coordinates) getSupportFragmentManager().findFragmentById(R.id.coordinates);
+            location.record();
+
+            isRecording = true;
+        }
     }
 
     private void tryStopRecording()
