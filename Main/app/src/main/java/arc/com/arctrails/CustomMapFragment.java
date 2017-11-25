@@ -28,6 +28,22 @@ import org.alternativevision.gpx.beans.Waypoint;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+/**
+ * Created by Caleigh
+ * 14-10-17
+ * This class contains the map and includes everything done using the google maps api.
+ *
+ * Methods:
+ * onAttach (handles what to do when the map fragment is called from elsewhere)
+ * onCreate (essentially the  main method - adds all the default items into the newly created map)
+ * onMapReady (initiates map-related tasks after the map is loaded)
+ * onPermissionResult (begins calling permission-related tasks when the user allows location permissions)
+ * moveCameraLocation (updates the zoom location on the map when called)
+ * updateLocationUI (moves the blue dot as the gps updates)
+ * onSaveInstantState (saves the location data when app is closed or new activity called)
+ * drawPath (Draws a polyline on the map using an arrayList of coordinates)
+ * makeTrail (Creates a trail using Waypoints and paths from the input GPX file)
+ */
 public class CustomMapFragment extends SupportMapFragment implements
         OnMapReadyCallback, LocationPermissionListener
 {
@@ -96,7 +112,6 @@ public class CustomMapFragment extends SupportMapFragment implements
         {
             moveCameraLocation();
             updateLocationUI();
-            //makeTrail(GPXFile.getGPX("test1_1.gpx"));
         }
     }
 
@@ -183,11 +198,22 @@ public class CustomMapFragment extends SupportMapFragment implements
         mMap.clear();
         HashSet<Track> tracks;
         HashSet<Waypoint> points;
-        if((points = trail.getWaypoints()) != null && !points.isEmpty()) {
+        points = trail.getWaypoints();
+        int numWaypoints = 0;
+        double lat = 0;
+        double lng = 0;
+        if(!points.isEmpty() || points != null) {     //Prevents crash if there are no waypoints in GPX File (aw)
             for (Waypoint w : points) {
                 LatLng wLatLng = new LatLng(w.getLatitude(), w.getLongitude());
                 mMap.addMarker(new MarkerOptions().position(wLatLng));
+                lat += w.getLatitude();
+                lng += w.getLongitude();
+                numWaypoints++;
             }
+            lat /= numWaypoints;
+            lng /= numWaypoints;
+            LatLng zLatLng = new LatLng(lat, lng);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(zLatLng, 14));
         }
         tracks = trail.getTracks();
         for (Track t : tracks) {
