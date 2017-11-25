@@ -260,7 +260,7 @@ public class CustomMapFragment extends SupportMapFragment implements
     }
 
     /**
-     * Created by Caleigh
+     * Created by Caleigh, modified by Ayla
      * Added for increment 3
 
      * Add the waypoints in the GPX file into the map, and call the drawPath method  to draw the
@@ -273,7 +273,8 @@ public class CustomMapFragment extends SupportMapFragment implements
         int numWaypoints = 0;
         double lat = 0;
         double lng = 0;
-        if((points = trail.getWaypoints()) != null && !points.isEmpty()) {     //Prevents crash if there are no waypoints in GPX File (aw)
+        // Check added to make sure there's at least 1 waypoint, added by Ayla
+        if((points = trail.getWaypoints()) != null && !points.isEmpty()) {
             for (Waypoint w : points) {
                 LatLng wLatLng = new LatLng(w.getLatitude(), w.getLongitude());
                 mMap.addMarker(new MarkerOptions().position(wLatLng));
