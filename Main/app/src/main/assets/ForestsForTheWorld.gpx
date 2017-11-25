@@ -431,6 +431,8 @@
         <time>2010-01-01T00:10:25Z</time>
       </trkpt>
     </trkseg>
+  </trk>
+  <trk>
     <trkseg>
       <trkpt lat="53.89147980" lon="-122.838188">
         <ele>823.00000</ele>
