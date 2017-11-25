@@ -2,9 +2,11 @@ package arc.com.arctrails;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -28,7 +30,7 @@ import java.util.Set;
 
 public class MenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-                    LocationRequestListener{
+                    LocationPermissionListener, LocationRequestListener{
 
     public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 99;
     public static final int MENU_START_RECORD = 0;
@@ -49,8 +51,18 @@ public class MenuActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Adds Files into phone storage - aw
-        initAssets.initAssets(this);
+        SharedPreferences wmbPreference = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean isFirstRun = wmbPreference.getBoolean("FIRSTRUN", true);
+        if (isFirstRun)
+        {
+            // Code to run once
+            SharedPreferences.Editor editor = wmbPreference.edit();
+            editor.putBoolean("FIRSTRUN", false);
+            editor.apply();
+
+            //Adds Files into phone storage - aw
+            initAssets.initAssets(this);
+        }
 
         ArrayList<Double[]> list = new ArrayList<>();
         for(int i=0; i<10; i++) {
@@ -110,23 +122,33 @@ public class MenuActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        Coordinates location;
 
         switch (id){
             case MENU_START_RECORD:
-                location = (Coordinates) getSupportFragmentManager().findFragmentById(R.id.coordinates);
-                location.record();
-
-                isRecording = true;
+                requestPermission(this);
                 return true;
             case MENU_STOP_RECORD:
                 tryStopRecording();
                 return true;
             case MENU_SETTINGS:
-                //TODO:come up with some settings for people to change
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * The only time the menu needs to check for permission is to begin recording a trail
+     */
+    @Override
+    public void onPermissionResult(boolean result){
+        if(result) {
+            Coordinates location;
+
+            location = (Coordinates) getSupportFragmentManager().findFragmentById(R.id.coordinates);
+            location.record();
+
+            isRecording = true;
+        }
     }
 
     private void tryStopRecording()
@@ -150,7 +172,10 @@ public class MenuActivity extends AppCompatActivity
                         }
                         else{
                             dialog.dismiss();
-                            showAlert("Empty trail","No location data was recorded");
+                            showAlert(
+                                    "Empty trail",
+                                    "No location data was recorded.\n"
+                                    +"Most likely, user has not moved.");
                         }
 
                         isRecording = false;
