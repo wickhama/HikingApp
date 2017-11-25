@@ -29,12 +29,12 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
- * Created by Caleigh
- * 14-10-17
+ * @author Caleigh
+ * @since 14-10-17
  * This class contains the map and includes everything done using the google maps api.
- *
+
  * Methods:
- * onAttach (handles what to do when the map fragment is called from elsewhere)
+ * onAttach (handles what to do when the map fragment is associated with its activity)
  * onCreate (essentially the  main method - adds all the default items into the newly created map)
  * onMapReady (initiates map-related tasks after the map is loaded)
  * onPermissionResult (begins calling permission-related tasks when the user allows location permissions)
@@ -61,6 +61,16 @@ public class CustomMapFragment extends SupportMapFragment implements
     private static final String KEY_CAMERA_POSITION = "camera_position";
     private static final String KEY_LOCATION = "location";
 
+    /**
+     * @author Ryley
+     * @since 14-10-17
+
+     * This activity is called when the map fragment becomes owned by its related context
+     * We needed to override this to add the location request listener so that we could
+     * request the user's location
+
+     * @param context
+     */
     @Override
     public void onAttach(Context context)
     {
@@ -73,6 +83,16 @@ public class CustomMapFragment extends SupportMapFragment implements
         }
     }
 
+    /**
+     * @author Ryley & Caleigh
+     * @since 14-10-17
+
+     * This activity is called directly after onAttach, and is needed for initial fragment creation.
+     * It may be called when the activity is still being created, so we couldn't add visual assets to
+     * the map until onMapReady is called.
+
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -91,7 +111,10 @@ public class CustomMapFragment extends SupportMapFragment implements
     }
 
     /**
-     * Manipulates the map once available.
+     * @author Caleigh
+     * @since 14-10-17
+
+     * Manipulates the map once is fully available.
      * This callback is triggered when the map is ready to be used.
      * This is where we can add markers or lines, add listeners or move the camera. In this case,
      * we just add a marker near Sydney, Australia.
@@ -105,6 +128,16 @@ public class CustomMapFragment extends SupportMapFragment implements
         mRequestListener.requestPermission(this);
     }
 
+    /**
+     * @author Caleigh
+     * @since 14-10-17
+
+     * Gets called the moment the user responds to the location permissions request. If permission
+     * is granted, we add in the location-specific utilities AKA. the blue dot on the user's
+     * location and the camera's zoom
+
+     * @param result
+     */
     @Override
     public void onPermissionResult(boolean result)
     {
@@ -115,7 +148,11 @@ public class CustomMapFragment extends SupportMapFragment implements
         }
     }
 
-    /** Gets the blue dot for the map
+    /**
+     * @author Caleigh
+     * @since 14-10-17
+
+     * Creates the blue dot centred on the user's location for the map
      * - Get the best and most recent location of the device, which may be null in rare
      * cases when a location is not available.
      */
