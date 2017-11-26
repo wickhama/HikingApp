@@ -30,7 +30,7 @@ import java.util.Set;
 /**
  * @author Ryley
  * @since 28-10-2017 Increment 1
- * @modified Increment 2, Increment 3
+ * modified: Increment 2, Increment 3
  *
  * This activity acts as the main entry point for the app, and handles initial set-up, menu systems,
  * and permission requests.
@@ -41,26 +41,39 @@ import java.util.Set;
  *      Set up dummy menus that do nothing
  *
  * 2nd increment:
- *      Set up the sliding NavigationMenu to dynamically add menu items based on saved files
+ *      Set up the NavigationMenu to dynamically add menu items based on saved files
  *      Added event handling when a user selects a trail from the menu.
  *          Creates an intent and spawns a TrailDataActivity
+ *
+ * 3rd increment:
+ *      Set up the drop-down menu to allow beginning/ending recording
+ *      Added event handling when a trail ends
+ *          Creates an intent and spawns a NewTrailActivity
+ *      added popups for alerting the user to unexpected behaviour
  */
 public class MenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
                     LocationPermissionListener, LocationRequestListener{
 
-    //Identifies permission requests to identify which ones were granted
+    //Identifies the type of permission requests to identify which ones were granted
     //although we only need need fine location for this specific case
     public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 99;
 
+    //Identifies message types when the dropdown menu is clicked
     public static final int MENU_START_RECORD = 0;
     public static final int MENU_STOP_RECORD = 1;
     public static final int MENU_CLEAR = 2;
 
+    //identifies the result source when a child activity finishes
+    //ID for TrailDataActivity results
     public static final int DATA_REQUEST_CODE = 0;
+    //ID for NewTrailActivity results
     public static final int NEW_TRAIL_REQUEST_CODE = 1;
 
+    //A tag for the file name sent to TrailDataActivity
     public static final String EXTRA_FILE_NAME = "arc.com.arctrails.filename";
+    //A tag for the preference property recording if the app has been opened before
+    //This is used so that assets only get saved to the phone the first time the app is run
     public static final String PREFERENCE_FIRST_RUN = "arc.com.arctrails.firstrun";
 
     private Set<LocationPermissionListener> mListeners;
@@ -153,6 +166,8 @@ public class MenuActivity extends AppCompatActivity
                 tryStopRecording();
                 return true;
             case MENU_CLEAR:
+                CustomMapFragment map = (CustomMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+                map.makeTrail(null);
                 return true;
         }
         return super.onOptionsItemSelected(item);
