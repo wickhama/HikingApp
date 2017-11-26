@@ -16,9 +16,10 @@
         android:layout_marginTop="16dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="@string/new_trail_name"
+        android:hint="@string/new_trail_name"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="16dp" />
 
     <EditText
         android:id="@+id/TrailDescriptionField"
@@ -31,8 +32,7 @@
         android:ems="10"
         android:gravity="top|left"
         android:inputType="textMultiLine"
-        android:text="@string/new_trail_description"
-        android:textAlignment="textStart"
+        android:hint="@string/new_trail_description"
         app:layout_constraintBottom_toTopOf="@+id/SaveButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
