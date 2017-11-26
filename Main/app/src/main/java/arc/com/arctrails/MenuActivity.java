@@ -86,6 +86,7 @@ public class MenuActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         SharedPreferences wmbPreference = PreferenceManager.getDefaultSharedPreferences(this);
+
         boolean isFirstRun = wmbPreference.getBoolean(PREFERENCE_FIRST_RUN, true);
         if (isFirstRun)
         {
