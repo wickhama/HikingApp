@@ -8,7 +8,6 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
-
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -21,11 +20,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-
 import org.alternativevision.gpx.beans.GPX;
 import org.alternativevision.gpx.beans.Track;
 import org.alternativevision.gpx.beans.Waypoint;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -34,6 +31,20 @@ import java.util.HashSet;
  * Added for increment 1
 
  * This class contains the map and includes everything done using the google maps api.
+
+ * 1st increment:
+ *      Create the map fragment and add location-specific methods. Calls on permission-check
+ *      methods in MenuActivity to display the current location and update as the user walks.
+ *      Add method for retrieving last known location data.
+
+ * 2nd increment:
+ *      Bug fixes to location-permissions and handle exception for when there is no previous
+ *      location data to load.
+
+ * 3rd increment:
+ *      Make trails visible: Take a GPX file for input and make a polyline on the map connecting
+ *      the GPS coordinates provided by the file. Zoom in on the waypoints provided by the file, or
+ *      an entry-point of the trail if no waypoints are provided.
 
  * Methods:
  * onAttach (handles what to do when the map fragment is associated with its activity)
