@@ -41,8 +41,8 @@ public class NewTrailActivity extends AppCompatActivity {
         EditText nameField = findViewById(R.id.TrailNameField);
         EditText descriptionField = findViewById(R.id.TrailDescriptionField);
 
-        final String name = nameField.getText().toString();
-        final String description = descriptionField.getText().toString();
+        final String name = nameField.getText().toString().trim();
+        final String description = descriptionField.getText().toString().trim();
 
         if(name.equals("")) {
             AlertUtils.showAlert(this, "No File Name", "Trails must be given a name before they can be saved.");
