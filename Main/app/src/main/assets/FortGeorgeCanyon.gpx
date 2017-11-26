@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<gpx version="Fort George Canyon" creator="Visit this Historical trail. Until 1914 the river was the highway in and out of this region. The canyon was one of the obstacles that sternwheelers had to navigate. Enjoy 4.8 kilometres of trail to a significant and historical area."
+    xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+<wpt lat="53.6841365" lon="-122.773127">
+  <name>Fort George Canyon Trail, Prince George, BC V2N 6H6, Canada</name>
+  <sym>images/icon-1.png</sym>
+</wpt>
+<wpt lat="53.6858938" lon="-122.7179718">
+  <name>Fort George Canyon Trail, Prince George, BC V2N 6H6, Canada</name>
+  <sym>images/icon-2.png</sym>
+</wpt>
+<trk>
+  <name>Directions from Fort George Canyon Trail, Prince George, BC V2N 6H6, Canada to Fort George Canyon Trail, Prince George, BC V2N 6H6, Canada</name>
+  <trkseg>
+    <trkpt lat="53.68414" lon="-122.77313"></trkpt>
+    <trkpt lat="53.68425" lon="-122.77269"></trkpt>
+    <trkpt lat="53.6844" lon="-122.77221"></trkpt>
+    <trkpt lat="53.68449" lon="-122.77172"></trkpt>
+    <trkpt lat="53.6845" lon="-122.7709"></trkpt>
+    <trkpt lat="53.68453" lon="-122.77025"></trkpt>
+    <trkpt lat="53.68466" lon="-122.76964"></trkpt>
+    <trkpt lat="53.68481" lon="-122.76915"></trkpt>
+    <trkpt lat="53.68495" lon="-122.76863"></trkpt>
+    <trkpt lat="53.68509" lon="-122.76799"></trkpt>
+    <trkpt lat="53.68537" lon="-122.76711"></trkpt>
+    <trkpt lat="53.68555" lon="-122.76595"></trkpt>
+    <trkpt lat="53.68554" lon="-122.76501"></trkpt>
+    <trkpt lat="53.68559" lon="-122.76406"></trkpt>
+    <trkpt lat="53.68574" lon="-122.76211"></trkpt>
+    <trkpt lat="53.68602" lon="-122.76059"></trkpt>
+    <trkpt lat="53.68612" lon="-122.75906"></trkpt>
+    <trkpt lat="53.68626" lon="-122.75801"></trkpt>
+    <trkpt lat="53.6865" lon="-122.75584"></trkpt>
+    <trkpt lat="53.68671" lon="-122.75451"></trkpt>
+    <trkpt lat="53.68686" lon="-122.75314"></trkpt>
+    <trkpt lat="53.68733" lon="-122.75042"></trkpt>
+    <trkpt lat="53.68761" lon="-122.74758"></trkpt>
+    <trkpt lat="53.68794" lon="-122.74522"></trkpt>
+    <trkpt lat="53.68812" lon="-122.74291"></trkpt>
+    <trkpt lat="53.68828" lon="-122.74141"></trkpt>
+    <trkpt lat="53.6884" lon="-122.73992"></trkpt>
+    <trkpt lat="53.68847" lon="-122.73849"></trkpt>
+    <trkpt lat="53.68847" lon="-122.73668"></trkpt>
+    <trkpt lat="53.68858" lon="-122.73458"></trkpt>
+    <trkpt lat="53.68858" lon="-122.73226"></trkpt>
+    <trkpt lat="53.68863" lon="-122.73072"></trkpt>
+    <trkpt lat="53.68855" lon="-122.7293"></trkpt>
+    <trkpt lat="53.68842" lon="-122.72763"></trkpt>
+    <trkpt lat="53.68835" lon="-122.72638"></trkpt>
+    <trkpt lat="53.68807" lon="-122.72522"></trkpt>
+    <trkpt lat="53.68774" lon="-122.72346"></trkpt>
+    <trkpt lat="53.68753" lon="-122.72213"></trkpt>
+    <trkpt lat="53.68715" lon="-122.72106"></trkpt>
+    <trkpt lat="53.6869" lon="-122.72012"></trkpt>
+    <trkpt lat="53.68662" lon="-122.71947"></trkpt>
+    <trkpt lat="53.6863" lon="-122.71879"></trkpt>
+    <trkpt lat="53.68589" lon="-122.71797"></trkpt>
+  </trkseg>
+</trk>
+</gpx>

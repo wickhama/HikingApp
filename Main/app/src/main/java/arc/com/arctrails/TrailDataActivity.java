@@ -142,22 +142,12 @@ public class TrailDataActivity extends AppCompatActivity {
         try{
             file.delete();
         }catch(SecurityException e){
-            showAlert("SecurityException",e.getLocalizedMessage(), new DialogInterface.OnClickListener() {
+            AlertUtils.showAlert(this, "SecurityException",e.getLocalizedMessage(), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
                 }
             });
         }
-    }
-
-    private void showAlert(String title, String message, DialogInterface.OnClickListener onClick)
-    {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(title)
-                .setMessage(message)
-                .setNeutralButton(android.R.string.ok, onClick);
-        builder.setIcon(android.R.drawable.ic_dialog_alert);
-        builder.show();
     }
 }

@@ -44,6 +44,11 @@ public class NewTrailActivity extends AppCompatActivity {
         final String name = nameField.getText().toString();
         final String description = descriptionField.getText().toString();
 
+        if(name.equals("")) {
+            AlertUtils.showAlert(this, "No File Name", "Trails must be given a name before they can be saved.");
+            return;
+        }
+
         File file = new File(getExternalFilesDir(null), name+".gpx");
         if(file.exists())
             askToReplace(new DialogInterface.OnClickListener() {

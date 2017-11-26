@@ -44,11 +44,13 @@ import java.util.Set;
  *      Set up the NavigationMenu to dynamically add menu items based on saved files
  *      Added event handling when a user selects a trail from the menu.
  *          Creates an intent and spawns a TrailDataActivity
+ *      Communicates with the map fragment to display GPX trails
  *
  * 3rd increment:
  *      Set up the drop-down menu to allow beginning/ending recording
  *      Added event handling when a trail ends
  *          Creates an intent and spawns a NewTrailActivity
+ *      Sends info to GPXFile for saving
  *      added popups for alerting the user to unexpected behaviour
  */
 public class MenuActivity extends AppCompatActivity
@@ -76,19 +78,41 @@ public class MenuActivity extends AppCompatActivity
     //This is used so that assets only get saved to the phone the first time the app is run
     public static final String PREFERENCE_FIRST_RUN = "arc.com.arctrails.firstrun";
 
+    //keeps a track of the listeners waiting for permissions
     private Set<LocationPermissionListener> mListeners;
+    //a list of files currently displayed in the menu
     private ArrayList<File> mTrailFiles;
+    //flag for whether the user is currently recording. used to change menu behaviour
     private boolean isRecording;
+    //the data recorded in the user's most recent trail
     private ArrayList<Double[]> recordedData = null;
 
+    /**
+     * Created by Ryley, modified by Ayla, Caleigh
+     * Added for increment 1
+     *
+     * Part of the startup process for activities. acts like a constructor.
+     *
+     * Increment 1:
+     *      Connects this activity to its layout
+     *      Connects this activity to the toolbar and side-menu as a listener
+     *          listener methods not implemented
+     *
+     * Increment 2:
+     *      Builds the initial state for the side menu
+     *      Loads files from the APK onto the file system on startup
+     *
+     * Increment 3:
+     *      Now only loads files on *first* startup, instead of every time
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //checks if this is the first time the app has been run
         SharedPreferences wmbPreference = PreferenceManager.getDefaultSharedPreferences(this);
-
         boolean isFirstRun = wmbPreference.getBoolean(PREFERENCE_FIRST_RUN, true);
-        //if (isFirstRun)
+        if (isFirstRun)
         {
             // Code to run once
             SharedPreferences.Editor editor = wmbPreference.edit();
@@ -99,34 +123,37 @@ public class MenuActivity extends AppCompatActivity
             initAssets.initAssets(this);
         }
 
-        ArrayList<Double[]> list = new ArrayList<>();
-        for(int i=0; i<10; i++) {
-            Double[] waypoint = {i+3.0, 22.0};
-            list.add(waypoint);
-        }
-        //GPXFile.writeGPXFile("ICanWalk", "This is a test", list, this);
-
         mListeners = new HashSet<>();
         mTrailFiles = new ArrayList<>();
         isRecording = false;
 
+        //loads the layout
         setContentView(R.layout.activity_menu);
+        //uses the toolbar defined in the layout
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        //connects the side menu to the toolbar
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
+        //Has this activity listen for menu events
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
+        //loads the initial state of the side menu
         buildSideMenu();
     }
 
-    // The following is for the menu
+    // The following section is for the menu
+
+    /**
+     * Created by Ryley (Auto-Generated)
+     * added for increment 1
+     *
+     * The back button has been replaced with the trail menu, so when they press back
+     * it should open or close the menu
+     */
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -137,6 +164,13 @@ public class MenuActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Created by Ryley
+     * added for increment 3
+     *
+     * When the options drop-down menu is selected, builds the contents.
+     * Adds Start/Stop recording depending on whether the user is already recording
+     */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -179,6 +213,8 @@ public class MenuActivity extends AppCompatActivity
     @Override
     public void onPermissionResult(boolean result){
         if(result) {
+            //notifies the fragments about the permission update
+            //this kind of ruins the point of having fragments request their own permission,
             Coordinates location;
 
             location = (Coordinates) getSupportFragmentManager().findFragmentById(R.id.coordinates);
@@ -209,7 +245,7 @@ public class MenuActivity extends AppCompatActivity
                         }
                         else{
                             dialog.dismiss();
-                            showAlert(
+                            AlertUtils.showAlert(MenuActivity.this,
                                     "Empty trail",
                                     "No location data was recorded.\n"
                                     +"Most likely, user has not moved.");
@@ -227,21 +263,6 @@ public class MenuActivity extends AppCompatActivity
                     }
                 });
 
-        builder.setIcon(android.R.drawable.ic_dialog_alert);
-        builder.show();
-    }
-
-    private void showAlert(String title, String message)
-    {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(title)
-                .setMessage(message)
-                .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
         builder.setIcon(android.R.drawable.ic_dialog_alert);
         builder.show();
     }
