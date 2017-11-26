@@ -88,10 +88,9 @@ public class TrailDataActivity extends AppCompatActivity {
             builder.show();
         }
         else {
-            //there should only be one track
-            Track track = trail.getTracks().iterator().next();
-            String name = track.getName();
-            String description = track.getDescription();
+            //Info for preset trails are stored in gpx Version and Creator as GPX Parser does not parse the meta-data.
+            String name = trail.getVersion();
+            String description = trail.getCreator();
 
             nameView.setText(name);
             descriptionView.setText(description);
