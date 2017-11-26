@@ -261,14 +261,21 @@ public class CustomMapFragment extends SupportMapFragment implements
     }
 
     /**
-     * Created by Caleigh, modified by Ayla
+     * Created by Caleigh, modified by Ayla, Ryley
      * Added for increment 3
 
      * Add the waypoints in the GPX file into the map, and call the drawPath method  to draw the
      * paths using the coordinates from the same GPX file
+     *
+     * Clears previous trails from the map before adding a new GPX
      */
     public void makeTrail(GPX trail) {
         mMap.clear();
+
+        //makeTrail(null) should clear the map
+        if(trail == null)
+            return;
+
         HashSet<Track> tracks = trail.getTracks();
         HashSet<Waypoint> points;
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
