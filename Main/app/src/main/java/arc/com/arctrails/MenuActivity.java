@@ -27,20 +27,41 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-
+/**
+ * @author Ryley
+ * @since 28-10-2017 Increment 1
+ * @modified Increment 2, Increment 3
+ *
+ * This activity acts as the main entry point for the app, and handles initial set-up, menu systems,
+ * and permission requests.
+ *
+ * 1st increment:
+ *      Sets up the layout defined in activity_menu.xml.
+ *      Acts as a permission handler for map and coordinate fragments
+ *      Set up dummy menus that do nothing
+ *
+ * 2nd increment:
+ *      Set up the sliding NavigationMenu to dynamically add menu items based on saved files
+ *      Added event handling when a user selects a trail from the menu.
+ *          Creates an intent and spawns a TrailDataActivity
+ */
 public class MenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
                     LocationPermissionListener, LocationRequestListener{
 
+    //Identifies permission requests to identify which ones were granted
+    //although we only need need fine location for this specific case
     public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 99;
+
     public static final int MENU_START_RECORD = 0;
     public static final int MENU_STOP_RECORD = 1;
-    public static final int MENU_SETTINGS = 2;
+    public static final int MENU_CLEAR = 2;
 
     public static final int DATA_REQUEST_CODE = 0;
     public static final int NEW_TRAIL_REQUEST_CODE = 1;
 
     public static final String EXTRA_FILE_NAME = "arc.com.arctrails.filename";
+    public static final String PREFERENCE_FIRST_RUN = "arc.com.arctrails.firstrun";
 
     private Set<LocationPermissionListener> mListeners;
     private ArrayList<File> mTrailFiles;
@@ -52,12 +73,13 @@ public class MenuActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         SharedPreferences wmbPreference = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean isFirstRun = wmbPreference.getBoolean("FIRSTRUN", true);
-        //if (isFirstRun)
+
+        boolean isFirstRun = wmbPreference.getBoolean(PREFERENCE_FIRST_RUN, true);
+        if (isFirstRun)
         {
             // Code to run once
             SharedPreferences.Editor editor = wmbPreference.edit();
-            editor.putBoolean("FIRSTRUN", false);
+            editor.putBoolean(PREFERENCE_FIRST_RUN, false);
             editor.apply();
 
             //Adds Files into phone storage - aw
@@ -111,7 +133,7 @@ public class MenuActivity extends AppCompatActivity
             menu.add(Menu.NONE,MENU_START_RECORD,Menu.NONE,"Start Recording");
         else
             menu.add(Menu.NONE,MENU_STOP_RECORD,Menu.NONE,"Stop Recording");
-        menu.add(Menu.NONE,MENU_SETTINGS,Menu.NONE,"Settings");
+        menu.add(Menu.NONE, MENU_CLEAR,Menu.NONE,"Clear Map");
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
@@ -130,7 +152,7 @@ public class MenuActivity extends AppCompatActivity
             case MENU_STOP_RECORD:
                 tryStopRecording();
                 return true;
-            case MENU_SETTINGS:
+            case MENU_CLEAR:
                 return true;
         }
         return super.onOptionsItemSelected(item);
