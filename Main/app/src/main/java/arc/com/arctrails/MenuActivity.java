@@ -44,11 +44,13 @@ import java.util.Set;
  *      Set up the NavigationMenu to dynamically add menu items based on saved files
  *      Added event handling when a user selects a trail from the menu.
  *          Creates an intent and spawns a TrailDataActivity
+ *      Communicates with the map fragment to display GPX trails
  *
  * 3rd increment:
  *      Set up the drop-down menu to allow beginning/ending recording
  *      Added event handling when a trail ends
  *          Creates an intent and spawns a NewTrailActivity
+ *      Sends info to GPXFile for saving
  *      added popups for alerting the user to unexpected behaviour
  */
 public class MenuActivity extends AppCompatActivity
@@ -76,11 +78,33 @@ public class MenuActivity extends AppCompatActivity
     //This is used so that assets only get saved to the phone the first time the app is run
     public static final String PREFERENCE_FIRST_RUN = "arc.com.arctrails.firstrun";
 
+    //keeps a track of the listeners waiting for permissions
     private Set<LocationPermissionListener> mListeners;
+    //a list of files currently displayed in the menu
     private ArrayList<File> mTrailFiles;
+    //flag for whether the user is currently recording. used to change menu behaviour
     private boolean isRecording;
+    //the data recorded in the user's most recent trail
     private ArrayList<Double[]> recordedData = null;
 
+    /**
+     * Created by Ryley, modified by Ayla, Caleigh
+     * Added for increment 1
+     *
+     * Part of the startup process for activities. acts like a constructor.
+     *
+     * Increment 1:
+     *      Connects this activity to its layout
+     *      Connects this activity to the toolbar and side-menu as a listener
+     *          listener methods not implemented
+     *
+     * Increment 2:
+     *      Builds the initial state for the side menu
+     *      Loads files from the APK onto the file system on startup
+     *
+     * Increment 3:
+     *      Now only loads files on *first* startup, instead of every time
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,13 +122,6 @@ public class MenuActivity extends AppCompatActivity
             //Adds Files into phone storage - aw
             initAssets.initAssets(this);
         }
-
-        ArrayList<Double[]> list = new ArrayList<>();
-        for(int i=0; i<10; i++) {
-            Double[] waypoint = {i+3.0, 22.0};
-            list.add(waypoint);
-        }
-        //GPXFile.writeGPXFile("ICanWalk", "This is a test", list, this);
 
         mListeners = new HashSet<>();
         mTrailFiles = new ArrayList<>();
