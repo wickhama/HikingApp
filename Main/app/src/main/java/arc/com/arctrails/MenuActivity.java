@@ -109,8 +109,8 @@ public class MenuActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //checks if this is the first time the app has been run
         SharedPreferences wmbPreference = PreferenceManager.getDefaultSharedPreferences(this);
-
         boolean isFirstRun = wmbPreference.getBoolean(PREFERENCE_FIRST_RUN, true);
         //if (isFirstRun)
         {
@@ -127,23 +127,33 @@ public class MenuActivity extends AppCompatActivity
         mTrailFiles = new ArrayList<>();
         isRecording = false;
 
+        //loads the layout
         setContentView(R.layout.activity_menu);
+        //uses the toolbar defined in the layout
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        //connects the side menu to the toolbar
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
+        //Has this activity listen for menu events
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
+        //loads the initial state of the side menu
         buildSideMenu();
     }
 
-    // The following is for the menu
+    // The following section is for the menu
+
+    /**
+     * Created by Ryley (Auto-Generated)
+     * added for increment 1
+     *
+     * The back button has been replaced with the trail menu, so when they press back
+     * it should open or close the menu
+     */
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -154,6 +164,13 @@ public class MenuActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Created by Ryley
+     * added for increment 3
+     *
+     * When the options drop-down menu is selected, builds the contents.
+     * Adds Start/Stop recording depending on whether the user is already recording
+     */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -196,6 +213,8 @@ public class MenuActivity extends AppCompatActivity
     @Override
     public void onPermissionResult(boolean result){
         if(result) {
+            //notifies the fragments about the permission update
+            //this kind of ruins the point of having fragments request their own permission,
             Coordinates location;
 
             location = (Coordinates) getSupportFragmentManager().findFragmentById(R.id.coordinates);
@@ -226,7 +245,7 @@ public class MenuActivity extends AppCompatActivity
                         }
                         else{
                             dialog.dismiss();
-                            showAlert(
+                            AlertUtils.showAlert(MenuActivity.this,
                                     "Empty trail",
                                     "No location data was recorded.\n"
                                     +"Most likely, user has not moved.");
@@ -244,21 +263,6 @@ public class MenuActivity extends AppCompatActivity
                     }
                 });
 
-        builder.setIcon(android.R.drawable.ic_dialog_alert);
-        builder.show();
-    }
-
-    private void showAlert(String title, String message)
-    {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(title)
-                .setMessage(message)
-                .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
         builder.setIcon(android.R.drawable.ic_dialog_alert);
         builder.show();
     }
