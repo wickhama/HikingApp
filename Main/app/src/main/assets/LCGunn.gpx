@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<gpx version="LC Gunn" creator="This is an easy grade walkway with 3.5 kilometres of trail that follow the same route traveled by the early surveyors when planning the railway line for the railroad companies." xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+<wpt lat="53.888263" lon="-122.7445525">
+  <name>Simon Fraser Bridge, Prince George, BC V2N 5S5, Canada</name>
+  <sym>images/icon-1.png</sym>
+</wpt>
+<wpt lat="53.8860074" lon="-122.7425749">
+  <name>L.C. Gunn Trail, Prince George, BC V2N 6S5, Canada</name>
+  <sym>images/icon-2.png</sym>
+</wpt>
+
+<wpt lat="53.9077639" lon="-122.721624">
+  <name>L.C. Gunn Trail, Prince George, BC V2N 6S5, Canada</name>
+  <sym>images/icon-2.png</sym>
+</wpt>
+<trk>
+  <name>Directions from Simon Fraser Bridge, Prince George, BC V2N 5S5, Canada to L.C. Gunn Trail, Prince George, BC V2N 6S5, Canada</name>
+  <trkseg>
+    <trkpt lat="53.88826" lon="-122.74455"></trkpt>
+    <trkpt lat="53.88838" lon="-122.74431"></trkpt>
+    <trkpt lat="53.88847" lon="-122.74417"></trkpt>
+    <trkpt lat="53.8887" lon="-122.74413"></trkpt>
+    <trkpt lat="53.8889" lon="-122.74415"></trkpt>
+    <trkpt lat="53.8893" lon="-122.74427"></trkpt>
+    <trkpt lat="53.8895" lon="-122.74425"></trkpt>
+    <trkpt lat="53.88976" lon="-122.74414"></trkpt>
+    <trkpt lat="53.88985" lon="-122.744"></trkpt>
+    <trkpt lat="53.88998" lon="-122.74393"></trkpt>
+    <trkpt lat="53.88998" lon="-122.74388"></trkpt>
+    <trkpt lat="53.8899" lon="-122.7439"></trkpt>
+    <trkpt lat="53.88981" lon="-122.74389"></trkpt>
+    <trkpt lat="53.8897" lon="-122.74377"></trkpt>
+    <trkpt lat="53.88958" lon="-122.74356"></trkpt>
+    <trkpt lat="53.88947" lon="-122.74337"></trkpt>
+    <trkpt lat="53.88932" lon="-122.7431"></trkpt>
+    <trkpt lat="53.88921" lon="-122.74328"></trkpt>
+    <trkpt lat="53.8891" lon="-122.74332"></trkpt>
+    <trkpt lat="53.88892" lon="-122.74323"></trkpt>
+    <trkpt lat="53.8887" lon="-122.74317"></trkpt>
+    <trkpt lat="53.88856" lon="-122.74315"></trkpt>
+    <trkpt lat="53.88844" lon="-122.74308"></trkpt>
+    <trkpt lat="53.88826" lon="-122.74305"></trkpt>
+    <trkpt lat="53.88807" lon="-122.74301"></trkpt>
+    <trkpt lat="53.88786" lon="-122.74307"></trkpt>
+    <trkpt lat="53.8872" lon="-122.74301"></trkpt>
+    <trkpt lat="53.88701" lon="-122.74293"></trkpt>
+    <trkpt lat="53.88686" lon="-122.74284"></trkpt>
+    <trkpt lat="53.88616" lon="-122.74241"></trkpt>
+    <trkpt lat="53.88613" lon="-122.7424"></trkpt>
+    <trkpt lat="53.88609" lon="-122.7424"></trkpt>
+    <trkpt lat="53.88607" lon="-122.74242"></trkpt>
+    <trkpt lat="53.88601" lon="-122.74257"></trkpt>
+  </trkseg>
+</trk>
+<trk>
+  <name>Directions from L.C. Gunn Trail, Prince George, BC V2N 6S5, Canada to L.C. Gunn Trail, Prince George, BC V2N 6S5, Canada</name>
+  <trkseg>
+    <trkpt lat="53.88949" lon="-122.7434"></trkpt>
+    <trkpt lat="53.88978" lon="-122.74333"></trkpt>
+    <trkpt lat="53.88991" lon="-122.74335"></trkpt>
+    <trkpt lat="53.8901" lon="-122.74345"></trkpt>
+    <trkpt lat="53.89029" lon="-122.74337"></trkpt>
+    <trkpt lat="53.89045" lon="-122.74322"></trkpt>
+    <trkpt lat="53.89065" lon="-122.74286"></trkpt>
+    <trkpt lat="53.89073" lon="-122.74234"></trkpt>
+    <trkpt lat="53.89065" lon="-122.74214"></trkpt>
+    <trkpt lat="53.89052" lon="-122.74208"></trkpt>
+    <trkpt lat="53.89034" lon="-122.74184"></trkpt>
+    <trkpt lat="53.89041" lon="-122.74144"></trkpt>
+    <trkpt lat="53.8904" lon="-122.74099"></trkpt>
+    <trkpt lat="53.89045" lon="-122.74059"></trkpt>
+    <trkpt lat="53.89053" lon="-122.74065"></trkpt>
+    <trkpt lat="53.89057" lon="-122.74079"></trkpt>
+    <trkpt lat="53.89066" lon="-122.74085"></trkpt>
+    <trkpt lat="53.89084" lon="-122.74035"></trkpt>
+    <trkpt lat="53.89112" lon="-122.73982"></trkpt>
+    <trkpt lat="53.8911" lon="-122.73961"></trkpt>
+    <trkpt lat="53.89105" lon="-122.73932"></trkpt>
+    <trkpt lat="53.89108" lon="-122.73911"></trkpt>
+    <trkpt lat="53.89117" lon="-122.73879"></trkpt>
+    <trkpt lat="53.89124" lon="-122.73857"></trkpt>
+    <trkpt lat="53.8912" lon="-122.73827"></trkpt>
+    <trkpt lat="53.89126" lon="-122.73812"></trkpt>
+    <trkpt lat="53.89149" lon="-122.73813"></trkpt>
+    <trkpt lat="53.89161" lon="-122.73814"></trkpt>
+    <trkpt lat="53.89168" lon="-122.73814"></trkpt>
+    <trkpt lat="53.89192" lon="-122.73781"></trkpt>
+    <trkpt lat="53.89201" lon="-122.73744"></trkpt>
+    <trkpt lat="53.89185" lon="-122.73706"></trkpt>
+    <trkpt lat="53.89167" lon="-122.73702"></trkpt>
+    <trkpt lat="53.89153" lon="-122.73691"></trkpt>
+    <trkpt lat="53.89129" lon="-122.73603"></trkpt>
+    <trkpt lat="53.89127" lon="-122.73537"></trkpt>
+    <trkpt lat="53.89135" lon="-122.73479"></trkpt>
+    <trkpt lat="53.89142" lon="-122.73451"></trkpt>
+    <trkpt lat="53.89147" lon="-122.73425"></trkpt>
+    <trkpt lat="53.89167" lon="-122.73387"></trkpt>
+    <trkpt lat="53.89178" lon="-122.73376"></trkpt>
+    <trkpt lat="53.89186" lon="-122.73398"></trkpt>
+    <trkpt lat="53.89179" lon="-122.73428"></trkpt>
+    <trkpt lat="53.89175" lon="-122.73492"></trkpt>
+    <trkpt lat="53.89208" lon="-122.73498"></trkpt>
+    <trkpt lat="53.89216" lon="-122.73507"></trkpt>
+    <trkpt lat="53.89232" lon="-122.7351"></trkpt>
+    <trkpt lat="53.89237" lon="-122.73491"></trkpt>
+    <trkpt lat="53.89246" lon="-122.73483"></trkpt>
+    <trkpt lat="53.89252" lon="-122.73495"></trkpt>
+    <trkpt lat="53.8926" lon="-122.73501"></trkpt>
+    <trkpt lat="53.89288" lon="-122.73494"></trkpt>
+    <trkpt lat="53.89303" lon="-122.73496"></trkpt>
+    <trkpt lat="53.89316" lon="-122.73485"></trkpt>
+    <trkpt lat="53.89347" lon="-122.73442"></trkpt>
+    <trkpt lat="53.89357" lon="-122.73426"></trkpt>
+    <trkpt lat="53.89371" lon="-122.73386"></trkpt>
+    <trkpt lat="53.89389" lon="-122.73374"></trkpt>
+    <trkpt lat="53.89409" lon="-122.73338"></trkpt>
+    <trkpt lat="53.89431" lon="-122.73305"></trkpt>
+    <trkpt lat="53.89438" lon="-122.73256"></trkpt>
+    <trkpt lat="53.89456" lon="-122.73229"></trkpt>
+    <trkpt lat="53.89474" lon="-122.73216"></trkpt>
+    <trkpt lat="53.89488" lon="-122.73209"></trkpt>
+    <trkpt lat="53.89503" lon="-122.73213"></trkpt>
+    <trkpt lat="53.89524" lon="-122.73213"></trkpt>
+    <trkpt lat="53.89531" lon="-122.73192"></trkpt>
+    <trkpt lat="53.89538" lon="-122.73157"></trkpt>
+    <trkpt lat="53.89548" lon="-122.73144"></trkpt>
+    <trkpt lat="53.89564" lon="-122.73134"></trkpt>
+    <trkpt lat="53.89589" lon="-122.73136"></trkpt>
+    <trkpt lat="53.89603" lon="-122.73127"></trkpt>
+    <trkpt lat="53.89617" lon="-122.73099"></trkpt>
+    <trkpt lat="53.8963" lon="-122.73085"></trkpt>
+    <trkpt lat="53.89637" lon="-122.73063"></trkpt>
+    <trkpt lat="53.89662" lon="-122.73033"></trkpt>
+    <trkpt lat="53.8967" lon="-122.7302"></trkpt>
+    <trkpt lat="53.89651" lon="-122.72982"></trkpt>
+    <trkpt lat="53.89686" lon="-122.7296"></trkpt>
+    <trkpt lat="53.89705" lon="-122.72938"></trkpt>
+    <trkpt lat="53.89712" lon="-122.72917"></trkpt>
+    <trkpt lat="53.89722" lon="-122.72917"></trkpt>
+    <trkpt lat="53.89752" lon="-122.72929"></trkpt>
+    <trkpt lat="53.89765" lon="-122.72938"></trkpt>
+    <trkpt lat="53.89813" lon="-122.72912"></trkpt>
+    <trkpt lat="53.89822" lon="-122.72898"></trkpt>
+    <trkpt lat="53.89834" lon="-122.72885"></trkpt>
+    <trkpt lat="53.89877" lon="-122.72863"></trkpt>
+    <trkpt lat="53.89904" lon="-122.72852"></trkpt>
+    <trkpt lat="53.89943" lon="-122.72826"></trkpt>
+    <trkpt lat="53.89991" lon="-122.72816"></trkpt>
+    <trkpt lat="53.90004" lon="-122.72812"></trkpt>
+    <trkpt lat="53.90025" lon="-122.72814"></trkpt>
+    <trkpt lat="53.9005" lon="-122.72803"></trkpt>
+    <trkpt lat="53.9009" lon="-122.72801"></trkpt>
+    <trkpt lat="53.90106" lon="-122.72809"></trkpt>
+    <trkpt lat="53.90131" lon="-122.72811"></trkpt>
+    <trkpt lat="53.90142" lon="-122.72814"></trkpt>
+    <trkpt lat="53.90153" lon="-122.72835"></trkpt>
+    <trkpt lat="53.90164" lon="-122.72836"></trkpt>
+    <trkpt lat="53.90175" lon="-122.72844"></trkpt>
+    <trkpt lat="53.9022" lon="-122.72859"></trkpt>
+    <trkpt lat="53.90244" lon="-122.72872"></trkpt>
+    <trkpt lat="53.90254" lon="-122.72872"></trkpt>
+    <trkpt lat="53.90301" lon="-122.72872"></trkpt>
+    <trkpt lat="53.90321" lon="-122.72862"></trkpt>
+    <trkpt lat="53.90342" lon="-122.72868"></trkpt>
+    <trkpt lat="53.90366" lon="-122.72845"></trkpt>
+    <trkpt lat="53.90387" lon="-122.72835"></trkpt>
+    <trkpt lat="53.90438" lon="-122.72791"></trkpt>
+    <trkpt lat="53.90457" lon="-122.72775"></trkpt>
+    <trkpt lat="53.90488" lon="-122.72755"></trkpt>
+    <trkpt lat="53.90518" lon="-122.72735"></trkpt>
+    <trkpt lat="53.90532" lon="-122.72714"></trkpt>
+    <trkpt lat="53.90557" lon="-122.72705"></trkpt>
+    <trkpt lat="53.9058" lon="-122.72704"></trkpt>
+    <trkpt lat="53.90601" lon="-122.72696"></trkpt>
+    <trkpt lat="53.90647" lon="-122.72638"></trkpt>
+    <trkpt lat="53.90679" lon="-122.72595"></trkpt>
+    <trkpt lat="53.9071" lon="-122.72554"></trkpt>
+    <trkpt lat="53.90727" lon="-122.72527"></trkpt>
+    <trkpt lat="53.90746" lon="-122.72492"></trkpt>
+    <trkpt lat="53.90769" lon="-122.72463"></trkpt>
+    <trkpt lat="53.90782" lon="-122.72425"></trkpt>
+    <trkpt lat="53.90788" lon="-122.72404"></trkpt>
+    <trkpt lat="53.90796" lon="-122.72373"></trkpt>
+    <trkpt lat="53.90801" lon="-122.72352"></trkpt>
+    <trkpt lat="53.90801" lon="-122.72335"></trkpt>
+    <trkpt lat="53.90799" lon="-122.72322"></trkpt>
+    <trkpt lat="53.90792" lon="-122.72303"></trkpt>
+    <trkpt lat="53.90785" lon="-122.72287"></trkpt>
+    <trkpt lat="53.90782" lon="-122.72271"></trkpt>
+    <trkpt lat="53.9078" lon="-122.72248"></trkpt>
+    <trkpt lat="53.90777" lon="-122.72235"></trkpt>
+    <trkpt lat="53.90773" lon="-122.72221"></trkpt>
+    <trkpt lat="53.9077" lon="-122.72211"></trkpt>
+    <trkpt lat="53.9077" lon="-122.72204"></trkpt>
+    <trkpt lat="53.90776" lon="-122.72162"></trkpt>
+  </trkseg>
+</trk>
+</gpx>

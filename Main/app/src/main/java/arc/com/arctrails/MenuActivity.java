@@ -112,7 +112,7 @@ public class MenuActivity extends AppCompatActivity
         //checks if this is the first time the app has been run
         SharedPreferences wmbPreference = PreferenceManager.getDefaultSharedPreferences(this);
         boolean isFirstRun = wmbPreference.getBoolean(PREFERENCE_FIRST_RUN, true);
-        if (isFirstRun)
+        //if (isFirstRun)
         {
             // Code to run once
             SharedPreferences.Editor editor = wmbPreference.edit();
