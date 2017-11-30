@@ -173,33 +173,41 @@ public class MenuActivity extends AppCompatActivity
      */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menu.clear();
 
+        //add a menu item to start/stop recording
         if(!isRecording)
             menu.add(Menu.NONE,MENU_START_RECORD,Menu.NONE,"Start Recording");
         else
             menu.add(Menu.NONE,MENU_STOP_RECORD,Menu.NONE,"Stop Recording");
+        //add a menu item to clear the map
         menu.add(Menu.NONE, MENU_CLEAR,Menu.NONE,"Clear Map");
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
 
+    /**
+     * Created by Ryley
+     * added for increment 3
+     *
+     * Called when the user selects on option from the drop down menu
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        //depending on which button they clicked
         switch (id){
             case MENU_START_RECORD:
+                //checks for location permissions, and starts recording if they're enabled
                 requestPermission(this);
                 return true;
             case MENU_STOP_RECORD:
+                //asks the user if they're sure they want to stop recording
                 tryStopRecording();
                 return true;
             case MENU_CLEAR:
+                //clear existing trails from the map
                 CustomMapFragment map = (CustomMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
                 map.makeTrail(null);
                 return true;
@@ -208,22 +216,35 @@ public class MenuActivity extends AppCompatActivity
     }
 
     /**
+     * Created by Ryley
+     * added for increment 3
+     *
      * The only time the menu needs to check for permission is to begin recording a trail
      */
     @Override
     public void onPermissionResult(boolean result){
         if(result) {
-            //notifies the fragments about the permission update
-            //this kind of ruins the point of having fragments request their own permission,
             Coordinates location;
-
             location = (Coordinates) getSupportFragmentManager().findFragmentById(R.id.coordinates);
+            CustomMapFragment map;
+            map = (CustomMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+
+            //notifies the fragments about the permission update, so that it will track location data
+            location.onPermissionResult(result);
+            map.onPermissionResult(result);
+            //then tells the coordinate fragment to record
             location.record();
 
             isRecording = true;
         }
     }
 
+    /**
+     * Created by Ryley
+     * added for increment 3
+     *
+     * Make sure the user did not press the button by accident before they stop recording
+     */
     private void tryStopRecording()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -234,23 +255,26 @@ public class MenuActivity extends AppCompatActivity
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        //if the user wants to stop recording...
                         Coordinates location = (Coordinates) getSupportFragmentManager()
                                 .findFragmentById(R.id.coordinates);
-                        //stop recording
+                        //get the location data that was recorded
                         recordedData = location.stopRecord();
+                        //if they actually did record data...
                         if(recordedData.size()>0) {
-                            //get other GPX data
+                            //get other GPX file information
                             Intent intent = new Intent(MenuActivity.this, NewTrailActivity.class);
                             startActivityForResult(intent, NEW_TRAIL_REQUEST_CODE);
                         }
                         else{
+                            //otherwise don't bother saving an empty file
                             dialog.dismiss();
                             AlertUtils.showAlert(MenuActivity.this,
                                     "Empty trail",
                                     "No location data was recorded.\n"
                                     +"Most likely, user has not moved.");
                         }
-
+                        //make sure the menu changes
                         isRecording = false;
                     }
                 });
@@ -259,7 +283,7 @@ public class MenuActivity extends AppCompatActivity
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //do nothing if they dont want to finish
+                        //do nothing if they dont want to finish. keep recording
                     }
                 });
 
@@ -267,6 +291,12 @@ public class MenuActivity extends AppCompatActivity
         builder.show();
     }
 
+    /**
+     * Created by Ryley
+     * added for increment 2
+     *
+     * The only time the menu needs to check for permission is to begin recording a trail
+     */
     public void buildSideMenu()
     {
         NavigationView navView = findViewById(R.id.nav_view);
