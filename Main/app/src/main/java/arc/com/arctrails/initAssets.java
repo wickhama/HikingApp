@@ -19,9 +19,10 @@ import java.io.OutputStream;
 class initAssets {
 
 
-    /** initAssets called at beginning of startup
+    /** initAssets called at beginning of startup.
+     * Loads preset trail files included in the app onto the phone's file system
      *
-     * @param context - Context
+     * @param context - Context used to locate files
      */
     public static void initAssets(Context context) {
         AssetManager assetManager = context.getAssets();
@@ -47,10 +48,16 @@ class initAssets {
                     outFile = new File(context.getExternalFilesDir(null), filename);
                     out = new FileOutputStream(outFile);
                     copyFiles(in, out);
+                    //finish with the streams
+                    in.close();
+                    in = null;
+                    out.close();
+                    out = null;
                 } catch(IOException e) {
                     e.printStackTrace();
                 }
             }
+            //make sure resources are still closed in the case of an exception
             if(in != null) {
                 try {
                     in.close();
@@ -72,7 +79,7 @@ class initAssets {
      *
      * @param in - InputStream
      * @param out - OutputStream
-     * @throws IOException
+     * @throws IOException if the file cannot be read
      */
     private static void copyFiles(InputStream in, OutputStream out) throws IOException{
         byte[] buffer = new byte[1024];

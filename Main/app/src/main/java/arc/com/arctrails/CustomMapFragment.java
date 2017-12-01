@@ -55,6 +55,7 @@ import java.util.HashSet;
  * updateLocationUI (moves the blue dot as the gps updates)
  * onSaveInstantState (saves the location data when app is closed or new activity called)
  * drawPath (Draws a polyline on the map using an arrayList of coordinates)
+ * clearTrail (Removes a trail from the map)
  * makeTrail (Creates a trail using Waypoints and paths from the input GPX file)
  */
 public class CustomMapFragment extends SupportMapFragment implements
@@ -272,6 +273,19 @@ public class CustomMapFragment extends SupportMapFragment implements
     }
 
     /**
+     * Created by Ryley
+     *
+     * Clears any existing trails from the map, and can return the camera to the user's position
+     * if location permission is enabled
+     */
+    public void clearTrail(boolean returnCamera){
+        mMap.clear();
+        //if the camera should be returned to the user's position, try to
+        if(returnCamera)
+            moveCameraLocation();
+    }
+
+    /**
      * Created by Caleigh, modified by Ayla, Ryley
      * Added for increment 3
 
@@ -281,11 +295,12 @@ public class CustomMapFragment extends SupportMapFragment implements
      * Clears previous trails from the map before adding a new GPX
      */
     public void makeTrail(GPX trail) {
-        mMap.clear();
-
-        //makeTrail(null) should clear the map
+        //null trails are not allowed
         if(trail == null)
             return;
+
+        //remove the previous trail, but don't bother moving the camera back to the user
+        clearTrail(false);
 
         HashSet<Track> tracks = trail.getTracks();
         HashSet<Waypoint> points;

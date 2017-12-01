@@ -14,7 +14,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -112,7 +111,7 @@ public class MenuActivity extends AppCompatActivity
         //checks if this is the first time the app has been run
         SharedPreferences wmbPreference = PreferenceManager.getDefaultSharedPreferences(this);
         boolean isFirstRun = wmbPreference.getBoolean(PREFERENCE_FIRST_RUN, true);
-        //if (isFirstRun)
+        if (isFirstRun)
         {
             // Code to run once
             SharedPreferences.Editor editor = wmbPreference.edit();
@@ -207,9 +206,9 @@ public class MenuActivity extends AppCompatActivity
                 tryStopRecording();
                 return true;
             case MENU_CLEAR:
-                //clear existing trails from the map
+                //clear existing trails from the map and center on the current location
                 CustomMapFragment map = (CustomMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-                map.makeTrail(null);
+                map.clearTrail(true);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -220,6 +219,11 @@ public class MenuActivity extends AppCompatActivity
      * added for increment 3
      *
      * The only time the menu needs to check for permission is to begin recording a trail
+     *
+     * Bugfix:
+     *  The coordinates and map would not be alerted to the new permissions if they were added
+     *  this way, and the fragment would not begin recording properly. Now, the fragments are
+     *  notified of the permission update.
      */
     @Override
     public void onPermissionResult(boolean result){
@@ -230,8 +234,8 @@ public class MenuActivity extends AppCompatActivity
             map = (CustomMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
             //notifies the fragments about the permission update, so that it will track location data
-            location.onPermissionResult(result);
-            map.onPermissionResult(result);
+            location.onPermissionResult(true);
+            map.onPermissionResult(true);
             //then tells the coordinate fragment to record
             location.record();
 
@@ -243,74 +247,67 @@ public class MenuActivity extends AppCompatActivity
      * Created by Ryley
      * added for increment 3
      *
-     * Make sure the user did not press the button by accident before they stop recording
+     * Make sure the user did not press the button by accident before they stop recording.
+     * If they did mean to stop, gets name and description info
      */
     private void tryStopRecording()
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Finish Recording")
-                .setMessage("Are you sure you want to finish this trail?");
-
-        builder.setPositiveButton(android.R.string.yes,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //if the user wants to stop recording...
-                        Coordinates location = (Coordinates) getSupportFragmentManager()
-                                .findFragmentById(R.id.coordinates);
-                        //get the location data that was recorded
-                        recordedData = location.stopRecord();
-                        //if they actually did record data...
-                        if(recordedData.size()>0) {
-                            //get other GPX file information
-                            Intent intent = new Intent(MenuActivity.this, NewTrailActivity.class);
-                            startActivityForResult(intent, NEW_TRAIL_REQUEST_CODE);
-                        }
-                        else{
-                            //otherwise don't bother saving an empty file
-                            dialog.dismiss();
-                            AlertUtils.showAlert(MenuActivity.this,
-                                    "Empty trail",
-                                    "No location data was recorded.\n"
-                                    +"Most likely, user has not moved.");
-                        }
-                        //make sure the menu changes
-                        isRecording = false;
+        AlertUtils.showConfirm(this,"Finish Recording", "Are you sure you want to finish this trail?",
+            new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    //if the user wants to stop recording...
+                    Coordinates location = (Coordinates) getSupportFragmentManager()
+                            .findFragmentById(R.id.coordinates);
+                    //get the location data that was recorded
+                    recordedData = location.stopRecord();
+                    //if they actually did record data...
+                    if(recordedData.size()>0) {
+                        //get other GPX file information
+                        Intent intent = new Intent(MenuActivity.this, NewTrailActivity.class);
+                        //starts an activity with the NEW TRAIL result code
+                        startActivityForResult(intent, NEW_TRAIL_REQUEST_CODE);
                     }
-                });
-
-        builder.setNegativeButton(android.R.string.no,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        //do nothing if they dont want to finish. keep recording
+                    else{
+                        //otherwise don't bother saving an empty file
+                        dialog.dismiss();
+                        AlertUtils.showAlert(MenuActivity.this,
+                                "Empty trail",
+                                "No location data was recorded.\n"
+                                +"Most likely, user has not moved.");
                     }
-                });
-
-        builder.setIcon(android.R.drawable.ic_dialog_alert);
-        builder.show();
+                    //make sure the menu changes
+                    isRecording = false;
+                }
+            });
     }
 
     /**
      * Created by Ryley
      * added for increment 2
      *
-     * The only time the menu needs to check for permission is to begin recording a trail
+     * Updates the side menu to include all GPX files saved on the device
      */
     public void buildSideMenu()
     {
         NavigationView navView = findViewById(R.id.nav_view);
         Menu menu = navView.getMenu();
 
+        //remove all previous menu options
         menu.clear();
+        //empty the list of files
         mTrailFiles.clear();
-
+        //get the app's directory on the phone
         File dir = getExternalFilesDir(null);
         if (dir != null) {
             for(File trailFile: dir.listFiles())
             {
+                //separate the file name from the file extension
                 String[] tokens = trailFile.getName().split("\\.");
-                if(tokens.length == 2 && tokens[1].equals("gpx")) {
+                //only display GPX files in the menu
+                if(tokens.length >= 2 && tokens[tokens.length-1].equals("gpx")) {
+                    //when a user clicks a file, we only get an int ID in the callback
+                    //so we add the file to an array, and use the index as the ID
                     int id = mTrailFiles.size();
                     menu.add(R.id.nav_group, id, Menu.NONE, tokens[0]).setCheckable(true);
                     mTrailFiles.add(trailFile);
@@ -319,21 +316,45 @@ public class MenuActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Created by Ryley
+     * added for increment 2
+     *
+     * When the user selects a file from the side menu,
+     * displays the information for that trail in a new activity
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        // Handle navigation view item clicks here.
+        //find the index of the selected file
         int id = item.getItemId();
 
         File trailFile = mTrailFiles.get(id);
         Intent intent = new Intent(this, TrailDataActivity.class);
+        //tell the activity which file to use. sending the file name as an extra is preferable
+        //to sending the file itself as the file would have to be serialized and deserialized
+        //in the other activity, which is an expensive process
         intent.putExtra(EXTRA_FILE_NAME, trailFile.getName());
+        //starts the activity with the DATA_REQUEST result code
         startActivityForResult(intent,DATA_REQUEST_CODE);
-
+        //closes the menu
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
+    /**
+     * Created by Ryley
+     * added for increment 2
+     *
+     * Responds to return values from other activities
+     *
+     * Increment 2:
+     *      When the trail data activity returns, if the user chose start,
+     *      draw the trail on the map. if the user chose delete, update the menu
+     * Increment 3:
+     *      when the new trail activity returns, use the information along with the
+     *      location data to build a GPX file
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
@@ -341,23 +362,30 @@ public class MenuActivity extends AppCompatActivity
         {
             if(resultCode == NewTrailActivity.RESULT_SAVE)
             {
+                //the activity sends the information back through the intent
                 String name = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_NAME);
                 String description = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_DESCRIPTION);
+                //make sure there's actually recorded data
                 if(recordedData != null)
                     GPXFile.writeGPXFile(name,description,recordedData,getApplicationContext());
                 recordedData = null;
+                //repopulate the menu
                 buildSideMenu();
             }
         }
         else if(requestCode == DATA_REQUEST_CODE)
         {
+            //if the trail was started, alert the map
             if(resultCode == TrailDataActivity.RESULT_START)
             {
+                //filename sent back through intent
                 String fileName = data.getStringExtra(TrailDataActivity.EXTRA_FILE_NAME);
                 GPX trail = GPXFile.getGPX(fileName,this);
+                //draw the trail
                 CustomMapFragment map = (CustomMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
                 map.makeTrail(trail);
             }
+            //if a file was deleted, repopulate the menu
             if(resultCode == TrailDataActivity.RESULT_DELETE)
                 buildSideMenu();
         }
@@ -365,7 +393,9 @@ public class MenuActivity extends AppCompatActivity
     // End menu stuff
 
     // Permissions
-    /*
+    /**
+     * Created by Ryley
+     * added for increment 1
      * Checks permission without creating a popup to grant it
      */
     @Override
@@ -377,22 +407,20 @@ public class MenuActivity extends AppCompatActivity
     /**
      * Created by Caleigh, modified by Ryley
      * Added for increment 1
-
+     *
      * Request location permission, so that we can get the location of the
      * device. The result of the permission request is handled by a callback,
      * onRequestPermissionsResult.
-
+     *
      * PermissionListener is the class requesting permission, and when permissions
      * are accepted, calls onPermissionGranted(). This was added by Ryley.
-
+     *
      * THIS IS SYNCHRONIZED SO THAT PEOPLE CAN'T ADD THEMSELVES TO THE SET OF LISTENERS
      * JUST BEFORE THE SET GETS EMPTIED
      */
     @Override
     public synchronized boolean requestPermission(LocationPermissionListener listener) {
-        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
+        if (hasPermission()) {
             //if permission is already enabled, notify the listener
             listener.onPermissionResult(true);
             return true;
@@ -408,9 +436,9 @@ public class MenuActivity extends AppCompatActivity
     /**
      * Created by Caleigh, modified by Ryley
      * Added for increment 1
-
+     *
      * Alerts the listeners that permission has been granted. Listeners added by Ryley.
-
+     *
      * THIS IS SYNCHRONIZED SO THAT PEOPLE CAN'T ADD THEMSELVES TO THE SET OF LISTENERS
      * JUST BEFORE THE SET GETS EMPTIED
      */
@@ -427,6 +455,7 @@ public class MenuActivity extends AppCompatActivity
 
             }
         }
+        //alert all the listeners
         for(LocationPermissionListener listener: mListeners)
             listener.onPermissionResult(permissionResult);
         //remove all permission listeners

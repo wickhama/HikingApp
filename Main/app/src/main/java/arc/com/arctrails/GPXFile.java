@@ -20,8 +20,8 @@ import javax.xml.transform.TransformerException;
 
 /**
  * Created by Ayla Wickham
- *  18-11-17 Increment 3
- *  GPX File has a static parser to prevent multiple creations of the GPX Parser
+ *  18-11-17 Increment 2
+ *  GPX File has a static parser to contain the use and avoid multiple instances of the GPX Parser.
  *  Handles all accesses and writes of GPX files using a third party GPX Library
  *  offered by AlternativeVision
  *  http://gpxparser.alternativevision.ro/
@@ -31,11 +31,10 @@ class GPXFile {
 
     private static GPXParser gpxParser = new GPXParser();
 
-    /** Returns the GPX object of the file parsed
+    /**Created by Ayla Wickham for Increment 2
+     * Returns the GPX object from the file parsed from the given file name
      *
-     * @param filename
-     * @param context
-     * @return
+     * Modified by Ryley to alert user to exceptions - *hopefully* never actually gets seen
      */
     static GPX getGPX(String filename, Context context) {
         FileInputStream in = null;
@@ -47,19 +46,26 @@ class GPXFile {
                 return gpxParser.parseGPX(in);
             }
         } catch(FileNotFoundException e) {
-        //e.printStackTrace(); should this be here?
+            AlertUtils.showAlert(context,"File not found","Please notify the developers.");
         } catch (ParserConfigurationException e) {
-            e.printStackTrace();
+            AlertUtils.showAlert(context,"Parser Exception","Please notify the developers.");
         } catch (IOException e) {
-            e.printStackTrace();
+            AlertUtils.showAlert(context,"IO Exception","Please notify the developers.");
         } catch (SAXException e) {
-            e.printStackTrace();
+            AlertUtils.showAlert(context,"SAXException","Please notify the developers.");
         }
 
         return null;
     }
 
+    /**Created by Ayla Wickham for Increment 3
+     *
+     * Takes
+     *
+     * Modified by Ryley to alert user to exceptions - *hopefully* never actually gets seen
+     */
     static void  writeGPXFile(String trackName, String description, ArrayList<Double[]> trackPoints, Context context) {
+        //convert pairs of doubles to GPX waypoints
         ArrayList<Waypoint> waypoints = new ArrayList<>();
         for(Double[] list : trackPoints) {
             Waypoint point = new Waypoint();
@@ -67,16 +73,21 @@ class GPXFile {
             point.setLongitude(list[1]);
             waypoints.add(point);
         }
+        //builds the track out of the waypoints
         Track track = new Track();
         track.setTrackPoints(waypoints);
-        track.setName(trackName);
-        track.setDescription(description);
-
+        //create a new file with the given name
         File file = new File(context.getExternalFilesDir(null), trackName+".gpx");
         FileOutputStream out;
         try {
             out = new FileOutputStream(file);
+            //create a GPX object and set the correct data
             GPX gpx = new GPX();
+            //writes the name and description to the version and the creator fields
+            //because those are the only fields we can access using the GPXParser
+            //that are properties of the GPX file itself, and not a specific path
+            gpx.setVersion(trackName);
+            gpx.setCreator(description);
             //adds the track
             gpx.addTrack(track);
             //adds waypoints for start and finish
@@ -85,11 +96,11 @@ class GPXFile {
             //writes file
             gpxParser.writeGPX(gpx, out);
         } catch(FileNotFoundException e) {
-            //TODO: Error handling
+            AlertUtils.showAlert(context,"File not found","Please notify the developers.");
         } catch (TransformerException e) {
-            e.printStackTrace();
+            AlertUtils.showAlert(context,"Transformer Exception","Please notify the developers.");
         } catch (ParserConfigurationException e) {
-            e.printStackTrace();
+            AlertUtils.showAlert(context,"Parser Exception","Please notify the developers.");
         }
     }
 }

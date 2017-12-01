@@ -25,25 +25,30 @@ import static java.lang.String.format;
  * and shows the user's current location if permissions is granted
  *
  * Created by Ayla Wickham Increment 1
- * Revised by
+ * Modified by Ryley
  */
 
 public class Coordinates extends Fragment implements LocationListener, LocationPermissionListener {
 
+    //The text boxes displaying position
     private TextView latView, longView;
+    //A listener that handles permission requests
     private LocationRequestListener mRequestListener;
+    //A flag for knowing whether to store location data
     private boolean recording;
+    //A list of recorded data
     private ArrayList<Double[]> trail = new ArrayList<>();
 
-    /** Called at startup
-     * Asks for location permission to show user's GPS coordinates.
+    /**Created by Ryley Increment 1
      *
-     * @param context Context
+     * Called at startup
+     * Uses the context this fragment is attached to as a permission listener
      */
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
+            //try to use the context as a listener
             mRequestListener = (LocationRequestListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
@@ -51,12 +56,13 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
         }
     }
 
-    /** Shows the fragment in the side menu
+    /**Created by Ayla Wickham Increment 1
+     * Builds the layout of the fragment.
+     * Tracks the textboxes for later updates.
      *
-     * @param inflater
-     * @param container
-     * @param savedInstanceState
-     * @return
+     * Modified by Ryley - Increment 1
+     * Instead of immediately trying to begin tracking, requests permission and
+     * begins tracking if permission is granted
      */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,14 +71,16 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
         latView = view.findViewById(R.id.latitude);
         longView = view.findViewById(R.id.longitude);
 
+        //once the layout is built, ask for location permission
         mRequestListener.requestPermission(this);
 
         return view;
     }
 
-    /** Once permission has been granted, we can begin tracking coordinates
+    /**Created by Ryley Increment 1
+     * Modified by Caleigh
      *
-     * @param result
+     * Once permission has been granted, we can begin tracking coordinates
      **/
     @Override
     public void onPermissionResult(boolean result) {
@@ -84,13 +92,16 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
                         != PackageManager.PERMISSION_GRANTED) {
                     return;
                 }
+                //begin tracking
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, this);
+                //set the initial position
                 onLocationChanged(locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER));
             }
         }
     }
 
-    /**Records latitude and longitude on location change
+    /**Created by Ayla Wickham Increment 3
+     * Records latitude and longitude on location change
      * Only called when user wishes to create a new trail.
      */
     public void record() {
@@ -98,16 +109,24 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
         recording = true;
     }
 
-    /** Stops recording and returns an ArrayList<Double[]> of points.
-     *
-     * @return ArrayList<Double[]>
+    /**Created by Ayla Wickham Increment 3
+     * Stops recording and returns an ArrayList<Double[]> of points.
      */
     public ArrayList<Double[]> stopRecord() {
         recording = false;
         return trail;
     }
 
-
+    /**Created by Ayla Wickham Increment 1
+     *
+     * When the user moves, update the display
+     *
+     * Modified in increment 3
+     *      If the user is recording, store the new location
+     *
+     * Supress DefaultLocale: AndroidStudio complains about printf's locale, which I assume means
+     * the language? The app is only being produced in english so this is not a concern -Ryley
+     */
     @SuppressLint("DefaultLocale")
     @Override
     public void onLocationChanged(Location location) {
@@ -124,6 +143,7 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
         }
     }
 
+    //Dummy methods for implementing a LocationListener
     @Override
     public void onStatusChanged(String s, int i, Bundle bundle) {
 
