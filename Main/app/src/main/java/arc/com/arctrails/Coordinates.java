@@ -21,11 +21,15 @@ import java.util.ArrayList;
 
 import static java.lang.String.format;
 
-/**Coordinates displays a fragment in the side menu
- * and shows the user's current location if permissions is granted
- *
+/**Coordinates
  * Created by Ayla Wickham Increment 1
  * Modified by Ryley
+ *
+ * Increment 1:
+ * 		Displays the user's GPS coordinates as plain text
+ * 
+ * Increment 3:
+ * 		Added functionality for recording updates to the user's location 
  */
 
 public class Coordinates extends Fragment implements LocationListener, LocationPermissionListener {

@@ -1,4 +1,0 @@
-#Sat Oct 28 17:17:12 PDT 2017
-base.0=C\:\\Users\\CaLePegasus\\Documents\\CPSC300\\GitHub\\HikingApp\\ARCTrails\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\5
-renamed.0=classes.dex
-file.0=C\:\\Users\\CaLePegasus\\Documents\\CPSC300\\GitHub\\HikingApp\\ARCTrails\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\5\\classes.dex

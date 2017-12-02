@@ -36,16 +36,17 @@ import java.util.HashSet;
  *      Create the map fragment and add location-specific methods. Calls on permission-check
  *      methods in MenuActivity to display the current location and update as the user walks.
  *      Add method for retrieving last known location data.
-
+ *
  * 2nd increment:
+ *      Make trails visible: Take a GPX file for input and make a polyline on the map connecting
+ *      the GPS coordinates provided by the file.
  *      Bug fixes to location-permissions and handle exception for when there is no previous
  *      location data to load.
-
+ *      
  * 3rd increment:
- *      Make trails visible: Take a GPX file for input and make a polyline on the map connecting
- *      the GPS coordinates provided by the file. Zoom in on the waypoints provided by the file, or
- *      an entry-point of the trail if no waypoints are provided.
-
+ *      Zoom in on the waypoints provided by the file, or an entry-point of the trail if no
+ *      waypoints are provided.
+ *
  * Methods:
  * onAttach (handles what to do when the map fragment is associated with its activity)
  * onCreate (essentially the  main method - adds all the default items into the newly created map)
