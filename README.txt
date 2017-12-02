@@ -4,6 +4,18 @@
  | CPSC300 - Software Engineering - 2017 Fall Semester
  |
 
+ARCtrails is an application for android devices that allows you to locate hiking trails in the
+Prince George area. Upon download, it provides a list of local trails for users to locate and
+walk/hike depending on their eagerness for adventure. This app includes information about the
+trails including the name, and a small description. Upon startup, the app will ask for location
+permissions to allow the user to track their location. This uses GPS signals in reference to the
+trail they have selected and allows the user to view their actual coordinates. This is helpful
+in the case of getting lost, as they can alert others to their exact location. ARCtrails also
+allows the user to create new trails. At the beginning of a new trail, a user may push a “Track”
+button and have their GPS coordinates stored as they traverse the trails. When the user has reached
+the end of the trail they may push a “Stop” button, which allows the user to choose a name and
+write a short description of the trail and save it for other users to enjoy the hike as well.
+
 Both the main project as well as test projects are included in the repository
 
 Prototypes & Tests (HikingApp/Tests/):
