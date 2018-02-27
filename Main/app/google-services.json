@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "376214606028",
+    "firebase_url": "https://arctrails-b4b44.firebaseio.com",
+    "project_id": "arctrails-b4b44",
+    "storage_bucket": "arctrails-b4b44.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:376214606028:android:0981627caecc80f7",
+        "android_client_info": {
+          "package_name": "arc.com.arctrails"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "376214606028-nlppfp0jlhmllps2hen276fhmkq9qpae.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "arc.com.arctrails",
+            "certificate_hash": "062fea457996e52aee5af9a10098c2c073c9f44a"
+          }
+        },
+        {
+          "client_id": "376214606028-9ff3cqg1goqvenqdhi680s2l013fr7j6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVb6IjaSSwG1miyQeF9nWe5elrx5IHyDE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "376214606028-9ff3cqg1goqvenqdhi680s2l013fr7j6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
