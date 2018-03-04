@@ -60,14 +60,11 @@ public class MenuActivity extends AppCompatActivity
     //although we only need need fine location for this specific case
     public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 99;
 
-    //Identifies message types when the dropdown menu is clicked
-    public static final int MENU_START_RECORD = 0;
-    public static final int MENU_STOP_RECORD = 1;
-    public static final int MENU_CLEAR = 2;
-
     //identifies the result source when a child activity finishes
     //ID for NewTrailActivity results
-    public static final int NEW_TRAIL_REQUEST_CODE = 1;
+    public static final int LOAD_LOCAL_FILE_CODE = 0;
+    public static final int DATABASE_FILE_CODE = 1;
+    public static final int NEW_TRAIL_REQUEST_CODE = 2;
 
     //A tag for the preference property recording if the app has been opened before
     //This is used so that assets only get saved to the phone the first time the app is run
@@ -159,57 +156,6 @@ public class MenuActivity extends AppCompatActivity
      * Created by Ryley
      * added for increment 3
      *
-     * When the options drop-down menu is selected, builds the contents.
-     * Adds Start/Stop recording depending on whether the user is already recording
-     */
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.clear();
-
-        //add a menu item to start/stop recording
-        if(!isRecording)
-            menu.add(Menu.NONE,MENU_START_RECORD,Menu.NONE,"Start Recording");
-        else
-            menu.add(Menu.NONE,MENU_STOP_RECORD,Menu.NONE,"Stop Recording");
-        //add a menu item to clear the map
-        menu.add(Menu.NONE, MENU_CLEAR,Menu.NONE,"Clear Map");
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    /**
-     * Created by Ryley
-     * added for increment 3
-     *
-     * Called when the user selects on option from the drop down menu
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        //depending on which button they clicked
-        switch (id){
-            case MENU_START_RECORD:
-                //checks for location permissions, and starts recording if they're enabled
-                requestPermission(this);
-                return true;
-            case MENU_STOP_RECORD:
-                //asks the user if they're sure they want to stop recording
-                tryStopRecording();
-                return true;
-            case MENU_CLEAR:
-                //clear existing trails from the map and center on the current location
-                CustomMapFragment map = (CustomMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-                map.clearTrail(true);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * Created by Ryley
-     * added for increment 3
-     *
      * The only time the menu needs to check for permission is to begin recording a trail
      *
      * Bugfix:
@@ -274,6 +220,8 @@ public class MenuActivity extends AppCompatActivity
             });
     }
 
+
+    private boolean AWFUL_CODE_TEMP_THING = true;
     /**
      * Created by Ryley
      * added for increment 2
@@ -284,7 +232,38 @@ public class MenuActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         //closes the menu
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        int id = item.getItemId();
+
+        if (id == R.id.nav_load) {
+            //allows a user to select a file
+            Intent intent = new Intent(this, LocalFileActivity.class);
+            //starts the activity with the LOAD_LOCAL_FILE_CODE result code
+            startActivityForResult(intent, LOAD_LOCAL_FILE_CODE);
+        } else if (id == R.id.nav_database) {
+            //allows a user to download files
+            Intent intent = new Intent(this, DatabaseFileActivity.class);
+            //starts the activity with the LOAD_LOCAL_FILE_CODE result code
+            startActivityForResult(intent, DATABASE_FILE_CODE);
+        } else if (id == R.id.nav_clear) {
+            //clear existing trails from the map and center on the current location
+            CustomMapFragment map = (CustomMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+            map.clearTrail(true);
+        } else if (id == R.id.nav_record) {
+            if(AWFUL_CODE_TEMP_THING){
+                AWFUL_CODE_TEMP_THING = false;
+                requestPermission(this);
+            }
+            else{
+                AWFUL_CODE_TEMP_THING = true;
+                tryStopRecording();
+            }
+        } else if (id == R.id.nav_edit) {
+
+        } else if (id == R.id.nav_settings) {
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -317,6 +296,23 @@ public class MenuActivity extends AppCompatActivity
                     GPXFile.writeGPXFile(name,description,recordedData,getApplicationContext());
                 recordedData = null;
             }
+        }
+        else if(requestCode == LOAD_LOCAL_FILE_CODE)
+        {
+            //if the trail was started, alert the map
+            if(resultCode == TrailDataActivity.RESULT_START)
+            {
+                //filename sent back through intent
+                String fileName = data.getStringExtra(TrailDataActivity.EXTRA_FILE_NAME);
+                GPX trail = GPXFile.getGPX(fileName,this);
+                //draw the trail
+                CustomMapFragment map = (CustomMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+                map.makeTrail(trail);
+            }
+        }
+        else if(requestCode == DATABASE_FILE_CODE)
+        {
+
         }
     }
     // End menu stuff

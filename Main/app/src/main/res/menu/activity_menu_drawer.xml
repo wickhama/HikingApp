@@ -1,10 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:showIn="navigation_view">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="Loading Trails">
+        <menu>
+            <item
+                android:id="@+id/nav_load"
+                android:icon="@drawable/ic_perm_media_black_24px"
+                android:title="Load a Trail" />
+            <item
+                android:id="@+id/nav_database"
+                android:icon="@drawable/ic_file_download_black_24px"
+                android:title="Get new Trails" />
+            <item
+                android:id="@+id/nav_clear"
+                android:icon="@drawable/ic_not_interested_black_24px"
+                android:title="Clear Map" />
+        </menu>
+    </item>
 
-    <group
-        android:id="@+id/nav_group"
-        android:checkableBehavior="single"
-        android:orderInCategory="200"/>
+    <item android:title="Creating Trails">
+        <menu>
+            <item
+                android:id="@+id/nav_record"
+                android:icon="@drawable/ic_add_circle_black_24px"
+                android:title="Record a Trail" />
+            <item
+                android:id="@+id/nav_edit"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Edit a Trail" />
+        </menu>
+    </item>
+
+    <item android:title="Options">
+        <menu>
+            <item
+                android:id="@+id/nav_settings"
+                android:icon="@drawable/ic_settings_black_24px"
+                android:title="Settings" />
+        </menu>
+    </item>
 </menu>

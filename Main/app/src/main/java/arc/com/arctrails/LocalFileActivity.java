@@ -118,12 +118,8 @@ public class LocalFileActivity extends AppCompatActivity
             //if the trail was started, alert the map
             if(resultCode == TrailDataActivity.RESULT_START)
             {
-                //filename sent back through intent
-                String fileName = data.getStringExtra(TrailDataActivity.EXTRA_FILE_NAME);
-                GPX trail = GPXFile.getGPX(fileName,this);
-                //draw the trail
-                CustomMapFragment map = (CustomMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-                map.makeTrail(trail);
+                setResult(TrailDataActivity.RESULT_START,data);
+                finish();
             }
             //if a file was deleted, repopulate the menu
             if(resultCode == TrailDataActivity.RESULT_DELETE)
