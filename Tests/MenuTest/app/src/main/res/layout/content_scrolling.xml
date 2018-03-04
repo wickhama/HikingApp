@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scroll_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="false"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.arc.menutest.ScrollingActivity"
+    tools:showIn="@layout/activity_scrolling">
+
+    <android.support.design.widget.NavigationView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/nav_view"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_gravity="start"
+        android:fitsSystemWindows="true"
+        app:menu="@menu/activity_main_drawer" />
+</android.support.v4.widget.NestedScrollView>

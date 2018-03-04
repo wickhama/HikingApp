@@ -22,4 +22,6 @@
     <string name="new_trail_name">Trail Name</string>
     <string name="new_trail_description">Description</string>
     <string name="new_trail_save">Save</string>
+    <string name="title_activity_local_file">Load a file</string>
+    <string name="title_activity_database_file">Download new Trails</string>
 </resources>

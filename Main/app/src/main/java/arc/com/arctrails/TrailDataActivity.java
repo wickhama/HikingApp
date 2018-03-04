@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import org.alternativevision.gpx.beans.GPX;
-import org.alternativevision.gpx.beans.Track;
 
 import java.io.File;
 
@@ -37,7 +36,9 @@ public class TrailDataActivity extends AppCompatActivity {
     //the user deleted this file
     public static final int RESULT_DELETE= 2;
 
-    //an ID for sending filenames between activities
+
+    //extras
+    //A tag for the file name sent to TrailDataActivity
     public static final String EXTRA_FILE_NAME = "arc.com.arctrails.filename";
     //the name of the file the data is coming from
     private String fileName;
@@ -69,7 +70,7 @@ public class TrailDataActivity extends AppCompatActivity {
             }
         });
         //build the display
-        fileName = getIntent().getStringExtra(MenuActivity.EXTRA_FILE_NAME);
+        fileName = getIntent().getStringExtra(EXTRA_FILE_NAME);
         setInfo(fileName);
     }
 
