@@ -5,15 +5,23 @@ import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * Created by graememorgan on 2018-02-26.
+ *
+ * UPDATE Mar 4: This is an unnecessary Class and can be removed.
  */
 
 public class DBDev {
 
-   private FirebaseDatabase database;
-   private DatabaseReference myRef;
 
 
 
+    public void main(){
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("Message");
+
+        myRef.setValue("Hello, World!");
+
+    }
 
 
 }// end class

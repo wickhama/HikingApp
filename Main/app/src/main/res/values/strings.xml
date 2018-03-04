@@ -22,4 +22,10 @@
     <string name="new_trail_name">Trail Name</string>
     <string name="new_trail_description">Description</string>
     <string name="new_trail_save">Save</string>
+    <string name="datbaseLink">Temp Link</string>
+    <string name="Title">Testing DB Environment</string>
+    <string name="addToDB">Add to DB</string>
+    <string name="addToDB2">Add to DB 2</string>
+    <string name="addToDb">Add to DB1</string>
+    <string name="testDBTitle">Test Activity for DB</string>
 </resources>

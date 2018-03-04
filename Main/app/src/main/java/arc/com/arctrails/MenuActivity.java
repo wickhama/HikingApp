@@ -18,6 +18,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.alternativevision.gpx.beans.GPX;
 
@@ -65,6 +70,12 @@ public class MenuActivity extends AppCompatActivity
     public static final int MENU_STOP_RECORD = 1;
     public static final int MENU_CLEAR = 2;
 
+    //TEMP: this navigates to the database testing area -- Graeme
+    private Button goToTesting;
+    private FirebaseDatabase database;
+    private DatabaseReference databaseReference;
+
+
     //identifies the result source when a child activity finishes
     //ID for TrailDataActivity results
     public static final int DATA_REQUEST_CODE = 0;
@@ -107,6 +118,11 @@ public class MenuActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //TEMP: This is to test the db connection
+        database = FirebaseDatabase.getInstance();
+        databaseReference = database.getReference("Friends");
+
+        databaseReference.setValue("Hello World, how are you! Fine!");
 
         //checks if this is the first time the app has been run
         SharedPreferences wmbPreference = PreferenceManager.getDefaultSharedPreferences(this);
@@ -142,6 +158,15 @@ public class MenuActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         //loads the initial state of the side menu
         buildSideMenu();
+
+        //TEMP: link to DBDev activity -- Graeme
+        goToTesting = (Button) findViewById(R.id.databaseLink);
+        goToTesting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MenuActivity.this, DBTest.class));
+            }
+        });
     }
 
     // The following section is for the menu

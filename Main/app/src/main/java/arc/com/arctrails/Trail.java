@@ -1,5 +1,7 @@
 package arc.com.arctrails;
 
+import java.util.List;
+
 /**
  * Created by graememorgan on 2018-02-26.
  */
@@ -10,12 +12,12 @@ public class Trail {
     private String location;
     private String difficulty;
     private String notes;
-    private String gpxFile;
+    private List gpxFile;
 
     public Trail() {
     }
 
-    public Trail(String name, String description, String location, String difficulty, String notes, String gpxFile) {
+    public Trail(String name, String description, String location) {
         this.name = name;
         this.description = description;
         this.location = location;
@@ -64,11 +66,11 @@ public class Trail {
         this.notes = notes;
     }
 
-    public String getGpxFile() {
+    public List getGpxFile() {
         return gpxFile;
     }
 
-    public void setGpxFile(String gpxFile) {
+    public void setGpxFile(List gpxFile) {
         this.gpxFile = gpxFile;
     }
 }

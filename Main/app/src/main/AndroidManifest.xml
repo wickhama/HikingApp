@@ -54,7 +54,8 @@
         <activity
             android:name=".NewTrailActivity"
             android:label="@string/title_activity_new_trail"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".DBTest"></activity>
     </application>
 
 </manifest>
