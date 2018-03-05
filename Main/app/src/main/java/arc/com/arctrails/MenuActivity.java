@@ -70,7 +70,8 @@ public class MenuActivity extends AppCompatActivity
     //ID for NewTrailActivity results
     public static final int LOAD_LOCAL_FILE_CODE = 0;
     public static final int DATABASE_FILE_CODE = 1;
-    public static final int NEW_TRAIL_REQUEST_CODE = 2;
+    public static final int RECORD_TRAIL_CODE = 2;
+    public static final int NEW_TRAIL_REQUEST_CODE = 3;
 
     //A tag for the preference property recording if the app has been opened before
     //This is used so that assets only get saved to the phone the first time the app is run
@@ -227,8 +228,6 @@ public class MenuActivity extends AppCompatActivity
             });
     }
 
-
-    private boolean AWFUL_CODE_TEMP_THING = true;
     /**
      * Created by Ryley
      * added for increment 2
@@ -256,18 +255,23 @@ public class MenuActivity extends AppCompatActivity
             CustomMapFragment map = (CustomMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
             map.clearTrail(true);
         } else if (id == R.id.nav_record) {
-            if(AWFUL_CODE_TEMP_THING){
-                AWFUL_CODE_TEMP_THING = false;
-                requestPermission(this);
-                item.setIcon(R.drawable.ic_fiber_manual_record_black_24px);
-                item.setTitle("Stop Recording");
-            }
-            else{
-                AWFUL_CODE_TEMP_THING = true;
-                item.setIcon(R.drawable.ic_add_circle_black_24px);
-                item.setTitle("Record a trail");
-                tryStopRecording();
-            }
+            //allows a user to download files
+            Intent intent = new Intent(this, RecordingActivity.class);
+            //starts the activity with the LOAD_LOCAL_FILE_CODE result code
+            startActivityForResult(intent, RECORD_TRAIL_CODE);
+
+//            if(AWFUL_CODE_TEMP_THING){
+//                AWFUL_CODE_TEMP_THING = false;
+//                requestPermission(this);
+//                item.setIcon(R.drawable.ic_fiber_manual_record_black_24px);
+//                item.setTitle("Stop Recording");
+//            }
+//            else{
+//                AWFUL_CODE_TEMP_THING = true;
+//                item.setIcon(R.drawable.ic_add_circle_black_24px);
+//                item.setTitle("Record a trail");
+//                tryStopRecording();
+//            }
         } else if (id == R.id.nav_edit) {
 
         } else if (id == R.id.nav_settings) {

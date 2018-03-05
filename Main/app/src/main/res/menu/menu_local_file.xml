@@ -4,7 +4,7 @@
     tools:showIn="navigation_view">
 
     <group
-        android:id="@+id/nav_group"
+        android:id="@+id/nav_group_local"
         android:checkableBehavior="single"
         android:orderInCategory="200"/>
 </menu>

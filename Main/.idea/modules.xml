@@ -3,13 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/GPXParser/GPXParser.iml" filepath="$PROJECT_DIR$/GPXParser/GPXParser.iml" />
-      <module fileurl="file://C:\Users\MSi Reece\Documents\UNBC Classes\CPSC499\Hiking\Main\GPXParser\GPXParser.iml" filepath="C:\Users\MSi Reece\Documents\UNBC Classes\CPSC499\Hiking\Main\GPXParser\GPXParser.iml" />
       <module fileurl="file://$PROJECT_DIR$/Main.iml" filepath="$PROJECT_DIR$/Main.iml" />
-      <module fileurl="file://C:\Users\MSi Reece\Documents\UNBC Classes\CPSC499\Hiking\Main\Main.iml" filepath="C:\Users\MSi Reece\Documents\UNBC Classes\CPSC499\Hiking\Main\Main.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://C:\Users\MSi Reece\Documents\UNBC Classes\CPSC499\Hiking\Main\app\app.iml" filepath="C:\Users\MSi Reece\Documents\UNBC Classes\CPSC499\Hiking\Main\app\app.iml" />
       <module fileurl="file://$PROJECT_DIR$/log4j/log4j.iml" filepath="$PROJECT_DIR$/log4j/log4j.iml" />
-      <module fileurl="file://C:\Users\MSi Reece\Documents\UNBC Classes\CPSC499\Hiking\Main\log4j\log4j.iml" filepath="C:\Users\MSi Reece\Documents\UNBC Classes\CPSC499\Hiking\Main\log4j\log4j.iml" />
     </modules>
   </component>
 </project>

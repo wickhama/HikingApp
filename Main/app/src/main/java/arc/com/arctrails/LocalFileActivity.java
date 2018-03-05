@@ -87,7 +87,7 @@ public class LocalFileActivity extends AppCompatActivity
                     //when a user clicks a file, we only get an int ID in the callback
                     //so we add the file to an array, and use the index as the ID
                     int id = mTrailFiles.size();
-                    menu.add(R.id.nav_group, id, Menu.NONE, tokens[0]).setCheckable(true);
+                    menu.add(R.id.nav_group_local, id, Menu.NONE, tokens[0]).setCheckable(true);
                     mTrailFiles.add(trailFile);
                 }
             }
