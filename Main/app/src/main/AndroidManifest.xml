@@ -22,7 +22,6 @@
             android:name=".MenuActivity"
             android:label="@string/title_activity_menu"
             android:theme="@style/AppTheme.NoActionBar">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -59,7 +58,6 @@
             android:label="@string/title_activity_new_trail"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".DBTest">
-            //This controls where the app starts
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN" />-->
 
