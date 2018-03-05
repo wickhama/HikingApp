@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -252,9 +253,13 @@ public class MenuActivity extends AppCompatActivity
             if(AWFUL_CODE_TEMP_THING){
                 AWFUL_CODE_TEMP_THING = false;
                 requestPermission(this);
+                item.setIcon(R.drawable.ic_fiber_manual_record_black_24px);
+                item.setTitle("Stop Recording");
             }
             else{
                 AWFUL_CODE_TEMP_THING = true;
+                item.setIcon(R.drawable.ic_add_circle_black_24px);
+                item.setTitle("Record a trail");
                 tryStopRecording();
             }
         } else if (id == R.id.nav_edit) {
