@@ -22,24 +22,13 @@
             android:name=".MenuActivity"
             android:label="@string/title_activity_menu"
             android:theme="@style/AppTheme.NoActionBar">
-<<<<<<< Updated upstream
 
-            <!-- This controls where the app starts -->
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-=======
-            //This is where intent-filter should be placed
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
 
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
-
->>>>>>> Stashed changes
         </activity>
         <!--
             Added this meta-data to call the gradle scripts I added. I followed a turorial online to do so. Feel free
@@ -69,9 +58,6 @@
             android:name=".NewTrailActivity"
             android:label="@string/title_activity_new_trail"
             android:theme="@style/AppTheme.NoActionBar" />
-<<<<<<< Updated upstream
-        <activity android:name=".DBTest"></activity>
-=======
         <activity android:name=".DBTest">
             //This controls where the app starts
             <intent-filter>
@@ -80,7 +66,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
->>>>>>> Stashed changes
         <activity
             android:name=".LocalFileActivity"
             android:label="@string/title_activity_local_file"
@@ -99,7 +84,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="arc.com.arctrails.MenuActivity" />
         </activity>
-<<<<<<< Updated upstream
         <activity
             android:name=".RecordingActivity"
             android:label="@string/title_activity_recording"
@@ -109,9 +93,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="arc.com.arctrails.MenuActivity" />
         </activity>
-=======
         <activity android:name=".listActivityTemp"></activity>
->>>>>>> Stashed changes
     </application>
 
 </manifest>

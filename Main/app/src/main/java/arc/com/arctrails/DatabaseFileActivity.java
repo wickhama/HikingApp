@@ -84,8 +84,6 @@ public class DatabaseFileActivity extends AppCompatActivity
         NavigationView navView = findViewById(R.id.nav_view_database);
         Menu menu = navView.getMenu();
 
-<<<<<<< Updated upstream
-=======
         /**
          * Add code here for the db list.
          */
@@ -94,12 +92,13 @@ public class DatabaseFileActivity extends AppCompatActivity
 
 
         //remove all previous menu options
->>>>>>> Stashed changes
+
         menu.clear();
         mTrailIDs.clear();
 
         //REPLACE THIS WITH WHATEVER METHOD FOR RETRIEVING A LIST OF IDS
         String[] DatabaseIDList = {"Foo","Bar","Test","Lorem Ipsum"};
+
 
         if(DatabaseIDList != null) {
             for(String trailID : DatabaseIDList) {

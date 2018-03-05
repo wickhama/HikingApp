@@ -34,8 +34,8 @@ public class DBTest extends AppCompatActivity {
 
         //TEMP: This is to test the db connection
         database = FirebaseDatabase.getInstance();
-        databaseReference = database.getReference("DB Test");
-        databaseReference.setValue("Congratulations, the DB is connected.");
+        databaseReference = database.getReference();
+        databaseReference.child("DBTest").setValue("Congratulations, the DB is connected.");
 
     }
 
@@ -71,6 +71,8 @@ public class DBTest extends AppCompatActivity {
     public void onDB2Click(View v){
 
 
+
+
         ValueEventListener trailListener = new ValueEventListener() {
             public static final String TAG = "cancelled";
 
@@ -78,6 +80,10 @@ public class DBTest extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Trail trail1 = dataSnapshot.child("Trails").child("Trail1").getValue(Trail.class);
                 //Printing the data from Trail1
+
+                System.out.println("Key: " + dataSnapshot.getChildrenCount());
+                System.out.println("Key: " + dataSnapshot.getKey());
+
 
                 if(trail1 != null) {
                     System.out.println("From Db: " + trail1.getName() + " " + trail1.getDescription()
