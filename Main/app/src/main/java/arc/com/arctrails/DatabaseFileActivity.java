@@ -25,7 +25,8 @@ import java.util.Set;
 
 public class DatabaseFileActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-                    InternetRequestListener{
+                    InternetRequestListener,
+                    DatabaseListener{
 
     //Identifies the type of permission requests to identify which ones were granted
     //although we only need need fine location for this specific case
@@ -44,12 +45,15 @@ public class DatabaseFileActivity extends AppCompatActivity
 
     private List<String> mTrailIDs;
 
+    private DBTest trailDB;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_database_file);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -70,7 +74,13 @@ public class DatabaseFileActivity extends AppCompatActivity
         mTrailIDs = new ArrayList<>();
 
         //loads the initial state of the menu
-        buildMenu();
+        trailDB = new DBTest();
+        trailDB.trailNameRun(this);
+    }
+
+    @Override
+    public void onDataList(List<String> entryIDs) {
+        buildMenu(entryIDs);
     }
 
     /**
@@ -79,37 +89,29 @@ public class DatabaseFileActivity extends AppCompatActivity
      *
      * Updates the side menu to include all GPX files saved on the device
      */
-    public void buildMenu()
+    public void buildMenu(List<String> names)
     {
         NavigationView navView = findViewById(R.id.nav_view_database);
         Menu menu = navView.getMenu();
-
-        /**
-         * Add code here for the db list.
-         */
-
-
-
 
         //remove all previous menu options
 
         menu.clear();
         mTrailIDs.clear();
 
-        //REPLACE THIS WITH WHATEVER METHOD FOR RETRIEVING A LIST OF IDS
-        String[] DatabaseIDList = {"Foo","Bar","Test","Lorem Ipsum"};
-
-        /**
-         * Add DB list here
-         */
+        System.out.println("Trails list: " + names.toString());
 
 
-        if(DatabaseIDList != null) {
-            for(String trailID : DatabaseIDList) {
+        if(names != null) {
+            for(String trailID : names) {
                 int id = mTrailIDs.size();
-                menu.add(R.id.nav_group_database, id, Menu.NONE, "Name of "+trailID).setCheckable(true);
+                menu.add(R.id.nav_group_database, id, Menu.NONE, trailID).setCheckable(true);
                 mTrailIDs.add(trailID);
             }
+        }else{
+            Snackbar.make(findViewById(R.id.db_content_view), "Error conecting to DB", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+
         }
     }
 

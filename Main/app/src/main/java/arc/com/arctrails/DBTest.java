@@ -1,6 +1,7 @@
 package arc.com.arctrails;
 
 import android.content.Intent;
+import android.renderscript.Sampler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public class DBTest extends AppCompatActivity {
@@ -24,6 +26,7 @@ public class DBTest extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
     private String trailID;
+    private ArrayList<String> trailList = new ArrayList<>();
 //    private Button addToDB1;
 //    private Button addToDB2;
 
@@ -41,51 +44,43 @@ public class DBTest extends AppCompatActivity {
 
     }
 
+//    public ArrayList<String> getTrailList(){
+//        System.out.print("From within the getTrailList method: " + trailList.toString());
+//        return trailList;
+//    }
 
     /**
-     *This is a little sloppy, this is temporary and getter for the DatbaseFileActivity class
+     *This is a little sloppy, this is temporary and getter for the DatabaseFileActivity class
      * this should grab the Trail Names from the DB
      */
-    public void getTrailName(String id){
+    public void trailNameRun(final DatabaseListener DBlistener){
 
-        ValueEventListener trailListener = new ValueEventListener() {
-            public static final String TAG = "cancelled";
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference ref = rootRef.child("Trails");
 
-            /**
-             * Working on this using an Iterator
-             * @param dataSnapshot
-             */
+        ValueEventListener eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                Iterable<DataSnapshot> allTrails = new Iterable<DataSnapshot>() {
-                    @NonNull
-                    @Override
-                    public Iterator<DataSnapshot> iterator() {
-                        return null;
-                    }
-                };// end Iterable
 
-
-                Trail trail1 = dataSnapshot.child("Trails").child("Trail1").getValue(Trail.class);
-
-                if(trail1 != null) {
-                    System.out.println(trail1.getName());
-                }else{
-                    System.out.println("Retreived Null Object");
+                for(DataSnapshot ds : dataSnapshot.getChildren()){
+                    String trail = ds.child("description").getValue(String.class);
+                    trailList.add(trail);
                 }
+
+                DBlistener.onDataList(trailList);
+                System.out.println("TrailList from ValueEventListener: " + trailList.toString());
+
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.w(TAG, "loadTrail: onCancelled", databaseError.toException());
+
             }
         };
 
-        databaseReference.addValueEventListener(trailListener);
+        ref.addListenerForSingleValueEvent(eventListener);
 
-
-        System.out.println("Worked: reading frm db.");
     }
 
     /**
