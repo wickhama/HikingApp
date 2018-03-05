@@ -2,9 +2,38 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/recording_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="arc.com.arctrails.RecordingActivity">
+
+    <fragment
+        android:id="@+id/coordinates"
+        android:name="arc.com.arctrails.Coordinates"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_anchor="@+id/include"
+        app:layout_anchorGravity="left|top" />
+
+    <ToggleButton
+        android:id="@+id/recordButton"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:onClick="onRecordClick"
+        android:textOff="@string/Record_off"
+        android:textOn="@string/Record_on"
+        app:layout_anchor="@+id/include"
+        app:layout_anchorGravity="left|bottom" />
+
+    <Button
+        android:id="@+id/stopButton"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:onClick="onStopClick"
+        android:text="Stop"
+        app:layout_anchor="@+id/include"
+        app:layout_anchorGravity="right|bottom" />
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"

@@ -10,6 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ToggleButton;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -34,8 +35,17 @@ public class RecordingActivity extends AppCompatActivity implements LocationRequ
         mListeners = new HashSet<>();
     }
 
-    public void onRunClick(View v) {
+    public void onRecordClick(View v) {
+        if(((ToggleButton)v).isChecked())
+        {
 
+        }
+        else
+        {
+            Snackbar.make(findViewById(R.id.recording_layout), "Pausing not yet implemented", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+            ((ToggleButton)v).setChecked(true);
+        }
     }
 
     public void onStopClick(View v) {
