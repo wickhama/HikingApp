@@ -28,4 +28,6 @@
     <string name="addToDB2">Add to DB 2</string>
     <string name="addToDb">Add to DB1</string>
     <string name="testDBTitle">Test Activity for DB</string>
+    <string name="title_activity_local_file">Load a file</string>
+    <string name="title_activity_database_file">Download new Trails</string>
 </resources>
