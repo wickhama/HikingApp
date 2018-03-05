@@ -1,6 +1,7 @@
 package arc.com.arctrails;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.Iterator;
 
 public class DBTest extends AppCompatActivity {
 
@@ -32,15 +35,61 @@ public class DBTest extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dbtest);
 
-        //TEMP: This is to test the db connection
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference();
         databaseReference.child("DBTest").setValue("Congratulations, the DB is connected.");
 
     }
 
+
     /**
-     * This block instantiates a few trail objects
+     *This is a little sloppy, this is temporary and getter for the DatbaseFileActivity class
+     * this should grab the Trail Names from the DB
+     */
+    public void getTrailName(String id){
+
+        ValueEventListener trailListener = new ValueEventListener() {
+            public static final String TAG = "cancelled";
+
+            /**
+             * Working on this using an Iterator
+             * @param dataSnapshot
+             */
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                Iterable<DataSnapshot> allTrails = new Iterable<DataSnapshot>() {
+                    @NonNull
+                    @Override
+                    public Iterator<DataSnapshot> iterator() {
+                        return null;
+                    }
+                };// end Iterable
+
+
+                Trail trail1 = dataSnapshot.child("Trails").child("Trail1").getValue(Trail.class);
+
+                if(trail1 != null) {
+                    System.out.println(trail1.getName());
+                }else{
+                    System.out.println("Retreived Null Object");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "loadTrail: onCancelled", databaseError.toException());
+            }
+        };
+
+        databaseReference.addValueEventListener(trailListener);
+
+
+        System.out.println("Worked: reading frm db.");
+    }
+
+    /**
+     * This instantiates a few trail objects
      */
     public void onDB1Click(View v){
 
@@ -66,12 +115,9 @@ public class DBTest extends AppCompatActivity {
     }
 
     /**
-     * This block is retrieving information from the database
+     * This is retrieving information from the database
      */
     public void onDB2Click(View v){
-
-
-
 
         ValueEventListener trailListener = new ValueEventListener() {
             public static final String TAG = "cancelled";

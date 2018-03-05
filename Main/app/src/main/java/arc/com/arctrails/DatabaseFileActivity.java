@@ -99,6 +99,10 @@ public class DatabaseFileActivity extends AppCompatActivity
         //REPLACE THIS WITH WHATEVER METHOD FOR RETRIEVING A LIST OF IDS
         String[] DatabaseIDList = {"Foo","Bar","Test","Lorem Ipsum"};
 
+        /**
+         * Add DB list here
+         */
+
 
         if(DatabaseIDList != null) {
             for(String trailID : DatabaseIDList) {

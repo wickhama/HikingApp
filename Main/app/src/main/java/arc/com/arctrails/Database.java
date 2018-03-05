@@ -1,23 +1,34 @@
 package arc.com.arctrails;
 
+import android.os.Bundle;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 /**
  * Created by graememorgan on 2018-02-26.
  */
 
 public class Database {
 
-    /*
-        **Database commands CRUD**
-       * Create
-       * Retrieve
-       * Update
-       * Delete
+    /**
+     * Home for CRUD
+     * Create
+     * Retrieve
+     * Update
+     * Destroy!
      */
-    public void retrieve(){
+
+    private FirebaseDatabase database;
+    private DatabaseReference databaseReference;
+    private String trailID;
+
+
+    public void create(){
 
     }
 
-    public void create(){
+    public void retrieve(){
 
     }
 
