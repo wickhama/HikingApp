@@ -21,11 +21,7 @@
             android:name=".MenuActivity"
             android:label="@string/title_activity_menu"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <!--
             Added this meta-data to call the gradle scripts I added. I followed a turorial online to do so. Feel free
@@ -55,7 +51,16 @@
             android:name=".NewTrailActivity"
             android:label="@string/title_activity_new_trail"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".DBTest"></activity>
+        <activity android:name=".DBTest">
+
+            //This controls where the app starts
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
     </application>
 
 </manifest>
