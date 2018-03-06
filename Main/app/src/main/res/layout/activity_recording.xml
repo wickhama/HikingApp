@@ -10,10 +10,10 @@
     <fragment
         android:id="@+id/coordinates"
         android:name="arc.com.arctrails.Coordinates"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         app:layout_anchor="@+id/include"
-        app:layout_anchorGravity="left|top" />
+        app:layout_anchorGravity="top|center" />
 
     <ToggleButton
         android:id="@+id/recordButton"

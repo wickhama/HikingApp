@@ -21,6 +21,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ToggleButton;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -60,18 +61,16 @@ import java.util.Set;
  */
 public class MenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-                    LocationPermissionListener, LocationRequestListener{
+        LocationRequestListener, LocationPermissionListener{
 
     //Identifies the type of permission requests to identify which ones were granted
     //although we only need need fine location for this specific case
     public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 99;
 
     //identifies the result source when a child activity finishes
-    //ID for NewTrailActivity results
     public static final int LOAD_LOCAL_FILE_CODE = 0;
     public static final int DATABASE_FILE_CODE = 1;
     public static final int RECORD_TRAIL_CODE = 2;
-    public static final int NEW_TRAIL_REQUEST_CODE = 3;
 
     //A tag for the preference property recording if the app has been opened before
     //This is used so that assets only get saved to the phone the first time the app is run
@@ -79,11 +78,6 @@ public class MenuActivity extends AppCompatActivity
 
     //keeps a track of the listeners waiting for permissions
     private Set<LocationPermissionListener> mListeners;
-
-    //flag for whether the user is currently recording. used to change menu behaviour
-    private boolean isRecording;
-    //the data recorded in the user's most recent trail
-    private ArrayList<Double[]> recordedData = null;
 
     /**
      * Created by Ryley, modified by Ayla, Caleigh
@@ -122,7 +116,6 @@ public class MenuActivity extends AppCompatActivity
         }
 
         mListeners = new HashSet<>();
-        isRecording = false;
 
         //loads the layout
         setContentView(R.layout.activity_menu);
@@ -162,74 +155,6 @@ public class MenuActivity extends AppCompatActivity
 
     /**
      * Created by Ryley
-     * added for increment 3
-     *
-     * The only time the menu needs to check for permission is to begin recording a trail
-     *
-     * Bugfix:
-     *  The coordinates and map would not be alerted to the new permissions if they were added
-     *  this way, and the fragment would not begin recording properly. Now, the fragments are
-     *  notified of the permission update.
-     */
-    @Override
-    public void onPermissionResult(boolean result){
-        if(result) {
-            Coordinates location;
-            location = (Coordinates) getSupportFragmentManager().findFragmentById(R.id.coordinates);
-            CustomMapFragment map;
-            map = (CustomMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-
-            //notifies the fragments about the permission update, so that it will track location data
-            location.onPermissionResult(true);
-            map.onPermissionResult(true);
-            //then tells the coordinate fragment to record
-            location.record();
-
-            isRecording = true;
-        }
-    }
-
-    /**
-     * Created by Ryley
-     * added for increment 3
-     *
-     * Make sure the user did not press the button by accident before they stop recording.
-     * If they did mean to stop, gets name and description info
-     */
-    private void tryStopRecording()
-    {
-        AlertUtils.showConfirm(this,"Finish Recording", "Are you sure you want to finish this trail?",
-            new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    //if the user wants to stop recording...
-                    Coordinates location = (Coordinates) getSupportFragmentManager()
-                            .findFragmentById(R.id.coordinates);
-                    //get the location data that was recorded
-                    recordedData = location.stopRecord();
-                    //if they actually did record data...
-                    if(recordedData.size()>0) {
-                        //get other GPX file information
-                        Intent intent = new Intent(MenuActivity.this, NewTrailActivity.class);
-                        //starts an activity with the NEW TRAIL result code
-                        startActivityForResult(intent, NEW_TRAIL_REQUEST_CODE);
-                    }
-                    else{
-                        //otherwise don't bother saving an empty file
-                        dialog.dismiss();
-                        AlertUtils.showAlert(MenuActivity.this,
-                                "Empty trail",
-                                "No location data was recorded.\n"
-                                +"Most likely, user has not moved.");
-                    }
-                    //make sure the menu changes
-                    isRecording = false;
-                }
-            });
-    }
-
-    /**
-     * Created by Ryley
      * added for increment 2
      *
      * When the user selects a file from the side menu,
@@ -259,19 +184,6 @@ public class MenuActivity extends AppCompatActivity
             Intent intent = new Intent(this, RecordingActivity.class);
             //starts the activity with the LOAD_LOCAL_FILE_CODE result code
             startActivityForResult(intent, RECORD_TRAIL_CODE);
-
-//            if(AWFUL_CODE_TEMP_THING){
-//                AWFUL_CODE_TEMP_THING = false;
-//                requestPermission(this);
-//                item.setIcon(R.drawable.ic_fiber_manual_record_black_24px);
-//                item.setTitle("Stop Recording");
-//            }
-//            else{
-//                AWFUL_CODE_TEMP_THING = true;
-//                item.setIcon(R.drawable.ic_add_circle_black_24px);
-//                item.setTitle("Record a trail");
-//                tryStopRecording();
-//            }
         } else if (id == R.id.nav_edit) {
 
         } else if (id == R.id.nav_settings) {
@@ -299,20 +211,7 @@ public class MenuActivity extends AppCompatActivity
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        if(requestCode == NEW_TRAIL_REQUEST_CODE)
-        {
-            if(resultCode == NewTrailActivity.RESULT_SAVE)
-            {
-                //the activity sends the information back through the intent
-                String name = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_NAME);
-                String description = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_DESCRIPTION);
-                //make sure there's actually recorded data
-                if(recordedData != null)
-                    GPXFile.writeGPXFile(name,description,recordedData,getApplicationContext());
-                recordedData = null;
-            }
-        }
-        else if(requestCode == LOAD_LOCAL_FILE_CODE)
+        if(requestCode == LOAD_LOCAL_FILE_CODE)
         {
             //if the trail was started, alert the map
             if(resultCode == TrailDataActivity.RESULT_START)
@@ -328,6 +227,26 @@ public class MenuActivity extends AppCompatActivity
         else if(requestCode == DATABASE_FILE_CODE)
         {
 
+        }
+        else if(requestCode == RECORD_TRAIL_CODE)
+        {
+            //if the user enabled permissions while in the recording activity
+            if(hasPermission())
+                requestPermission(this);
+        }
+    }
+
+    @Override
+    public void onPermissionResult(boolean result){
+        if(result) {
+            Coordinates location;
+            location = (Coordinates) getSupportFragmentManager().findFragmentById(R.id.coordinates);
+            CustomMapFragment map;
+            map = (CustomMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+
+            //notifies the fragments about the permission update, so that it will track location data
+            location.onPermissionResult(true);
+            map.onPermissionResult(true);
         }
     }
     // End menu stuff
