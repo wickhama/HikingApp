@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<gpx version="Moore's Meadow" creator="Enjoy many recreation opportunities all year round. Moore's Meadow has over 5 kilometres of networking trails. Enjoy and be careful of wildlife." xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+<gpx version="1.1" creator="ArcTrails" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+<extensions>
+  <name>Moore's Meadow</name>
+  <desc>Enjoy many recreation opportunities all year round. Moore's Meadow has over 5 kilometres of networking trails. Enjoy and be careful of wildlife.</desc>
+</extensions>
 <wpt lat="53.9339693" lon="-122.8195723">
   <name>Foothills Blvd, Prince George, BC V2M, Canada</name>
   <sym>images/icon-1.png</sym>

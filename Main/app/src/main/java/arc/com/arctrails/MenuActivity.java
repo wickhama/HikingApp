@@ -1,11 +1,9 @@
 package arc.com.arctrails;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -17,19 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ToggleButton;
-
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import org.alternativevision.gpx.beans.GPX;
-
-import java.io.File;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -103,17 +89,17 @@ public class MenuActivity extends AppCompatActivity
 
         //checks if this is the first time the app has been run
         SharedPreferences wmbPreference = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean isFirstRun = wmbPreference.getBoolean(PREFERENCE_FIRST_RUN, true);
-        if (isFirstRun)
-        {
-            // Code to run once
-            SharedPreferences.Editor editor = wmbPreference.edit();
-            editor.putBoolean(PREFERENCE_FIRST_RUN, false);
-            editor.apply();
-
-            //Adds Files into phone storage - aw
-            initAssets.initAssets(this);
-        }
+//        boolean isFirstRun = wmbPreference.getBoolean(PREFERENCE_FIRST_RUN, true);
+//        if (isFirstRun)
+//        {
+//            // Code to run once
+//            SharedPreferences.Editor editor = wmbPreference.edit();
+//            editor.putBoolean(PREFERENCE_FIRST_RUN, false);
+//            editor.apply();
+//
+//            //Adds Files into phone storage - aw
+//            initAssets.initAssets(this);
+//        }
 
         mListeners = new HashSet<>();
 
@@ -218,7 +204,7 @@ public class MenuActivity extends AppCompatActivity
             {
                 //filename sent back through intent
                 String fileName = data.getStringExtra(TrailDataActivity.EXTRA_FILE_NAME);
-                GPX trail = GPXFile.getGPX(fileName,this);
+                Trail trail = GPXFile.getGPX(fileName,this);
                 //draw the trail
                 CustomMapFragment map = (CustomMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
                 map.makeTrail(trail);

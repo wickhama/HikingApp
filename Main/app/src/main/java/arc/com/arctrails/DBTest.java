@@ -64,7 +64,7 @@ public class DBTest extends AppCompatActivity {
 
 
                 for(DataSnapshot ds : dataSnapshot.getChildren()){
-                    String trail = ds.child("description").getValue(String.class);
+                    String trail = ds.getKey();//ds.child("description").getValue(String.class);
                     trailList.add(trail);
                 }
 
@@ -80,7 +80,30 @@ public class DBTest extends AppCompatActivity {
         };
 
         ref.addListenerForSingleValueEvent(eventListener);
+    }
 
+    public void getTrail(final String trailID, final DatabaseListener DBlistener){
+        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference ref = rootRef.child("Trails");
+
+        ValueEventListener eventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                DBlistener.onDataTrail(dataSnapshot.child(trailID).getValue(Trail.class));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+
+        ref.addListenerForSingleValueEvent(eventListener);
+    }
+
+    public void uploadTrail(String trailID, Trail trail){
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference.child("Trails").child(trailID).setValue(trail);
     }
 
     /**

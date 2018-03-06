@@ -83,6 +83,13 @@ public class DatabaseFileActivity extends AppCompatActivity
         buildMenu(entryIDs);
     }
 
+    @Override
+    public void onDataTrail(Trail trail){
+        GPXFile.writeGPXFile(trail,this);
+        Snackbar.make(findViewById(R.id.db_content_view), "Downloaded "+trail.getName(), Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+    }
+
     /**
      * Created by Ryley
      * added for increment 2
@@ -120,7 +127,8 @@ public class DatabaseFileActivity extends AppCompatActivity
         //find the index of the selected file
         int id = item.getItemId();
 
-        Snackbar.make(findViewById(R.id.db_content_view), mTrailIDs.get(id), Snackbar.LENGTH_LONG)
+        trailDB.getTrail(mTrailIDs.get(id), this);
+        Snackbar.make(findViewById(R.id.db_content_view), "Downloading Trail", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
 
         return true;

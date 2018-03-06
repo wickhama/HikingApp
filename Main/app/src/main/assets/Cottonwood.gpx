@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<gpx version="Cottonwood" creator="Cottonwood exists of winding trails along the river, where you can view the historical vertical-lift rail bridge." xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+<gpx version="1.1" creator="ArcTrails" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+<extensions>
+  <name>Cottonwood</name>
+  <desc>Cottonwood exists of winding trails along the river, where you can view the historical vertical-lift rail bridge.</desc>
+</extensions>
 <wpt lat="53.918754" lon="-122.7246299">
   <name>Cottonwood Trail, Prince George, BC V2L 5S8, Canada</name>
   <sym>images/icon-2.png</sym>

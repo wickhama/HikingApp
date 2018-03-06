@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<gpx version="Forest For the World" creator="Established in 1986, Forest for the World has 106 hectares of forest with 15(8.5 mi) kilometres of hiking trails. Thousands of spruce, pne, and Douglas fir trees have been planted over the years.
-Some areas are left untouched for regeneration. The extensive trail system is sutiable for all ages and abilites. Some sections are wheelchair and baby stroller friendly.
-Shane lake contains stoked trout and a dock for fishing. There are picnic tables, a shelter, a BBQ pit, fire pits, pit toilets, and a viewing platform." xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+<gpx version="1.1" creator="ArcTrails" xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+<extensions>
+  <name>Forest For the World</name>
+  <desc>Established in 1986, Forest for the World has 106 hectares of forest with 15(8.5 mi) kilometres of hiking trails. Thousands of spruce, pne, and Douglas fir trees have been planted over the years.
+        Some areas are left untouched for regeneration. The extensive trail system is sutiable for all ages and abilites. Some sections are wheelchair and baby stroller friendly.
+        Shane lake contains stoked trout and a dock for fishing. There are picnic tables, a shelter, a BBQ pit, fire pits, pit toilets, and a viewing platform.</desc>
+</extensions>
 <wpt lat="53.8953609" lon="-122.8319944">
   <name>2323 Kueng Rd, Prince George, BC V2M 7C5, Canada</name>
   <sym>images/icon-2.png</sym>

@@ -20,11 +20,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import org.alternativevision.gpx.beans.GPX;
-import org.alternativevision.gpx.beans.Track;
-import org.alternativevision.gpx.beans.Waypoint;
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.List;
 
 /**
  * Created by Caleigh
@@ -263,7 +259,7 @@ public class CustomMapFragment extends SupportMapFragment implements
      * Draw a polyline path from an arrayList of waypoints and update camera to the start of the
      * trail. To make it more nature-esque, I coloured the path a custom green colour.
      */
-    private void drawPath(ArrayList<Waypoint> points) {
+    private void drawPath(List<Trail.Waypoint> points) {
         PolylineOptions polylineOptions = new PolylineOptions();
         int len = points.size();
         for (int i=0; i<len; ++i) {
@@ -295,7 +291,7 @@ public class CustomMapFragment extends SupportMapFragment implements
      *
      * Clears previous trails from the map before adding a new GPX
      */
-    public void makeTrail(GPX trail) {
+    public void makeTrail(Trail trail) {
         //null trails are not allowed
         if(trail == null)
             return;
@@ -303,12 +299,12 @@ public class CustomMapFragment extends SupportMapFragment implements
         //remove the previous trail, but don't bother moving the camera back to the user
         clearTrail(false);
 
-        HashSet<Track> tracks = trail.getTracks();
-        HashSet<Waypoint> points;
+        List<Trail.Track> tracks = trail.getTracks();
+        List<Trail.Waypoint> points;
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         // Check added to make sure there's at least 1 waypoint, added by Ayla
         if((points = trail.getWaypoints()) != null && !points.isEmpty()) {
-            for (Waypoint w : points) {
+            for (Trail.Waypoint w : points) {
                 LatLng wLatLng = new LatLng(w.getLatitude(), w.getLongitude());
                 builder.include(wLatLng);
                 mMap.addMarker(new MarkerOptions().position(wLatLng));
@@ -321,7 +317,7 @@ public class CustomMapFragment extends SupportMapFragment implements
             LatLng zLatLng = new LatLng(tracks.iterator().next().getTrackPoints().get(0).getLatitude(),tracks.iterator().next().getTrackPoints().get(0).getLongitude());
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(zLatLng, 15));
         }
-        for (Track t : tracks) {
+        for (Trail.Track t : tracks) {
             drawPath(t.getTrackPoints());
         }
     }

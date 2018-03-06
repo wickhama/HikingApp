@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -141,7 +140,7 @@ public class RecordingActivity extends AppCompatActivity
                         //get the location data that was recorded
                         recordedData = location.stopRecord();
                         //if they actually did record data...
-                        if(recordedData.size()>0) {
+                        if(recordedData.size()>1) {
                             //get other GPX file information
                             Intent intent = new Intent(RecordingActivity.this, NewTrailActivity.class);
                             //starts an activity with the NEW TRAIL result code
@@ -169,11 +168,53 @@ public class RecordingActivity extends AppCompatActivity
                 String name = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_NAME);
                 String description = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_DESCRIPTION);
                 //make sure there's actually recorded data
-                if (recordedData != null)
-                    GPXFile.writeGPXFile(name, description, recordedData, getApplicationContext());
+                if (recordedData != null) {
+                    Trail trail = buildTrailFromData(name, description, recordedData);
+                    GPXFile.writeGPXFile(trail, getApplicationContext());
+                }
                 recordedData = null;
             }
         }
+    }
+
+    private Trail buildTrailFromData(String name, String description, ArrayList<Double[]> data){
+        Trail trail = new Trail();
+        trail.setName(name);
+        trail.setDescription(description);
+
+        Trail.Waypoint w;
+        Trail.Track t;
+        ArrayList<Trail.Track> tracks = new ArrayList<>();
+        ArrayList<Trail.Waypoint> track = new ArrayList<>();
+        for(Double[] loc : data)
+        {
+            w = new Trail.Waypoint();
+            w.setLatitude(loc[0]);
+            w.setLongitude(loc[1]);
+            track.add(w);
+        }
+        t = new Trail.Track();
+        t.setTrackPoints(track);
+        tracks.add(t);
+
+        ArrayList<Trail.Waypoint> waypoints = new ArrayList<>();
+        w = new Trail.Waypoint();
+        w.setWaypointName("Start");
+        w.setLatitude(data.get(0)[0]);
+        w.setLongitude(data.get(0)[1]);
+        waypoints.add(w);
+        w = new Trail.Waypoint();
+        w.setWaypointName("End");
+        w.setLatitude(data.get(data.size()-1)[0]);
+        w.setLongitude(data.get(data.size()-1)[1]);
+        waypoints.add(w);
+
+        trail.setName(name);
+        trail.setDescription(description);
+        trail.setTracks(tracks);
+        trail.setWaypoints(waypoints);
+
+        return trail;
     }
 
     // Permissions
