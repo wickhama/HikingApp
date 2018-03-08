@@ -20,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.String.format;
@@ -125,7 +126,7 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
     /**Created by Ayla Wickham Increment 3
      * Stops recording and returns an ArrayList<Double[]> of points.
      */
-    public List<Location> stopRecord() {
+    public ArrayList<Double[]> stopRecord() {
         if(service_bounded) {
             return trackingService.stop_Recording();
         }
