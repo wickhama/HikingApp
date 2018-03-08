@@ -3,6 +3,7 @@ package arc.com.arctrails;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,7 +11,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import org.alternativevision.gpx.beans.GPX;
-import org.alternativevision.gpx.beans.Track;
 
 import java.io.File;
 
@@ -37,10 +37,14 @@ public class TrailDataActivity extends AppCompatActivity {
     //the user deleted this file
     public static final int RESULT_DELETE= 2;
 
-    //an ID for sending filenames between activities
+
+    //extras
+    //A tag for the file name sent to TrailDataActivity
     public static final String EXTRA_FILE_NAME = "arc.com.arctrails.filename";
     //the name of the file the data is coming from
     private String fileName;
+    //the trail information is being displayed from
+    private Trail trail;
 
     /**
      * Created by Ryley
@@ -69,8 +73,10 @@ public class TrailDataActivity extends AppCompatActivity {
             }
         });
         //build the display
-        fileName = getIntent().getStringExtra(MenuActivity.EXTRA_FILE_NAME);
-        setInfo(fileName);
+        fileName = getIntent().getStringExtra(EXTRA_FILE_NAME);
+        //read the GPX file into an object
+        trail = GPXFile.getGPX(fileName,this);
+        setInfo(trail);
     }
 
     /**
@@ -83,11 +89,8 @@ public class TrailDataActivity extends AppCompatActivity {
      *
      * Modified to get the name and description from the creator and version respectively
      */
-    private void setInfo(String fileName)
+    private void setInfo(Trail trail)
     {
-        //read the GPX file into an object
-        GPX trail = GPXFile.getGPX(fileName,this);
-
         TextView nameView = findViewById(R.id.TrailName);
         TextView descriptionView = findViewById(R.id.Description);
 
@@ -132,8 +135,8 @@ public class TrailDataActivity extends AppCompatActivity {
         else {
             //Info for preset trails are stored in gpx Version and Creator as
             //GPX Parser does not allow access to any other fields
-            String name = trail.getVersion();
-            String description = trail.getCreator();
+            String name = trail.getName();
+            String description = trail.getDescription();
 
             nameView.setText(name);
             descriptionView.setText(description);
@@ -177,6 +180,14 @@ public class TrailDataActivity extends AppCompatActivity {
                     finish();
                 }
             });
+    }
+
+    public void onUploadPressed(View view)
+    {
+        DBTest database = new DBTest();
+        database.uploadTrail(trail.getName(), trail);
+        Snackbar.make(findViewById(R.id.trail_data_layout), "Uploading Trail", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
     }
 
     /**

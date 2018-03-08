@@ -3,7 +3,11 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MenuTest.iml" filepath="$PROJECT_DIR$/MenuTest.iml" />
+      <module fileurl="file://C:\Users\MSi Reece\Documents\UNBC Classes\CPSC499\Hiking\Tests\MenuTest\MenuTest.iml" filepath="C:\Users\MSi Reece\Documents\UNBC Classes\CPSC499\Hiking\Tests\MenuTest\MenuTest.iml" />
+      <module fileurl="file://C:\Users\ryley_000\Documents\GitHub\HikingApp\Tests\MenuTest\MenuTest.iml" filepath="C:\Users\ryley_000\Documents\GitHub\HikingApp\Tests\MenuTest\MenuTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\ryley_000\Documents\GitHub\HikingApp\Tests\MenuTest\app\app.iml" filepath="C:\Users\ryley_000\Documents\GitHub\HikingApp\Tests\MenuTest\app\app.iml" />
+      <module fileurl="file://C:\Users\MSi Reece\Documents\UNBC Classes\CPSC499\Hiking\Tests\MenuTest\app\app.iml" filepath="C:\Users\MSi Reece\Documents\UNBC Classes\CPSC499\Hiking\Tests\MenuTest\app\app.iml" />
     </modules>
   </component>
 </project>

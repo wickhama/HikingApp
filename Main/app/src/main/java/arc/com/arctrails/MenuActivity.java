@@ -1,6 +1,5 @@
 package arc.com.arctrails;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -16,13 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
-
-import org.alternativevision.gpx.beans.GPX;
-
-import java.io.File;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -54,37 +47,23 @@ import java.util.Set;
  */
 public class MenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-                    LocationPermissionListener, LocationRequestListener{
+        LocationRequestListener, LocationPermissionListener{
 
     //Identifies the type of permission requests to identify which ones were granted
     //although we only need need fine location for this specific case
     public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 99;
 
-    //Identifies message types when the dropdown menu is clicked
-    public static final int MENU_START_RECORD = 0;
-    public static final int MENU_STOP_RECORD = 1;
-    public static final int MENU_CLEAR = 2;
-
     //identifies the result source when a child activity finishes
-    //ID for TrailDataActivity results
-    public static final int DATA_REQUEST_CODE = 0;
-    //ID for NewTrailActivity results
-    public static final int NEW_TRAIL_REQUEST_CODE = 1;
+    public static final int LOAD_LOCAL_FILE_CODE = 0;
+    public static final int DATABASE_FILE_CODE = 1;
+    public static final int RECORD_TRAIL_CODE = 2;
 
-    //A tag for the file name sent to TrailDataActivity
-    public static final String EXTRA_FILE_NAME = "arc.com.arctrails.filename";
     //A tag for the preference property recording if the app has been opened before
     //This is used so that assets only get saved to the phone the first time the app is run
     public static final String PREFERENCE_FIRST_RUN = "arc.com.arctrails.firstrun";
 
     //keeps a track of the listeners waiting for permissions
     private Set<LocationPermissionListener> mListeners;
-    //a list of files currently displayed in the menu
-    private ArrayList<File> mTrailFiles;
-    //flag for whether the user is currently recording. used to change menu behaviour
-    private boolean isRecording;
-    //the data recorded in the user's most recent trail
-    private ArrayList<Double[]> recordedData = null;
 
     /**
      * Created by Ryley, modified by Ayla, Caleigh
@@ -110,21 +89,19 @@ public class MenuActivity extends AppCompatActivity
 
         //checks if this is the first time the app has been run
         SharedPreferences wmbPreference = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean isFirstRun = wmbPreference.getBoolean(PREFERENCE_FIRST_RUN, true);
-        if (isFirstRun)
-        {
-            // Code to run once
-            SharedPreferences.Editor editor = wmbPreference.edit();
-            editor.putBoolean(PREFERENCE_FIRST_RUN, false);
-            editor.apply();
-
-            //Adds Files into phone storage - aw
-            initAssets.initAssets(this);
-        }
+//        boolean isFirstRun = wmbPreference.getBoolean(PREFERENCE_FIRST_RUN, true);
+//        if (isFirstRun)
+//        {
+//            // Code to run once
+//            SharedPreferences.Editor editor = wmbPreference.edit();
+//            editor.putBoolean(PREFERENCE_FIRST_RUN, false);
+//            editor.apply();
+//
+//            //Adds Files into phone storage - aw
+//            initAssets.initAssets(this);
+//        }
 
         mListeners = new HashSet<>();
-        mTrailFiles = new ArrayList<>();
-        isRecording = false;
 
         //loads the layout
         setContentView(R.layout.activity_menu);
@@ -140,8 +117,7 @@ public class MenuActivity extends AppCompatActivity
         //Has this activity listen for menu events
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        //loads the initial state of the side menu
-        buildSideMenu();
+
     }
 
     // The following section is for the menu
@@ -165,159 +141,6 @@ public class MenuActivity extends AppCompatActivity
 
     /**
      * Created by Ryley
-     * added for increment 3
-     *
-     * When the options drop-down menu is selected, builds the contents.
-     * Adds Start/Stop recording depending on whether the user is already recording
-     */
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.clear();
-
-        //add a menu item to start/stop recording
-        if(!isRecording)
-            menu.add(Menu.NONE,MENU_START_RECORD,Menu.NONE,"Start Recording");
-        else
-            menu.add(Menu.NONE,MENU_STOP_RECORD,Menu.NONE,"Stop Recording");
-        //add a menu item to clear the map
-        menu.add(Menu.NONE, MENU_CLEAR,Menu.NONE,"Clear Map");
-        getMenuInflater().inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    /**
-     * Created by Ryley
-     * added for increment 3
-     *
-     * Called when the user selects on option from the drop down menu
-     */
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        //depending on which button they clicked
-        switch (id){
-            case MENU_START_RECORD:
-                //checks for location permissions, and starts recording if they're enabled
-                requestPermission(this);
-                return true;
-            case MENU_STOP_RECORD:
-                //asks the user if they're sure they want to stop recording
-                tryStopRecording();
-                return true;
-            case MENU_CLEAR:
-                //clear existing trails from the map and center on the current location
-                CustomMapFragment map = (CustomMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-                map.clearTrail(true);
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * Created by Ryley
-     * added for increment 3
-     *
-     * The only time the menu needs to check for permission is to begin recording a trail
-     *
-     * Bugfix:
-     *  The coordinates and map would not be alerted to the new permissions if they were added
-     *  this way, and the fragment would not begin recording properly. Now, the fragments are
-     *  notified of the permission update.
-     */
-    @Override
-    public void onPermissionResult(boolean result){
-        if(result) {
-            Coordinates location;
-            location = (Coordinates) getSupportFragmentManager().findFragmentById(R.id.coordinates);
-            CustomMapFragment map;
-            map = (CustomMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-
-            //notifies the fragments about the permission update, so that it will track location data
-            location.onPermissionResult(true);
-            map.onPermissionResult(true);
-            //then tells the coordinate fragment to record
-            location.record();
-
-            isRecording = true;
-        }
-    }
-
-    /**
-     * Created by Ryley
-     * added for increment 3
-     *
-     * Make sure the user did not press the button by accident before they stop recording.
-     * If they did mean to stop, gets name and description info
-     */
-    private void tryStopRecording()
-    {
-        AlertUtils.showConfirm(this,"Finish Recording", "Are you sure you want to finish this trail?",
-            new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    //if the user wants to stop recording...
-                    Coordinates location = (Coordinates) getSupportFragmentManager()
-                            .findFragmentById(R.id.coordinates);
-                    //get the location data that was recorded
-                    recordedData = location.stopRecord();
-                    //if they actually did record data...
-                    if(recordedData.size()>0) {
-                        //get other GPX file information
-                        Intent intent = new Intent(MenuActivity.this, NewTrailActivity.class);
-                        //starts an activity with the NEW TRAIL result code
-                        startActivityForResult(intent, NEW_TRAIL_REQUEST_CODE);
-                    }
-                    else{
-                        //otherwise don't bother saving an empty file
-                        dialog.dismiss();
-                        AlertUtils.showAlert(MenuActivity.this,
-                                "Empty trail",
-                                "No location data was recorded.\n"
-                                +"Most likely, user has not moved.");
-                    }
-                    //make sure the menu changes
-                    isRecording = false;
-                }
-            });
-    }
-
-    /**
-     * Created by Ryley
-     * added for increment 2
-     *
-     * Updates the side menu to include all GPX files saved on the device
-     */
-    public void buildSideMenu()
-    {
-        NavigationView navView = findViewById(R.id.nav_view);
-        Menu menu = navView.getMenu();
-
-        //remove all previous menu options
-        menu.clear();
-        //empty the list of files
-        mTrailFiles.clear();
-        //get the app's directory on the phone
-        File dir = getExternalFilesDir(null);
-        if (dir != null) {
-            for(File trailFile: dir.listFiles())
-            {
-                //separate the file name from the file extension
-                String[] tokens = trailFile.getName().split("\\.");
-                //only display GPX files in the menu
-                if(tokens.length >= 2 && tokens[tokens.length-1].equals("gpx")) {
-                    //when a user clicks a file, we only get an int ID in the callback
-                    //so we add the file to an array, and use the index as the ID
-                    int id = mTrailFiles.size();
-                    menu.add(R.id.nav_group, id, Menu.NONE, tokens[0]).setCheckable(true);
-                    mTrailFiles.add(trailFile);
-                }
-            }
-        }
-    }
-
-    /**
-     * Created by Ryley
      * added for increment 2
      *
      * When the user selects a file from the side menu,
@@ -325,19 +148,35 @@ public class MenuActivity extends AppCompatActivity
      */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        //find the index of the selected file
+        //closes the menu
         int id = item.getItemId();
 
-        File trailFile = mTrailFiles.get(id);
-        Intent intent = new Intent(this, TrailDataActivity.class);
-        //tell the activity which file to use. sending the file name as an extra is preferable
-        //to sending the file itself as the file would have to be serialized and deserialized
-        //in the other activity, which is an expensive process
-        intent.putExtra(EXTRA_FILE_NAME, trailFile.getName());
-        //starts the activity with the DATA_REQUEST result code
-        startActivityForResult(intent,DATA_REQUEST_CODE);
-        //closes the menu
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        if (id == R.id.nav_load) {
+            //allows a user to select a file
+            Intent intent = new Intent(this, LocalFileActivity.class);
+            //starts the activity with the LOAD_LOCAL_FILE_CODE result code
+            startActivityForResult(intent, LOAD_LOCAL_FILE_CODE);
+        } else if (id == R.id.nav_database) {
+            //allows a user to download files
+            Intent intent = new Intent(this, DatabaseFileActivity.class);
+            //starts the activity with the LOAD_LOCAL_FILE_CODE result code
+            startActivityForResult(intent, DATABASE_FILE_CODE);
+        } else if (id == R.id.nav_clear) {
+            //clear existing trails from the map and center on the current location
+            CustomMapFragment map = (CustomMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+            map.clearTrail(true);
+        } else if (id == R.id.nav_record) {
+            //allows a user to download files
+            Intent intent = new Intent(this, RecordingActivity.class);
+            //starts the activity with the LOAD_LOCAL_FILE_CODE result code
+            startActivityForResult(intent, RECORD_TRAIL_CODE);
+        } else if (id == R.id.nav_edit) {
+
+        } else if (id == R.id.nav_settings) {
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -358,36 +197,42 @@ public class MenuActivity extends AppCompatActivity
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        if(requestCode == NEW_TRAIL_REQUEST_CODE)
-        {
-            if(resultCode == NewTrailActivity.RESULT_SAVE)
-            {
-                //the activity sends the information back through the intent
-                String name = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_NAME);
-                String description = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_DESCRIPTION);
-                //make sure there's actually recorded data
-                if(recordedData != null)
-                    GPXFile.writeGPXFile(name,description,recordedData,getApplicationContext());
-                recordedData = null;
-                //repopulate the menu
-                buildSideMenu();
-            }
-        }
-        else if(requestCode == DATA_REQUEST_CODE)
+        if(requestCode == LOAD_LOCAL_FILE_CODE)
         {
             //if the trail was started, alert the map
             if(resultCode == TrailDataActivity.RESULT_START)
             {
                 //filename sent back through intent
                 String fileName = data.getStringExtra(TrailDataActivity.EXTRA_FILE_NAME);
-                GPX trail = GPXFile.getGPX(fileName,this);
+                Trail trail = GPXFile.getGPX(fileName,this);
                 //draw the trail
                 CustomMapFragment map = (CustomMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
                 map.makeTrail(trail);
             }
-            //if a file was deleted, repopulate the menu
-            if(resultCode == TrailDataActivity.RESULT_DELETE)
-                buildSideMenu();
+        }
+        else if(requestCode == DATABASE_FILE_CODE)
+        {
+
+        }
+        else if(requestCode == RECORD_TRAIL_CODE)
+        {
+            //if the user enabled permissions while in the recording activity
+            if(hasPermission())
+                requestPermission(this);
+        }
+    }
+
+    @Override
+    public void onPermissionResult(boolean result){
+        if(result) {
+            Coordinates location;
+            location = (Coordinates) getSupportFragmentManager().findFragmentById(R.id.coordinates);
+            CustomMapFragment map;
+            map = (CustomMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+
+            //notifies the fragments about the permission update, so that it will track location data
+            location.onPermissionResult(true);
+            map.onPermissionResult(true);
         }
     }
     // End menu stuff

@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<gpx version="Fort George Canyon" creator="Visit this Historical trail. Until 1914 the river was the highway in and out of this region. The canyon was one of the obstacles that sternwheelers had to navigate. Enjoy 4.8 kilometres of trail to a significant and historical area."
+<gpx version="1.1" creator="ArcTrails"
     xmlns="http://www.topografix.com/GPX/1/1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">
+<extensions>
+  <name>Fort George Canyon</name>
+  <desc>Visit this Historical trail. Until 1914 the river was the highway in and out of this region. The canyon was one of the obstacles that sternwheelers had to navigate. Enjoy 4.8 kilometres of trail to a significant and historical area.</desc>
+</extensions>
 <wpt lat="53.6841365" lon="-122.773127">
   <name>Fort George Canyon Trail, Prince George, BC V2N 6H6, Canada</name>
   <sym>images/icon-1.png</sym>

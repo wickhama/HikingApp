@@ -9,6 +9,7 @@
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -26,6 +27,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <!--
             Added this meta-data to call the gradle scripts I added. I followed a turorial online to do so. Feel free
@@ -58,6 +60,42 @@
         <service
             android:name=".Tracking"
             android:exported="false"/>
+
+        <activity android:name=".DBTest">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+        <activity
+            android:name=".LocalFileActivity"
+            android:label="@string/title_activity_local_file"
+            android:parentActivityName=".MenuActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="arc.com.arctrails.MenuActivity" />
+        </activity>
+        <activity
+            android:name=".DatabaseFileActivity"
+            android:label="@string/title_activity_database_file"
+            android:parentActivityName=".MenuActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="arc.com.arctrails.MenuActivity" />
+        </activity>
+        <activity
+            android:name=".RecordingActivity"
+            android:label="@string/title_activity_recording"
+            android:parentActivityName=".MenuActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="arc.com.arctrails.MenuActivity" />
+        </activity>
+        <activity android:name=".listActivityTemp"></activity>
     </application>
 
 </manifest>

@@ -6,6 +6,10 @@ import org.alternativevision.gpx.GPXParser;
 import org.alternativevision.gpx.beans.GPX;
 import org.alternativevision.gpx.beans.Track;
 import org.alternativevision.gpx.beans.Waypoint;
+import org.alternativevision.gpx.extensions.DummyExtensionParser;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import java.io.File;
@@ -29,21 +33,181 @@ import javax.xml.transform.TransformerException;
 
 class GPXFile {
 
-    private static GPXParser gpxParser = new GPXParser();
+    private static String   TRAIL_EXTENSION = "trail",
+            TRAIL_NAME = "name",
+            TRAIL_DESCRIPTION = "desc",
+            TRAIL_LOCATION = "location",
+            TRAIL_DIFFICULTY = "difficulty",
+            TRAIL_NOTES = "notes";
+
+    private static GPXParser gpxParser;
+
+    private static void buildParser(){
+        gpxParser = new GPXParser();
+        gpxParser.addExtensionParser(new DummyExtensionParser(){
+            @Override
+            public String getId(){
+                return TRAIL_EXTENSION;
+            }
+
+            @Override
+            public Object parseGPXExtension(Node node){
+                Trail trail = new Trail();
+
+                NodeList childNodes = node.getChildNodes();
+                Node currentNode;
+                if(childNodes != null){
+                    for(int i = 0; i < childNodes.getLength(); i++){
+                        currentNode = childNodes.item(i);
+                        if(TRAIL_NAME.equals(currentNode.getNodeName())){
+                            trail.setName(currentNode.getFirstChild().getNodeValue());
+                        }
+                        if(TRAIL_DESCRIPTION.equals(currentNode.getNodeName())){
+                            trail.setDescription(currentNode.getFirstChild().getNodeValue());
+                        }
+                        if(TRAIL_LOCATION.equals(currentNode.getNodeName())){
+                            trail.setLocation(currentNode.getFirstChild().getNodeValue());
+                        }
+                        if(TRAIL_DIFFICULTY.equals(currentNode.getNodeName())){
+                            trail.setDifficulty(currentNode.getFirstChild().getNodeValue());
+                        }
+                        if(TRAIL_NOTES.equals(currentNode.getNodeName())){
+                            trail.setNotes(currentNode.getFirstChild().getNodeValue());
+                        }
+                    }
+                }
+                return trail;
+            }
+
+            @Override
+            public void writeGPXExtensionData(Node extensionNode, GPX gpx, Document doc){
+                Trail trail = (Trail)gpx.getExtensionData(TRAIL_EXTENSION);
+                Node node;
+
+                if(trail.getName() != null) {
+                    node = doc.createElement(TRAIL_NAME);
+                    node.appendChild(doc.createTextNode(trail.getName()));
+                    extensionNode.appendChild(node);
+                }
+                if(trail.getDescription() != null) {
+                    node = doc.createElement(TRAIL_DESCRIPTION);
+                    node.appendChild(doc.createTextNode(trail.getDescription()));
+                    extensionNode.appendChild(node);
+                }
+                if(trail.getLocation() != null) {
+                    node = doc.createElement(TRAIL_LOCATION);
+                    node.appendChild(doc.createTextNode(trail.getLocation()));
+                    extensionNode.appendChild(node);
+                }
+                if(trail.getDifficulty() != null) {
+                    node = doc.createElement(TRAIL_DIFFICULTY);
+                    node.appendChild(doc.createTextNode(trail.getDifficulty()));
+                    extensionNode.appendChild(node);
+                }
+                if(trail.getNotes() != null) {
+                    node = doc.createElement(TRAIL_NOTES);
+                    node.appendChild(doc.createTextNode(trail.getNotes()));
+                    extensionNode.appendChild(node);
+                }
+            }
+        });
+    }
+
+    private static Trail parseGPXtoTrail(GPX gpx){
+        Trail trail = (Trail)gpx.getExtensionData(TRAIL_EXTENSION);
+        ArrayList<Trail.Waypoint> waypoints = new ArrayList<>();
+        ArrayList<Trail.Track> tracks = new ArrayList<>();
+        ArrayList<Trail.Waypoint> trackPoints;
+        Trail.Waypoint waypoint;
+        Trail.Track track;
+
+        if(gpx.getWaypoints() != null) {
+            for (Waypoint w : gpx.getWaypoints()) {
+                waypoint = new Trail.Waypoint();
+                waypoint.setWaypointName(w.getName());
+                waypoint.setLatitude(w.getLatitude());
+                waypoint.setLongitude(w.getLongitude());
+                waypoints.add(waypoint);
+            }
+        }
+        if(gpx.getTracks() != null) {
+            for (Track t : gpx.getTracks()) {
+                track = new Trail.Track();
+                trackPoints = new ArrayList<>();
+
+                for (Waypoint w : t.getTrackPoints()) {
+                    waypoint = new Trail.Waypoint();
+                    waypoint.setWaypointName(w.getName());
+                    waypoint.setLatitude(w.getLatitude());
+                    waypoint.setLongitude(w.getLongitude());
+                    trackPoints.add(waypoint);
+                }
+                track.setTrackPoints(trackPoints);
+                tracks.add(track);
+            }
+        }
+        trail.setWaypoints(waypoints);
+        trail.setTracks(tracks);
+
+        return trail;
+    }
+
+    private static GPX parseTrailtoGPX(Trail trail)
+    {
+        GPX gpx = new GPX();
+        Waypoint waypoint;
+        Track track;
+        ArrayList<Waypoint> trackPoints;
+
+        gpx.setVersion("1.1");
+        gpx.setCreator("ArcTrails");
+        gpx.addExtensionData(TRAIL_EXTENSION, trail);
+        if(trail.getWaypoints() != null) {
+            for (Trail.Waypoint w : trail.getWaypoints()) {
+                waypoint = new Waypoint();
+                waypoint.setName(w.getWaypointName());
+                waypoint.setLatitude(w.getLatitude());
+                waypoint.setLongitude(w.getLongitude());
+                gpx.addWaypoint(waypoint);
+            }
+        }
+        if(trail.getTracks() != null) {
+            for (Trail.Track t : trail.getTracks()) {
+                track = new Track();
+                trackPoints = new ArrayList<>();
+
+                for (Trail.Waypoint w : t.getTrackPoints()) {
+                    waypoint = new Waypoint();
+                    waypoint.setName(w.getWaypointName());
+                    waypoint.setLatitude(w.getLatitude());
+                    waypoint.setLongitude(w.getLongitude());
+                    trackPoints.add(waypoint);
+                }
+                track.setTrackPoints(trackPoints);
+                gpx.addTrack(track);
+            }
+        }
+
+        return gpx;
+    }
 
     /**Created by Ayla Wickham for Increment 2
      * Returns the GPX object from the file parsed from the given file name
      *
      * Modified by Ryley to alert user to exceptions - *hopefully* never actually gets seen
      */
-    static GPX getGPX(String filename, Context context) {
+    static Trail getGPX(String filename, Context context) {
+        if(gpxParser == null)
+            buildParser();
+
         FileInputStream in = null;
 
         File file = new File(context.getExternalFilesDir(null), filename);
         try {
             in = new FileInputStream(file);
             if(in != null) {
-                return gpxParser.parseGPX(in);
+                GPX gpxData = gpxParser.parseGPX(in);
+                return parseGPXtoTrail(gpxData);
             }
         } catch(FileNotFoundException e) {
             AlertUtils.showAlert(context,"File not found","Please notify the developers.");
@@ -64,36 +228,17 @@ class GPXFile {
      *
      * Modified by Ryley to alert user to exceptions - *hopefully* never actually gets seen
      */
-    static void  writeGPXFile(String trackName, String description, ArrayList<Double[]> trackPoints, Context context) {
-        //convert pairs of doubles to GPX waypoints
-        ArrayList<Waypoint> waypoints = new ArrayList<>();
-        for(Double[] list : trackPoints) {
-            Waypoint point = new Waypoint();
-            point.setLatitude(list[0]);
-            point.setLongitude(list[1]);
-            waypoints.add(point);
-        }
-        //builds the track out of the waypoints
-        Track track = new Track();
-        track.setTrackPoints(waypoints);
+    static void  writeGPXFile(Trail trail, Context context) {
+        if(gpxParser == null)
+            buildParser();
+
+        GPX gpx = parseTrailtoGPX(trail);
+
         //create a new file with the given name
-        File file = new File(context.getExternalFilesDir(null), trackName+".gpx");
+        File file = new File(context.getExternalFilesDir(null), trail.getName()+".gpx");
         FileOutputStream out;
         try {
             out = new FileOutputStream(file);
-            //create a GPX object and set the correct data
-            GPX gpx = new GPX();
-            //writes the name and description to the version and the creator fields
-            //because those are the only fields we can access using the GPXParser
-            //that are properties of the GPX file itself, and not a specific path
-            gpx.setVersion(trackName);
-            gpx.setCreator(description);
-            //adds the track
-            gpx.addTrack(track);
-            //adds waypoints for start and finish
-            gpx.addWaypoint(waypoints.get(0));
-            gpx.addWaypoint(waypoints.get(waypoints.size()-1));
-            //writes file
             gpxParser.writeGPX(gpx, out);
         } catch(FileNotFoundException e) {
             AlertUtils.showAlert(context,"File not found","Please notify the developers.");
