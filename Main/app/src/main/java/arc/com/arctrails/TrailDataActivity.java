@@ -10,8 +10,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
-import org.alternativevision.gpx.beans.GPX;
-
 import java.io.File;
 
 /**
@@ -93,6 +91,9 @@ public class TrailDataActivity extends AppCompatActivity {
     {
         TextView nameView = findViewById(R.id.TrailName);
         TextView descriptionView = findViewById(R.id.Description);
+        TextView locationView = findViewById(R.id.Location);
+        TextView difficultyView = findViewById(R.id.Difficulty);
+        TextView notesView = findViewById(R.id.Notes);
 
         //if the file could not be parsed, ask them if they would like to delete
         if(trail == null){
@@ -135,11 +136,12 @@ public class TrailDataActivity extends AppCompatActivity {
         else {
             //Info for preset trails are stored in gpx Version and Creator as
             //GPX Parser does not allow access to any other fields
-            String name = trail.getName();
-            String description = trail.getDescription();
 
-            nameView.setText(name);
-            descriptionView.setText(description);
+            nameView.setText(trail.getName());
+            locationView.setText("Location: "+trail.getLocation());
+            difficultyView.setText("Difficulty: "+trail.getDifficulty());
+            descriptionView.setText(trail.getDescription());
+            notesView.setText(trail.getNotes());
         }
     }
 
@@ -184,10 +186,18 @@ public class TrailDataActivity extends AppCompatActivity {
 
     public void onUploadPressed(View view)
     {
-        DBTest database = new DBTest();
-        database.uploadTrail(trail.getName(), trail);
-        Snackbar.make(findViewById(R.id.trail_data_layout), "Uploading Trail", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
+        AlertUtils.showConfirm(this, "Upload Trail",
+                "Are you sure you want to upload this trail?",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        DBTest database = new DBTest();
+                        database.uploadTrail(trail.getName(), trail);
+                        Snackbar.make(findViewById(R.id.trail_data_layout), "Uploading Trail", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                    }
+                });
     }
 
     /**
