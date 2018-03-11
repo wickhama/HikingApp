@@ -60,7 +60,7 @@ public class Tracking extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         //Asks for permission
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            stopSelf();
+            stopSelf();//TODO: Change to request permission
         }
         flocatClient.requestLocationUpdates(locationRequest, locationCallback, null);
         return START_STICKY;
