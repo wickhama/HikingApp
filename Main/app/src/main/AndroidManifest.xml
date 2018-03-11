@@ -56,7 +56,11 @@
         <activity
             android:name=".NewTrailActivity"
             android:label="@string/title_activity_new_trail"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <service
+            android:name=".Tracking"
+            android:exported="false"/>
+
         <activity android:name=".DBTest">
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN" />-->

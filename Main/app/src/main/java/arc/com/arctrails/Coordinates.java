@@ -2,13 +2,16 @@ package arc.com.arctrails;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -18,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static java.lang.String.format;
 
@@ -38,10 +42,10 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
     private TextView latView, longView;
     //A listener that handles permission requests
     private LocationRequestListener mRequestListener;
-    //A flag for knowing whether to store location data
-    private boolean recording;
-    //A list of recorded data
-    private ArrayList<Double[]> trail = new ArrayList<>();
+    //Service that records trail --Ayla
+    private Tracking trackingService;
+    //Value for if tracking is bounded or not -- Ayla
+    private boolean service_bounded;
 
     /**Created by Ryley Increment 1
      *
@@ -109,17 +113,39 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
      * Only called when user wishes to create a new trail.
      */
     public void record() {
-        trail.clear();
-        recording = true;
+        Intent intent = new Intent(getActivity(), Tracking.class);
+        getActivity().bindService(intent, bindConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    public void pauseRecording() {
+        if(service_bounded) {
+            trackingService.pause_Recording();
+        }
     }
 
     /**Created by Ayla Wickham Increment 3
      * Stops recording and returns an ArrayList<Double[]> of points.
      */
     public ArrayList<Double[]> stopRecord() {
-        recording = false;
-        return trail;
+        if(service_bounded) {
+            return trackingService.stop_Recording();
+        }
+        return null;
     }
+
+    private ServiceConnection bindConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            Tracking.LocalBinder binder = (Tracking.LocalBinder) service;
+            trackingService = binder.getService();
+            service_bounded = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            service_bounded = false;
+        }
+    };
 
     /**Created by Ayla Wickham Increment 1
      *
@@ -140,10 +166,6 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
 
             latView.setText(format("%.5f", lat));
             longView.setText(format("%.5f", lon));
-            if(recording) {
-                Double[] point = {lat, lon};
-                trail.add(point);
-            }
         }
     }
 
@@ -163,4 +185,5 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
         Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
         startActivity(intent);
     }
+
 }
