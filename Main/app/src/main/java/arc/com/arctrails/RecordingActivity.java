@@ -140,7 +140,7 @@ public class RecordingActivity extends AppCompatActivity
                         //get the location data that was recorded
                         recordedData = location.stopRecord();
                         //if they actually did record data...
-                        if(recordedData.size()>1) {
+                        if(!recordedData.isEmpty()) {
                             //get other GPX file information
                             Intent intent = new Intent(RecordingActivity.this, NewTrailActivity.class);
                             //starts an activity with the NEW TRAIL result code

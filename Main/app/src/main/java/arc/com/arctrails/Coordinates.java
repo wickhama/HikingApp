@@ -45,6 +45,7 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
     private Tracking trackingService;
     //Value for if tracking is bounded or not -- Ayla
     private boolean service_bounded;
+    private ArrayList<Double[]> trail = new ArrayList();
 
     /**Created by Ryley Increment 1
      *
@@ -126,10 +127,10 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
      * Stops recording and returns an ArrayList<Double[]> of points.
      */
     public ArrayList<Double[]> stopRecord() {
-        if(service_bounded) {
-            return trackingService.stop_Recording();
-        }
-        return null;
+
+        if((trail=trackingService.stop_Recording()) == null) return new ArrayList();
+        getActivity().unbindService(bindConnection);
+        return trail;
     }
 
     private ServiceConnection bindConnection = new ServiceConnection() {

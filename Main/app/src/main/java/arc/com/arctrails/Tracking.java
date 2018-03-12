@@ -9,8 +9,11 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.util.DebugUtils;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationAvailability;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
@@ -29,25 +32,28 @@ import java.util.List;
 public class Tracking extends Service {
 
     private FusedLocationProviderClient flocatClient;
-    private ArrayList<Double[]> trail = new ArrayList();
+    private ArrayList<Double[]> trail;
     private LocationRequest locationRequest = new LocationRequest();
     private LocationCallback locationCallback;
     private final IBinder locationBinder = new LocalBinder();
 
     @Override
     public void onCreate() {
-        flocatClient = LocationServices.getFusedLocationProviderClient(this);
-        locationRequest.setInterval(10000);
+        trail = new ArrayList();
+        flocatClient = LocationServices.getFusedLocationProviderClient(getApplicationContext());
+        locationRequest.setInterval(1000);
         locationRequest.setFastestInterval(5000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
+                if(locationResult == null) {return;}
                 Double[] point = new Double[2];
                 for(Location location:locationResult.getLocations()) {
                     point[0] = location.getLatitude();
                     point[1] = location.getLongitude();
                     trail.add(point);
+                    Toast.makeText(getApplicationContext(), "Point added: "+ point[0]+", "+point[1],Toast.LENGTH_LONG).show();
                 }
             }
         };
@@ -83,8 +89,11 @@ public class Tracking extends Service {
     Ayla
      */
     public ArrayList<Double[]> stop_Recording() {
-        flocatClient.removeLocationUpdates(locationCallback);
         return trail;
+    }
+
+    public boolean isTrailEmpty() {
+        return trail.isEmpty();
     }
 
     /* Clean up:
@@ -92,13 +101,14 @@ public class Tracking extends Service {
      */
     @Override
     public void onDestroy() {
+        flocatClient.removeLocationUpdates(locationCallback);
         trail.clear();
     }
 
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        return locationBinder;
     }
 
     /* LocalBinder extends Binder to allow us to
