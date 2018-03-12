@@ -192,7 +192,7 @@ public class TrailDataActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        DBTest database = new DBTest();
+                        Database database = new Database();
                         database.uploadTrail(trail.getName(), trail);
                         Snackbar.make(findViewById(R.id.trail_data_layout), "Uploading Trail", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();

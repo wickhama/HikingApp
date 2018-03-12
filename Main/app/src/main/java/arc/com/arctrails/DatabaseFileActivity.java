@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -15,9 +14,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import org.alternativevision.gpx.beans.GPX;
-
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -45,7 +41,7 @@ public class DatabaseFileActivity extends AppCompatActivity
 
     private List<String> mTrailIDs;
 
-    private DBTest trailDB;
+    private Database trailDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,7 +70,7 @@ public class DatabaseFileActivity extends AppCompatActivity
         mTrailIDs = new ArrayList<>();
 
         //loads the initial state of the menu
-        trailDB = new DBTest();
+        trailDB = new Database();
         trailDB.trailNameRun(this);
     }
 

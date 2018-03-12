@@ -61,7 +61,7 @@
             android:name=".Tracking"
             android:exported="false"/>
 
-        <activity android:name=".DBTest">
+        <activity android:name=".Database">
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN" />-->
 
@@ -95,7 +95,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="arc.com.arctrails.MenuActivity" />
         </activity>
-        <activity android:name=".listActivityTemp"></activity>
     </application>
 
 </manifest>
