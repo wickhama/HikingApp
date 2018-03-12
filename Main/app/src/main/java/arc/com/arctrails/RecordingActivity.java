@@ -3,6 +3,7 @@ package arc.com.arctrails;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -35,7 +36,7 @@ public class RecordingActivity extends AppCompatActivity
     public static final int NEW_TRAIL_REQUEST_CODE = 3;
 
     //the data recorded in the user's most recent trail
-    private ArrayList<Double[]> recordedData = null;
+    private ArrayList<Location> recordedData = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,7 +178,7 @@ public class RecordingActivity extends AppCompatActivity
         }
     }
 
-    private Trail buildTrailFromData(String name, String description, ArrayList<Double[]> data){
+    private Trail buildTrailFromData(String name, String description, ArrayList<Location> data){
         Trail trail = new Trail();
         trail.setName(name);
         trail.setDescription(description);
@@ -186,11 +187,11 @@ public class RecordingActivity extends AppCompatActivity
         Trail.Track t;
         ArrayList<Trail.Track> tracks = new ArrayList<>();
         ArrayList<Trail.Waypoint> track = new ArrayList<>();
-        for(Double[] loc : data)
+        for(Location loc : data)
         {
             w = new Trail.Waypoint();
-            w.setLatitude(loc[0]);
-            w.setLongitude(loc[1]);
+            w.setLatitude(loc.getLatitude());
+            w.setLongitude(loc.getLongitude());
             track.add(w);
         }
         t = new Trail.Track();
@@ -200,13 +201,13 @@ public class RecordingActivity extends AppCompatActivity
         ArrayList<Trail.Waypoint> waypoints = new ArrayList<>();
         w = new Trail.Waypoint();
         w.setWaypointName("Start");
-        w.setLatitude(data.get(0)[0]);
-        w.setLongitude(data.get(0)[1]);
+        w.setLatitude(data.get(0).getLatitude());
+        w.setLongitude(data.get(0).getLongitude());
         waypoints.add(w);
         w = new Trail.Waypoint();
         w.setWaypointName("End");
-        w.setLatitude(data.get(data.size()-1)[0]);
-        w.setLongitude(data.get(data.size()-1)[1]);
+        w.setLatitude(data.get(data.size()-1).getLatitude());
+        w.setLongitude(data.get(data.size()-1).getLongitude());
         waypoints.add(w);
 
         trail.setName(name);

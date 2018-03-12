@@ -32,7 +32,7 @@ import java.util.List;
 public class Tracking extends Service {
 
     private FusedLocationProviderClient flocatClient;
-    private ArrayList<Double[]> trail;
+    private ArrayList<Location> trail;
     private LocationRequest locationRequest = new LocationRequest();
     private LocationCallback locationCallback;
     private final IBinder locationBinder = new LocalBinder();
@@ -48,28 +48,11 @@ public class Tracking extends Service {
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 if(locationResult == null) {return;}
-                Double[] point = new Double[2];
                 for(Location location:locationResult.getLocations()) {
-                    point[0] = location.getLatitude();
-                    point[1] = location.getLongitude();
-                    trail.add(point);
-                    Toast.makeText(getApplicationContext(), "Point added: "+ point[0]+", "+point[1],Toast.LENGTH_LONG).show();
+                    trail.add(location);
                 }
             }
         };
-    }
-
-    /*onStartCommand
-    starts recording
-     */
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        //Asks for permission
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            stopSelf();//TODO: Change to request permission
-        }
-        flocatClient.requestLocationUpdates(locationRequest, locationCallback, null);
-        return START_STICKY;
     }
 
     public void pause_Recording() {
@@ -88,7 +71,7 @@ public class Tracking extends Service {
     @Returns List<Location> : trail Coordinates
     Ayla
      */
-    public ArrayList<Double[]> stop_Recording() {
+    public ArrayList<Location> stop_Recording() {
         return trail;
     }
 
@@ -108,6 +91,11 @@ public class Tracking extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
+        //Asks for permission
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            stopSelf();//TODO: Change to request permission
+        }
+        flocatClient.requestLocationUpdates(locationRequest, locationCallback, null);
         return locationBinder;
     }
 
