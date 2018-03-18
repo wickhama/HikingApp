@@ -7,6 +7,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.widget.TextView;
 
@@ -91,7 +92,7 @@ public class TrailDataActivity extends AppCompatActivity {
     {
         TextView nameView = findViewById(R.id.TrailName);
         TextView descriptionView = findViewById(R.id.Description);
-        TextView locationView = findViewById(R.id.Location);
+        TextView locationView = findViewById(R.id.TrailLocationField);
         TextView difficultyView = findViewById(R.id.Difficulty);
         TextView notesView = findViewById(R.id.Notes);
 
@@ -133,6 +134,9 @@ public class TrailDataActivity extends AppCompatActivity {
             builder.setIcon(android.R.drawable.ic_dialog_alert);
             builder.show();
         }
+
+        /*HERE*/
+
         else {
             //Info for preset trails are stored in gpx Version and Creator as
             //GPX Parser does not allow access to any other fields
@@ -142,6 +146,9 @@ public class TrailDataActivity extends AppCompatActivity {
             difficultyView.setText("Difficulty: "+trail.getDifficulty());
             descriptionView.setText(trail.getDescription());
             notesView.setText(trail.getNotes());
+
+            descriptionView.setMovementMethod(new ScrollingMovementMethod());
+            notesView.setMovementMethod(new ScrollingMovementMethod());
         }
     }
 

@@ -7,6 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import java.io.File;
 
@@ -27,7 +30,14 @@ public class NewTrailActivity extends AppCompatActivity {
 
     //the IDs used in the result Intent to send back data
     public static final String EXTRA_TRAIL_NAME = "arc.com.arctrails.trailname";
+    public static final String EXTRA_TRAIL_LOCATION = "arc.com.arctrails.traillocation";
     public static final String EXTRA_TRAIL_DESCRIPTION = "arc.com.arctrails.traildescription";
+    public static final String EXTRA_TRAIL_NOTES = "arc.com.arctrails.trailnotes";
+    public static final String EXTRA_TRAIL_DIFFICULTY = "arc.com.arctrails.traildescription";
+
+
+
+
 
     /**
      * Created by Ryley
@@ -54,6 +64,15 @@ public class NewTrailActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        Spinner spinner = (Spinner) findViewById(R.id.editDifficulty);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.difficulty_array, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
     }
 
     /**
@@ -70,11 +89,9 @@ public class NewTrailActivity extends AppCompatActivity {
     public void onSavePressed(View view)
     {
         EditText nameField = findViewById(R.id.TrailNameField);
-        EditText descriptionField = findViewById(R.id.TrailDescriptionField);
 
         //trims whitespace from the user input
         final String name = nameField.getText().toString().trim();
-        final String description = descriptionField.getText().toString().trim();
 
         //file names cannot be empty
         if(name.equals("")) {
@@ -97,12 +114,12 @@ public class NewTrailActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //if they're sure they want to overwrite, send the info
-                        sendSaveResult(name, description);
+                        sendSaveResult();
                     }
                 });
         else
         {
-            sendSaveResult(name, description);
+            sendSaveResult();
         }
     }
 
@@ -112,12 +129,30 @@ public class NewTrailActivity extends AppCompatActivity {
      *
      * Wraps the information in an intent and sends the result
      */
-    private void sendSaveResult(String name, String description)
+    private void sendSaveResult()
     {
+        EditText nameField = findViewById(R.id.TrailNameField);
+        EditText locationField = findViewById(R.id.TrailLocationField);
+        EditText descriptionField = findViewById(R.id.TrailDescriptionField);
+        EditText notesField = findViewById(R.id.TrailNotesField);
+        Spinner difficultySpinner = findViewById(R.id.editDifficulty);
+
+        //trims whitespace from the user input
+        String name = nameField.getText().toString().trim();
+        String location = locationField.getText().toString().trim();
+        String description = descriptionField.getText().toString().trim();
+        String notes = notesField.getText().toString().trim();
+        String difficulty = difficultySpinner.getSelectedItem().toString().trim();
+
         Intent intent = new Intent();
         intent.putExtra(EXTRA_TRAIL_NAME,name);
+        intent.putExtra(EXTRA_TRAIL_LOCATION,location);
         intent.putExtra(EXTRA_TRAIL_DESCRIPTION, description);
+        intent.putExtra(EXTRA_TRAIL_NOTES, notes);
+        intent.putExtra(EXTRA_TRAIL_DIFFICULTY, difficulty);
         setResult(RESULT_SAVE,intent);
         finish();
     }
+
+
 }

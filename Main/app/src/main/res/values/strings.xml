@@ -34,4 +34,13 @@
     <string name="Record_off">Record</string>
     <string name="Record_on">Pause</string>
     <string name="trail_data_upload">Upload</string>
+    <string name="editDifficulty">Difficulty</string>
+    <string name="editLocation">Location</string>
+    <string name="stringNotes">Notes</string>
+
+    <string-array name="difficulty_array">
+        <item>Easy</item>
+        <item>Medium</item>
+        <item>Hard</item>
+    </string-array>
 </resources>
