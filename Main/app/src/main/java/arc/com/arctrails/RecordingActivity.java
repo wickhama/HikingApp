@@ -138,6 +138,17 @@ public class RecordingActivity extends AppCompatActivity
 
     }
 
+    public void onWaypointAddClick() {
+        Coordinates location = (Coordinates) getSupportFragmentManager()
+                .findFragmentById(R.id.coordinates);
+
+    }
+
+    private void addWaypoint(LatLng latLng)
+    {
+        
+    }
+
     /**
      * Created by Ryley
      * added for increment 3
@@ -196,8 +207,6 @@ public class RecordingActivity extends AppCompatActivity
     }
 
     private void addTrack(ArrayList<Location> data){
-
-        System.out.println("-----------------------------"+data);
         if(recordedTrail != null && data != null && !data.isEmpty()) {
             Trail.Waypoint w;
             Trail.Track t;
