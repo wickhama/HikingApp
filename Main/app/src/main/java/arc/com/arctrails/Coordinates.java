@@ -20,6 +20,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 
 import static java.lang.String.format;
@@ -108,6 +110,10 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
         }
     }
 
+    public LatLng getLastLocation() {
+        return trackingService.getLastLocation();
+    }
+
     /**Created by Ayla Wickham Increment 3
      * Records latitude and longitude on location change
      * Only called when user wishes to create a new trail.
@@ -117,10 +123,12 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
         getActivity().bindService(intent, bindConnection, Context.BIND_AUTO_CREATE);
     }
 
-    public void pauseRecording() {
-        if(service_bounded) {
-            trackingService.pause_Recording();
-        }
+    public ArrayList<Location> pauseRecording() {
+            return trackingService.pauseRecording();
+    }
+
+    public void resumeRecording() {
+        trackingService.resumeRecording();
     }
 
     /**Created by Ayla Wickham Increment 3

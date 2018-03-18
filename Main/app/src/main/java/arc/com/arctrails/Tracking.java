@@ -18,6 +18,7 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ import java.util.List;
 /**
  * This Service runs in the background and records the user's coordinates while the user walks.
  * Bind activity to access methods for recording.
- * Methods: pause_Recording(), resume_Recording(), stop_Recording()
+ * Methods: pauseRecording(), resumeRecording(), stop_Recording()
  * List<Location> is returned when stop_Recording() is called.
  */
 
@@ -58,23 +59,27 @@ public class Tracking extends Service {
         };
     }
 
-    public Location getLastLocation() {
+    public LatLng getLastLocation() {
         //Asks for permission
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             stopSelf();
         }
-        return flocatClient.getLastLocation().getResult();
+        double lat = flocatClient.getLastLocation().getResult().getLatitude();
+        double lon = flocatClient.getLastLocation().getResult().getLongitude();
+        return new LatLng(lat, lon);
     }
 
-    public void pause_Recording() {
+    public ArrayList<Location> pauseRecording() {
         flocatClient.removeLocationUpdates(locationCallback);
+        return trail;
     }
 
-    public void resume_Recording() {
+    public void resumeRecording() {
         //Asks for permission
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             stopSelf();
         }
+        trail.clear();
         flocatClient.requestLocationUpdates(locationRequest, locationCallback, null);
     }
 
@@ -111,7 +116,7 @@ public class Tracking extends Service {
     }
 
     /* LocalBinder extends Binder to allow us to
-    access methods: pause_Recording, resume_Recording, stop_Recording
+    access methods: pauseRecording, resumeRecording, stop_Recording
     Ayla
      */
     public class LocalBinder extends Binder {
