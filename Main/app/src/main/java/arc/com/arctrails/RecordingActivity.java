@@ -3,6 +3,7 @@ package arc.com.arctrails;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -194,17 +195,17 @@ public class RecordingActivity extends AppCompatActivity
         }
     }
 
-    private void addTrack(ArrayList<Double[]> data){
+    private void addTrack(ArrayList<Location> data){
 
         System.out.println("-----------------------------"+data);
         if(recordedTrail != null && data != null && !data.isEmpty()) {
             Trail.Waypoint w;
             Trail.Track t;
             ArrayList<Trail.Waypoint> track = new ArrayList<>();
-            for (Double[] loc : data) {
+            for (Location loc : data) {
                 w = new Trail.Waypoint();
-                w.setLatitude(loc[0]);
-                w.setLongitude(loc[1]);
+                w.setLatitude(loc.getLatitude());
+                w.setLongitude(loc.getLongitude());
                 track.add(w);
             }
             t = new Trail.Track();
