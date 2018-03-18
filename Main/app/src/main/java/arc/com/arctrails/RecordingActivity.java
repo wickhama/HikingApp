@@ -13,12 +13,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ToggleButton;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 public class RecordingActivity extends AppCompatActivity
-        implements LocationRequestListener, LocationPermissionListener{
+        implements LocationRequestListener, LocationPermissionListener, GoogleMap.OnMapClickListener{
 
     //Identifies the type of permission requests to identify which ones were granted
     //although we only need need fine location for this specific case
@@ -35,7 +38,7 @@ public class RecordingActivity extends AppCompatActivity
     public static final int NEW_TRAIL_REQUEST_CODE = 3;
 
     //the data recorded in the user's most recent trail
-    private ArrayList<Double[]> recordedData = null;
+    private Trail recordedTrail = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,17 +111,30 @@ public class RecordingActivity extends AppCompatActivity
         if(result) {
             Coordinates location;
             location = (Coordinates) getSupportFragmentManager().findFragmentById(R.id.coordinates);
-            CustomMapFragment map;
-            map = (CustomMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
-            //notifies the fragments about the permission update, so that it will track location data
-            location.onPermissionResult(true);
-            map.onPermissionResult(true);
+            //if this is the beginning of a new recording,
+            if(recordedTrail == null) {
+                CustomMapFragment map;
+                map = (CustomMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+
+                //notifies the fragments about the permission update, so that it will track location data
+                location.onPermissionResult(true);
+                map.onPermissionResult(true);
+                map.getMap().setOnMapClickListener(this);
+
+                //creates a new empty trail
+                recordedTrail = new Trail();
+            }
             //then tells the coordinate fragment to record
             location.record();
 
             ((ToggleButton)findViewById(R.id.recordButton)).setChecked(true);
         }
+    }
+
+    @Override
+    public void onMapClick(LatLng latLng) {
+
     }
 
     /**
@@ -138,9 +154,9 @@ public class RecordingActivity extends AppCompatActivity
                         Coordinates location = (Coordinates) getSupportFragmentManager()
                                 .findFragmentById(R.id.coordinates);
                         //get the location data that was recorded
-                        recordedData = location.stopRecord();
+                        addTrack(location.stopRecord());
                         //if they actually did record data...
-                        if(!recordedData.isEmpty()) {
+                        if(!recordedTrail.getTracks().isEmpty()) {
                             //get other GPX file information
                             Intent intent = new Intent(RecordingActivity.this, NewTrailActivity.class);
                             //starts an activity with the NEW TRAIL result code
@@ -168,53 +184,44 @@ public class RecordingActivity extends AppCompatActivity
                 String name = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_NAME);
                 String description = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_DESCRIPTION);
                 //make sure there's actually recorded data
-                if (recordedData != null) {
-                    Trail trail = buildTrailFromData(name, description, recordedData);
-                    GPXFile.writeGPXFile(trail, getApplicationContext());
+                if (recordedTrail != null) {
+                    recordedTrail.setName(name);
+                    recordedTrail.setDescription(description);
+                    GPXFile.writeGPXFile(recordedTrail, getApplicationContext());
                 }
-                recordedData = null;
+                recordedTrail = null;
             }
         }
     }
 
-    private Trail buildTrailFromData(String name, String description, ArrayList<Double[]> data){
-        Trail trail = new Trail();
-        trail.setName(name);
-        trail.setDescription(description);
+    private void addTrack(ArrayList<Double[]> data){
 
-        Trail.Waypoint w;
-        Trail.Track t;
-        ArrayList<Trail.Track> tracks = new ArrayList<>();
-        ArrayList<Trail.Waypoint> track = new ArrayList<>();
-        for(Double[] loc : data)
-        {
-            w = new Trail.Waypoint();
-            w.setLatitude(loc[0]);
-            w.setLongitude(loc[1]);
-            track.add(w);
+        System.out.println("-----------------------------"+data);
+        if(recordedTrail != null && data != null && !data.isEmpty()) {
+            Trail.Waypoint w;
+            Trail.Track t;
+            ArrayList<Trail.Waypoint> track = new ArrayList<>();
+            for (Double[] loc : data) {
+                w = new Trail.Waypoint();
+                w.setLatitude(loc[0]);
+                w.setLongitude(loc[1]);
+                track.add(w);
+            }
+            t = new Trail.Track();
+            t.setTrackPoints(track);
+            recordedTrail.addTrack(t);
+
+//            w = new Trail.Waypoint();
+//            w.setWaypointName("Start");
+//            w.setLatitude(data.get(0)[0]);
+//            w.setLongitude(data.get(0)[1]);
+//            recordedTrail.addWaypoint(w);
+//            w = new Trail.Waypoint();
+//            w.setWaypointName("End");
+//            w.setLatitude(data.get(data.size() - 1)[0]);
+//            w.setLongitude(data.get(data.size() - 1)[1]);
+//            recordedTrail.addWaypoint(w);
         }
-        t = new Trail.Track();
-        t.setTrackPoints(track);
-        tracks.add(t);
-
-        ArrayList<Trail.Waypoint> waypoints = new ArrayList<>();
-        w = new Trail.Waypoint();
-        w.setWaypointName("Start");
-        w.setLatitude(data.get(0)[0]);
-        w.setLongitude(data.get(0)[1]);
-        waypoints.add(w);
-        w = new Trail.Waypoint();
-        w.setWaypointName("End");
-        w.setLatitude(data.get(data.size()-1)[0]);
-        w.setLongitude(data.get(data.size()-1)[1]);
-        waypoints.add(w);
-
-        trail.setName(name);
-        trail.setDescription(description);
-        trail.setTracks(tracks);
-        trail.setWaypoints(waypoints);
-
-        return trail;
     }
 
     // Permissions

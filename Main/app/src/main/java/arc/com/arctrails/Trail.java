@@ -59,7 +59,9 @@ public class Trail {
     public static class Track {
         private List<Waypoint> trackPoints;
 
-        public Track(){}
+        public Track(){
+            this( new ArrayList<Waypoint>() );
+        }
 
         public Track(List<Waypoint> list){
             trackPoints = list;
@@ -134,6 +136,8 @@ public class Trail {
         this.waypoints = waypoints;
     }
 
+    public void addWaypoint(Waypoint waypoint){ waypoints.add(waypoint); }
+
     public List<Track> getTracks() {
         return tracks;
     }
@@ -141,4 +145,6 @@ public class Trail {
     public void setTracks(List<Track> tracks) {
         this.tracks = tracks;
     }
+
+    public void addTrack(Track track){ tracks.add(track); }
 }

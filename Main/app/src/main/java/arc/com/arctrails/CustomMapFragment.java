@@ -85,6 +85,10 @@ public class CustomMapFragment extends SupportMapFragment implements
     private static final String KEY_CAMERA_POSITION = "camera_position";
     private static final String KEY_LOCATION = "location";
 
+    public GoogleMap getMap(){
+        return mMap;
+    }
+
     /**
      * Created by Ryley
      * Added for increment 1
@@ -293,8 +297,10 @@ public class CustomMapFragment extends SupportMapFragment implements
      */
     public void makeTrail(Trail trail) {
         //null trails are not allowed
-        if(trail == null)
+        if(trail == null || trail.getTracks() == null || trail.getTracks().isEmpty()) {
+            AlertUtils.showAlert(getActivity(),"Empty Trail", "This trail contained no location data");
             return;
+        }
 
         //remove the previous trail, but don't bother moving the camera back to the user
         clearTrail(false);
@@ -314,8 +320,12 @@ public class CustomMapFragment extends SupportMapFragment implements
 
         }
         else {
-            LatLng zLatLng = new LatLng(tracks.iterator().next().getTrackPoints().get(0).getLatitude(),tracks.iterator().next().getTrackPoints().get(0).getLongitude());
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(zLatLng, 15));
+            //if there's a trail in the file,
+            if(!tracks.isEmpty() && !tracks.get(0).getTrackPoints().isEmpty()) {
+                //zoom in on the start of the trail
+                LatLng zLatLng = new LatLng(tracks.iterator().next().getTrackPoints().get(0).getLatitude(), tracks.iterator().next().getTrackPoints().get(0).getLongitude());
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(zLatLng, 15));
+            }
         }
         for (Trail.Track t : tracks) {
             drawPath(t.getTrackPoints());
