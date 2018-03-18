@@ -41,6 +41,9 @@ public class RecordingActivity extends AppCompatActivity
     //the data recorded in the user's most recent trail
     private Trail recordedTrail = null;
 
+    //Object to manage location tracking
+    private Coordinates location;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,9 +89,7 @@ public class RecordingActivity extends AppCompatActivity
         }
         else
         {
-            Snackbar.make(findViewById(R.id.recording_layout), "Pausing not yet implemented", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
-            ((ToggleButton)v).setChecked(true);
+            location.pauseRecording();
         }
     }
 
@@ -110,7 +111,7 @@ public class RecordingActivity extends AppCompatActivity
     @Override
     public void onPermissionResult(boolean result){
         if(result) {
-            Coordinates location;
+
             location = (Coordinates) getSupportFragmentManager().findFragmentById(R.id.coordinates);
 
             //if this is the beginning of a new recording,
@@ -128,7 +129,6 @@ public class RecordingActivity extends AppCompatActivity
             }
             //then tells the coordinate fragment to record
             location.record();
-
             ((ToggleButton)findViewById(R.id.recordButton)).setChecked(true);
         }
     }

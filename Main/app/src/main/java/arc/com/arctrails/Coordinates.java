@@ -119,8 +119,14 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
      * Only called when user wishes to create a new trail.
      */
     public void record() {
-        Intent intent = new Intent(getActivity(), Tracking.class);
-        getActivity().bindService(intent, bindConnection, Context.BIND_AUTO_CREATE);
+        if(!service_bounded) {
+            System.out.println("Starting Service");
+            Intent intent = new Intent(getActivity(), Tracking.class);
+            getActivity().bindService(intent, bindConnection, Context.BIND_AUTO_CREATE);
+        }
+        else {
+            resumeRecording();
+        }
     }
 
     public ArrayList<Location> pauseRecording() {
