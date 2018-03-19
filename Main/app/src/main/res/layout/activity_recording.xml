@@ -43,7 +43,7 @@
         android:onClick="onWaypointAddClick"
         app:backgroundTint="@color/colorAccent"
         app:layout_anchor="@+id/include"
-        app:layout_anchorGravity="bottom|center"
+        app:layout_anchorGravity="center|bottom"
         app:rippleColor="@color/common_google_signin_btn_text_light_focused"
         app:srcCompat="@drawable/ic_add_location_white_24px" />
 

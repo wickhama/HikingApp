@@ -268,7 +268,7 @@ public class CustomMapFragment extends SupportMapFragment implements
         int len = points.size();
         for (int i=0; i<len; ++i) {
             LatLng iLatLng = new LatLng(points.get(i).getLatitude(),points.get(i).getLongitude());
-            polylineOptions.add(iLatLng).width(5).geodesic(true);//.color(Color.rgb(60,195,0));
+            polylineOptions.add(iLatLng).width(5).geodesic(true).color(Color.rgb(60,195,0));
         }
         mMap.addPolyline(polylineOptions);
     }

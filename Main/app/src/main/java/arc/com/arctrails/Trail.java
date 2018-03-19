@@ -20,6 +20,8 @@ public class Trail {
 
     public static class Waypoint {
         private String waypointName;
+        private String type;
+        private String comment;
         private double latitude;
         private double longitude;
 
@@ -53,6 +55,22 @@ public class Trail {
 
         public void setLongitude(double longitude) {
             this.longitude = longitude;
+        }
+
+        public String getWaypointType() {
+            return type;
+        }
+
+        public void setWaypointType(String type) {
+            this.type = type;
+        }
+
+        public String getComment() {
+            return comment;
+        }
+
+        public void setComment(String comment) {
+            this.comment = comment;
         }
     }
 
