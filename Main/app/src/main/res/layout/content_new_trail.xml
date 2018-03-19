@@ -10,33 +10,49 @@
 
     <EditText
         android:id="@+id/TrailNameField"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:hint="@string/new_trail_name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginLeft="16dp" />
-
-    <EditText
-        android:id="@+id/TrailDescriptionField"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="16dp"
+        android:layout_height="44dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:ems="10"
+        android:hint="@string/new_trail_name"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/TrailDescriptionField"
+        android:layout_width="0dp"
+        android:layout_height="186dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
         android:gravity="top|left"
-        android:inputType="textMultiLine"
         android:hint="@string/new_trail_description"
+        android:inputType="textMultiLine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editDifficulty" />
+
+    <EditText
+        android:id="@+id/TrailNotesField"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:gravity="top|left"
+        android:hint="@string/stringNotes"
+        android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/SaveButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TrailNameField" />
+        app:layout_constraintTop_toBottomOf="@+id/TrailDescriptionField" />
 
     <Button
         android:id="@+id/SaveButton"
@@ -51,4 +67,48 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <EditText
+        android:id="@+id/TrailLocationField"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="@string/editLocation"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TrailNameField" />
+
+    <Spinner
+        android:id="@+id/editDifficulty"
+        android:layout_width="165dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@+id/labelDifficulty"
+        app:layout_constraintTop_toBottomOf="@+id/TrailLocationField" />
+
+    <TextView
+        android:id="@+id/labelDifficulty"
+        android:layout_width="78dp"
+        android:layout_height="31dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center_vertical"
+        android:text="Difficulty:"
+        android:textAlignment="viewEnd"
+        android:textAppearance="@android:style/TextAppearance.Material.Medium"
+        app:layout_constraintBottom_toTopOf="@+id/TrailDescriptionField"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TrailLocationField" />
+
+
+
 </android.support.constraint.ConstraintLayout>
+
+
+
+
