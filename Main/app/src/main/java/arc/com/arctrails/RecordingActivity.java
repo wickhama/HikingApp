@@ -89,7 +89,7 @@ public class RecordingActivity extends AppCompatActivity
         }
         else
         {
-            location.pauseRecording();
+            addTrack(location.pauseRecording());
         }
     }
 
