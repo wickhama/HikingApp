@@ -45,4 +45,14 @@
         <item>Toilets</item>
         <item>Dock</item>
     </string-array>
+
+    <string name="editDifficulty">Difficulty</string>
+    <string name="editLocation">Location</string>
+    <string name="stringNotes">Notes</string>
+
+    <string-array name="difficulty_array">
+        <item>Easy</item>
+        <item>Medium</item>
+        <item>Hard</item>
+    </string-array>
 </resources>

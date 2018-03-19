@@ -9,7 +9,6 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -45,6 +44,9 @@ public class RecordingActivity extends AppCompatActivity
 
     //the selected location to place a waypoint
     private LatLng waypointLatLng;
+
+    //Object to manage location tracking
+    private Coordinates location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,9 +93,7 @@ public class RecordingActivity extends AppCompatActivity
         }
         else
         {
-            Snackbar.make(findViewById(R.id.recording_layout), "Pausing not yet implemented", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
-            ((ToggleButton)v).setChecked(true);
+            addTrack(location.pauseRecording());
         }
     }
 
@@ -115,7 +115,7 @@ public class RecordingActivity extends AppCompatActivity
     @Override
     public void onPermissionResult(boolean result){
         if(result) {
-            Coordinates location;
+
             location = (Coordinates) getSupportFragmentManager().findFragmentById(R.id.coordinates);
 
             //if this is the beginning of a new recording,
@@ -133,7 +133,6 @@ public class RecordingActivity extends AppCompatActivity
             }
             //then tells the coordinate fragment to record
             location.record();
-
             ((ToggleButton)findViewById(R.id.recordButton)).setChecked(true);
         }
     }
@@ -199,6 +198,7 @@ public class RecordingActivity extends AppCompatActivity
                         addTrack(location.stopRecord());
                         //if they actually did record data...
                         if(!recordedTrail.getTracks().isEmpty()) {
+
                             //get other GPX file information
                             Intent intent = new Intent(RecordingActivity.this, NewTrailActivity.class);
                             //starts an activity with the NEW TRAIL result code
