@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Service;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Binder;
 import android.os.IBinder;
@@ -18,7 +19,10 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
@@ -34,14 +38,20 @@ import java.util.List;
 public class Tracking extends Service {
 
     private FusedLocationProviderClient flocatClient;
-    private ArrayList<Location> trail;
+    private final IBinder locationBinder = new LocalBinder();
     private LocationRequest locationRequest = new LocationRequest();
     private LocationCallback locationCallback;
-    private final IBinder locationBinder = new LocalBinder();
+
+    private ArrayList<Location> trail;
+    private GoogleMap map;
+    private PolylineOptions polylineOptions;
+
+
 
     @Override
     public void onCreate() {
         trail = new ArrayList();
+        //map = new CustomMapFragment().getMap();
         flocatClient = LocationServices.getFusedLocationProviderClient(getApplicationContext());
         locationRequest.setInterval(1000);
         locationRequest.setFastestInterval(5000);
@@ -54,6 +64,7 @@ public class Tracking extends Service {
                 }
                 for (Location location : locationResult.getLocations()) {
                     trail.add(location);
+                    draw(new LatLng(location.getLatitude(), location.getLongitude()));
                 }
             }
         };
@@ -113,6 +124,10 @@ public class Tracking extends Service {
         }
         flocatClient.requestLocationUpdates(locationRequest, locationCallback, null);
         return locationBinder;
+    }
+
+    private void draw(LatLng latlng) {
+       //map.addPolyline(new PolylineOptions().add(latlng).width(5).color(Color.RED));
     }
 
     /* LocalBinder extends Binder to allow us to
