@@ -75,9 +75,14 @@ public class Tracking extends Service {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             stopSelf();
         }
-        double lat = flocatClient.getLastLocation().getResult().getLatitude();
-        double lon = flocatClient.getLastLocation().getResult().getLongitude();
-        return new LatLng(lat, lon);
+        double lat, lon;
+        try {
+            lat = flocatClient.getLastLocation().getResult().getLatitude();
+            lon = flocatClient.getLastLocation().getResult().getLongitude();
+            return new LatLng(lat, lon);
+        } catch (IllegalStateException e) {
+            return null;
+        }
     }
 
     public ArrayList<Location> pauseRecording() {

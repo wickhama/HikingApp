@@ -34,6 +34,18 @@
     <string name="Record_off">Record</string>
     <string name="Record_on">Pause</string>
     <string name="trail_data_upload">Upload</string>
+    <string name="waypoint_title">Add a Waypoint</string>
+    <string name="waypoint_name">WName (optional)</string>
+    <string name="Waypoint_comment">comment (optional)</string>
+
+    <string-array name="waypoint_types">
+        <item>Parking Lot</item>
+        <item>View Point</item>
+        <item>Picnic Area</item>
+        <item>Toilets</item>
+        <item>Dock</item>
+    </string-array>
+
     <string name="editDifficulty">Difficulty</string>
     <string name="editLocation">Location</string>
     <string name="stringNotes">Notes</string>

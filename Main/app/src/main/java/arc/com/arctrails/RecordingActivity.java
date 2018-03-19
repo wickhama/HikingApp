@@ -22,7 +22,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class RecordingActivity extends AppCompatActivity
-        implements LocationRequestListener, LocationPermissionListener, GoogleMap.OnMapClickListener{
+        implements LocationRequestListener, LocationPermissionListener,
+        GoogleMap.OnMapClickListener, WaypointDialog.WaypointDialogListener{
 
     //Identifies the type of permission requests to identify which ones were granted
     //although we only need need fine location for this specific case
@@ -40,6 +41,9 @@ public class RecordingActivity extends AppCompatActivity
 
     //the data recorded in the user's most recent trail
     private Trail recordedTrail = null;
+
+    //the selected location to place a waypoint
+    private LatLng waypointLatLng;
 
     //Object to manage location tracking
     private Coordinates location;
@@ -135,7 +139,43 @@ public class RecordingActivity extends AppCompatActivity
 
     @Override
     public void onMapClick(LatLng latLng) {
+        addWaypoint(latLng);
+    }
 
+    public void onWaypointAddClick(View v) {
+        Coordinates location = (Coordinates) getSupportFragmentManager()
+                .findFragmentById(R.id.coordinates);
+        addWaypoint(location.getLastLocation());
+    }
+
+    private void addWaypoint(LatLng latLng)
+    {
+        if(recordedTrail != null && latLng != null) {
+            waypointLatLng = latLng;
+            (new WaypointDialog()).show(getFragmentManager(), "waypoint");
+        }
+        else {
+            Snackbar.make(findViewById(R.id.recording_layout),
+                    "Cannot mark waypoints without recording", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        }
+    }
+
+    @Override
+    public void onDialogPositiveClick(WaypointDialog dialog)
+    {
+        if(recordedTrail != null) {
+            Trail.Waypoint w = new Trail.Waypoint();
+            w.setWaypointName(dialog.getWaypointName());
+            w.setComment(dialog.getWaypointComment());
+            w.setWaypointType(dialog.getWaypointType());
+            w.setLatitude(waypointLatLng.latitude);
+            w.setLongitude(waypointLatLng.longitude);
+
+            recordedTrail.addWaypoint(w);
+
+            waypointLatLng = null;
+        }
     }
 
     /**
@@ -197,8 +237,6 @@ public class RecordingActivity extends AppCompatActivity
     }
 
     private void addTrack(ArrayList<Location> data){
-
-        System.out.println("-----------------------------"+data);
         if(recordedTrail != null && data != null && !data.isEmpty()) {
             Trail.Waypoint w;
             Trail.Track t;

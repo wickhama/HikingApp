@@ -127,6 +127,8 @@ class GPXFile {
                 waypoint.setWaypointName(w.getName());
                 waypoint.setLatitude(w.getLatitude());
                 waypoint.setLongitude(w.getLongitude());
+                waypoint.setComment(w.getComment());
+                waypoint.setWaypointType(w.getType());
                 waypoints.add(waypoint);
             }
         }
@@ -168,6 +170,8 @@ class GPXFile {
                 waypoint.setName(w.getWaypointName());
                 waypoint.setLatitude(w.getLatitude());
                 waypoint.setLongitude(w.getLongitude());
+                waypoint.setComment(w.getComment());
+                waypoint.setType(w.getWaypointType());
                 gpx.addWaypoint(waypoint);
             }
         }

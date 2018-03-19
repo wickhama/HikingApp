@@ -111,7 +111,10 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
     }
 
     public LatLng getLastLocation() {
-        return trackingService.getLastLocation();
+        if(trackingService != null)
+            return trackingService.getLastLocation();
+        else
+            return null;
     }
 
     /**Created by Ayla Wickham Increment 3

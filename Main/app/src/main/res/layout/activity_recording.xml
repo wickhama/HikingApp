@@ -35,6 +35,18 @@
         app:layout_anchor="@+id/include"
         app:layout_anchorGravity="right|bottom" />
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/waypointButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:onClick="onWaypointAddClick"
+        app:backgroundTint="@color/colorAccent"
+        app:layout_anchor="@+id/include"
+        app:layout_anchorGravity="center|bottom"
+        app:rippleColor="@color/common_google_signin_btn_text_light_focused"
+        app:srcCompat="@drawable/ic_add_location_white_24px" />
+
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
