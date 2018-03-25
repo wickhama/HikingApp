@@ -1,7 +1,10 @@
 package arc.com.arctrails;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -14,9 +17,11 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -57,7 +62,7 @@ import java.util.List;
  * makeTrail (Creates a trail using Waypoints and paths from the input GPX file)
  */
 public class CustomMapFragment extends SupportMapFragment implements
-        OnMapReadyCallback, LocationPermissionListener {
+        OnMapReadyCallback, LocationPermissionListener, GoogleMap.OnMarkerClickListener {
     /**
      * Instance variables mostly added by Caleigh.
      */
@@ -154,6 +159,7 @@ public class CustomMapFragment extends SupportMapFragment implements
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        mMap.setOnMarkerClickListener(this);
         mRequestListener.requestPermission(this);
     }
 
@@ -340,26 +346,54 @@ public class CustomMapFragment extends SupportMapFragment implements
 
         MarkerOptions options = new MarkerOptions();
         options.position(wLatLng);
+        if(w.getWaypointName() == null)
+            options.title(w.getWaypointType());
+        else
+            options.title(w.getWaypointName());
+        options.snippet(w.getComment());
         switch(w.getWaypointType())
         {
             case "Parking Lot":
-                options.icon(BitmapDescriptorFactory.fromAsset("parking.png"));
+                options.icon(getMarkerIconFromDrawable(getResources().getDrawable(R.drawable.ic_local_parking_black_24px)));
                 break;
             case "View Point":
-                options.icon(BitmapDescriptorFactory.fromAsset("beautifulview.png"));
+                options.icon(getMarkerIconFromDrawable(getResources().getDrawable(R.drawable.ic_photo_camera_black_24px)));
                 break;
             case "Picnic Area":
-                options.icon(BitmapDescriptorFactory.fromAsset("picnic-2.png"));
+                options.icon(getMarkerIconFromDrawable(getResources().getDrawable(R.drawable.picnic_desk)));
                 break;
             case "Toilets":
-                options.icon(BitmapDescriptorFactory.fromAsset("toilets.png"));
+                options.icon(getMarkerIconFromDrawable(getResources().getDrawable(R.drawable.toilet)));
                 break;
             case "Dock":
-                options.icon(BitmapDescriptorFactory.fromAsset("river-2.png"));
+                options.icon(getMarkerIconFromDrawable(getResources().getDrawable(R.drawable.waves)));
                 break;
             default:
                 break;
         }
         mMap.addMarker(options);
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        int zoom = (int)mMap.getCameraPosition().zoom;
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.getPosition(), zoom), 4000, null);
+        marker.showInfoWindow();
+        return true;
+    }
+
+
+    /**
+     * Taken from github. All credit to user vovahost
+     * https://stackoverflow.com/questions/18053156/set-image-from-drawable-as-marker-in-google-map-version-2?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+     */
+    private BitmapDescriptor getMarkerIconFromDrawable(Drawable drawable) {
+        Canvas canvas = new Canvas();
+        Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+        canvas.setBitmap(bitmap);
+        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+        drawable.draw(canvas);
+        bitmap = Bitmap.createScaledBitmap(bitmap,100,100,false);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 }
