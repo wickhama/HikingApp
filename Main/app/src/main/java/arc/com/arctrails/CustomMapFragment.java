@@ -14,6 +14,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -179,7 +180,7 @@ public class CustomMapFragment extends SupportMapFragment implements
     /**
      * Created by Caleigh
      * Added for increment 1
-
+     *
      * Creates the blue dot centred on the user's location for the map.
      * Gets the best and most recent location of the device, which may be null in rare cases when a
      * location is not available. We handle this with
@@ -311,9 +312,7 @@ public class CustomMapFragment extends SupportMapFragment implements
         // Check added to make sure there's at least 1 waypoint, added by Ayla
         if((points = trail.getWaypoints()) != null && !points.isEmpty()) {
             for (Trail.Waypoint w : points) {
-                LatLng wLatLng = new LatLng(w.getLatitude(), w.getLongitude());
-                builder.include(wLatLng);
-                mMap.addMarker(new MarkerOptions().position(wLatLng));
+                makeWaypoint(w, builder);
             }
             LatLngBounds bounds = builder.build();
             mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 200));
@@ -330,5 +329,37 @@ public class CustomMapFragment extends SupportMapFragment implements
         for (Trail.Track t : tracks) {
             drawPath(t.getTrackPoints());
         }
+    }
+
+    private void makeWaypoint(Trail.Waypoint w, LatLngBounds.Builder builder)
+    {
+        LatLng wLatLng = new LatLng(w.getLatitude(), w.getLongitude());
+
+        if(builder != null)
+            builder.include(wLatLng);
+
+        MarkerOptions options = new MarkerOptions();
+        options.position(wLatLng);
+        switch(w.getWaypointType())
+        {
+            case "Parking Lot":
+                options.icon(BitmapDescriptorFactory.fromAsset("parking.png"));
+                break;
+            case "View Point":
+                options.icon(BitmapDescriptorFactory.fromAsset("beautifulview.png"));
+                break;
+            case "Picnic Area":
+                options.icon(BitmapDescriptorFactory.fromAsset("picnic-2.png"));
+                break;
+            case "Toilets":
+                options.icon(BitmapDescriptorFactory.fromAsset("toilets.png"));
+                break;
+            case "Dock":
+                options.icon(BitmapDescriptorFactory.fromAsset("river-2.png"));
+                break;
+            default:
+                break;
+        }
+        mMap.addMarker(options);
     }
 }
