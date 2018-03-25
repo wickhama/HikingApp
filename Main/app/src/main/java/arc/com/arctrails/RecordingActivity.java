@@ -3,6 +3,7 @@ package arc.com.arctrails;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,7 +16,9 @@ import android.view.View;
 import android.widget.ToggleButton;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.LocationSource;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -47,6 +50,8 @@ public class RecordingActivity extends AppCompatActivity
 
     //Object to manage location tracking
     private Coordinates location;
+
+    private CustomMapFragment map;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,15 +123,15 @@ public class RecordingActivity extends AppCompatActivity
 
             location = (Coordinates) getSupportFragmentManager().findFragmentById(R.id.coordinates);
 
+            map = (CustomMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+
             //if this is the beginning of a new recording,
             if(recordedTrail == null) {
-                CustomMapFragment map;
-                map = (CustomMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-
                 //notifies the fragments about the permission update, so that it will track location data
                 location.onPermissionResult(true);
                 map.onPermissionResult(true);
                 map.getMap().setOnMapClickListener(this);
+                //map.getMap().setLocationSource(new LocationSource());
 
                 //creates a new empty trail
                 recordedTrail = new Trail();
@@ -136,6 +141,13 @@ public class RecordingActivity extends AppCompatActivity
             ((ToggleButton)findViewById(R.id.recordButton)).setChecked(true);
         }
     }
+
+    /*@Override
+    public void onLocationChanged(Location location) {
+        if(((ToggleButton)findViewById(R.id.recordButton)).isChecked()) {
+            map.getMap().addPolyline(new PolylineOptions().add(new LatLng(location.getLatitude(), location.getLongitude())).width(5).color(16753920));
+        }
+    }*/
 
     @Override
     public void onMapClick(LatLng latLng) {

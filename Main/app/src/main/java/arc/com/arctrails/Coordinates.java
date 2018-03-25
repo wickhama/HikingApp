@@ -111,7 +111,7 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
     }
 
     public LatLng getLastLocation() {
-        if(trackingService != null)
+        if(service_bounded)
             return trackingService.getLastLocation();
         else
             return null;
@@ -123,7 +123,6 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
      */
     public void record() {
         if(!service_bounded) {
-            System.out.println("Starting Service");
             Intent intent = new Intent(getActivity(), Tracking.class);
             getActivity().bindService(intent, bindConnection, Context.BIND_AUTO_CREATE);
         }
@@ -147,14 +146,14 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
 
         if((trail=trackingService.stop_Recording()) == null) return new ArrayList();
         getActivity().unbindService(bindConnection);
+        service_bounded = false;
         return trail;
     }
 
     private ServiceConnection bindConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName className, IBinder service) {
-            Tracking.LocalBinder binder = (Tracking.LocalBinder) service;
-            trackingService = binder.getService();
+            trackingService = ((Tracking.LocalBinder) service).getService();
             service_bounded = true;
         }
 

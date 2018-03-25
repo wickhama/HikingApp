@@ -4,9 +4,11 @@ import android.Manifest;
 import android.app.Service;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Binder;
 import android.os.IBinder;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.util.DebugUtils;
@@ -18,8 +20,13 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,18 +41,30 @@ import java.util.List;
 public class Tracking extends Service {
 
     private FusedLocationProviderClient flocatClient;
-    private ArrayList<Location> trail;
+    private final IBinder locationBinder = new LocalBinder();
     private LocationRequest locationRequest = new LocationRequest();
     private LocationCallback locationCallback;
-    private final IBinder locationBinder = new LocalBinder();
+
+    private ArrayList<Location> trail;
+    private GoogleMap map;
+    private PolylineOptions polylineOptions;
+
+    private boolean mAllowRebind;
 
     @Override
     public void onCreate() {
+        //Asks for permission
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            stopSelf();
+        }
         trail = new ArrayList();
+
         flocatClient = LocationServices.getFusedLocationProviderClient(getApplicationContext());
+
         locationRequest.setInterval(1000);
         locationRequest.setFastestInterval(5000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
         locationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
@@ -65,13 +84,9 @@ public class Tracking extends Service {
             stopSelf();
         }
         double lat, lon;
-        try {
-            lat = flocatClient.getLastLocation().getResult().getLatitude();
-            lon = flocatClient.getLastLocation().getResult().getLongitude();
-            return new LatLng(lat, lon);
-        } catch (IllegalStateException e) {
-            return null;
-        }
+        lat = trail.get(trail.size()-1).getLatitude();
+        lon = trail.get(trail.size()-1).getLongitude();
+        return new LatLng(lat, lon);
     }
 
     public ArrayList<Location> pauseRecording() {
@@ -116,8 +131,20 @@ public class Tracking extends Service {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             stopSelf();//TODO: Change to request permission
         }
+        flocatClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
+            @Override
+            public void onComplete(@NonNull Task<Location> task) {
+                if(task.isSuccessful()) trail.add(task.getResult());
+            }
+        });
+
         flocatClient.requestLocationUpdates(locationRequest, locationCallback, null);
         return locationBinder;
+    }
+
+    @Override
+    public boolean onUnbind(Intent intent) {
+        return mAllowRebind;
     }
 
     /* LocalBinder extends Binder to allow us to
