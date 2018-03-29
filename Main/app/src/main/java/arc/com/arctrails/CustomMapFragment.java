@@ -63,6 +63,7 @@ import java.util.List;
  */
 public class CustomMapFragment extends SupportMapFragment implements
         OnMapReadyCallback, LocationPermissionListener, GoogleMap.OnMarkerClickListener {
+
     /**
      * Instance variables mostly added by Caleigh.
      */
@@ -351,26 +352,28 @@ public class CustomMapFragment extends SupportMapFragment implements
         else
             options.title(w.getWaypointName());
         options.snippet(w.getComment());
-        switch(w.getWaypointType())
-        {
-            case "Parking Lot":
-                options.icon(getMarkerIconFromDrawable(getResources().getDrawable(R.drawable.ic_local_parking_black_24px)));
-                break;
-            case "View Point":
-                options.icon(getMarkerIconFromDrawable(getResources().getDrawable(R.drawable.ic_photo_camera_black_24px)));
-                break;
-            case "Picnic Area":
-                options.icon(getMarkerIconFromDrawable(getResources().getDrawable(R.drawable.picnic_desk)));
-                break;
-            case "Toilets":
-                options.icon(getMarkerIconFromDrawable(getResources().getDrawable(R.drawable.toilet)));
-                break;
-            case "Dock":
-                options.icon(getMarkerIconFromDrawable(getResources().getDrawable(R.drawable.waves)));
-                break;
-            default:
-                break;
-        }
+        if(w.getWaypointType() != null)
+            switch(w.getWaypointType())
+            {
+                case "Parking Lot":
+                    options.icon(getMarkerIconFromDrawable(getResources().getDrawable(R.drawable.ic_local_parking_black_24px)));
+                    break;
+                case "View Point":
+                    options.icon(getMarkerIconFromDrawable(getResources().getDrawable(R.drawable.ic_photo_camera_black_24px)));
+                    break;
+                case "Picnic Area":
+                    options.icon(getMarkerIconFromDrawable(getResources().getDrawable(R.drawable.picnic_desk)));
+                    break;
+                case "Toilets":
+                    options.icon(getMarkerIconFromDrawable(getResources().getDrawable(R.drawable.toilet)));
+                    break;
+                case "Dock":
+                    options.icon(getMarkerIconFromDrawable(getResources().getDrawable(R.drawable.waves)));
+                    break;
+                default:
+                    break;
+            }
+        
         mMap.addMarker(options);
     }
 

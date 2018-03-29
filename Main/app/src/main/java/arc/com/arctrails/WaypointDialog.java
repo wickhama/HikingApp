@@ -85,6 +85,9 @@ public class WaypointDialog extends DialogFragment {
 
     public String getWaypointType() {
         Spinner spinner = mView.findViewById(R.id.WaypointType);
-        return spinner.getSelectedItem().toString();
+        if(spinner.getSelectedItem().toString().equals("Other"))
+            return null;
+        else
+            return spinner.getSelectedItem().toString();
     }
 }

@@ -44,6 +44,7 @@
         <item>Picnic Area</item>
         <item>Toilets</item>
         <item>Dock</item>
+        <item>Other</item>
     </string-array>
 
     <string name="editDifficulty">Difficulty</string>

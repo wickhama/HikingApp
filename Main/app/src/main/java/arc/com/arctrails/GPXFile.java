@@ -63,16 +63,20 @@ class GPXFile {
                             trail.getMetadata().setName(currentNode.getFirstChild().getNodeValue());
                         }
                         if(TRAIL_DESCRIPTION.equals(currentNode.getNodeName())){
-                            trail.getMetadata().setDescription(currentNode.getFirstChild().getNodeValue());
+                            if(currentNode.getFirstChild() != null)
+                                trail.getMetadata().setDescription(currentNode.getFirstChild().getNodeValue());
                         }
                         if(TRAIL_LOCATION.equals(currentNode.getNodeName())){
-                            trail.getMetadata().setLocation(currentNode.getFirstChild().getNodeValue());
+                            if(currentNode.getFirstChild() != null)
+                                trail.getMetadata().setLocation(currentNode.getFirstChild().getNodeValue());
                         }
                         if(TRAIL_DIFFICULTY.equals(currentNode.getNodeName())){
-                            trail.getMetadata().setDifficulty(currentNode.getFirstChild().getNodeValue());
+                            if(currentNode.getFirstChild() != null)
+                                trail.getMetadata().setDifficulty(currentNode.getFirstChild().getNodeValue());
                         }
                         if(TRAIL_NOTES.equals(currentNode.getNodeName())){
-                            trail.getMetadata().setNotes(currentNode.getFirstChild().getNodeValue());
+                            if(currentNode.getFirstChild() != null)
+                                trail.getMetadata().setNotes(currentNode.getFirstChild().getNodeValue());
                         }
                     }
                 }
