@@ -2,12 +2,11 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/trail_data_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="arc.com.arctrails.TrailDataActivity"
-    tools:showIn="@layout/activity_trail_data">
+    tools:context="arc.com.arctrails.DownloadDataActivity"
+    tools:showIn="@layout/activity_download_data">
 
     <TextView
         android:id="@+id/TrailName"
@@ -55,33 +54,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="16dp"
-        android:onClick="onStartPressed"
-        android:text="@string/trail_data_start"
+        android:onClick="onDownloadPressed"
+        android:text="@string/trail_data_download"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/DeleteButton"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/DeleteButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:onClick="onDeletePressed"
-        android:text="@string/trail_data_delete"
-        app:layout_constraintBaseline_toBaselineOf="@+id/DownloadButton"
-        app:layout_constraintEnd_toStartOf="@+id/button3" />
-
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:onClick="onUploadPressed"
-        android:text="@string/trail_data_upload"
-        app:layout_constraintBaseline_toBaselineOf="@+id/DeleteButton"
-        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/Difficulty"

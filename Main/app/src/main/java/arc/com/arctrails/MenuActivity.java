@@ -118,6 +118,8 @@ public class MenuActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        //create a database instance to improve load times later
+        Database.getDatabase();
     }
 
     // The following section is for the menu

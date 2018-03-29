@@ -60,19 +60,19 @@ class GPXFile {
                     for(int i = 0; i < childNodes.getLength(); i++){
                         currentNode = childNodes.item(i);
                         if(TRAIL_NAME.equals(currentNode.getNodeName())){
-                            trail.setName(currentNode.getFirstChild().getNodeValue());
+                            trail.getMetadata().setName(currentNode.getFirstChild().getNodeValue());
                         }
                         if(TRAIL_DESCRIPTION.equals(currentNode.getNodeName())){
-                            trail.setDescription(currentNode.getFirstChild().getNodeValue());
+                            trail.getMetadata().setDescription(currentNode.getFirstChild().getNodeValue());
                         }
                         if(TRAIL_LOCATION.equals(currentNode.getNodeName())){
-                            trail.setLocation(currentNode.getFirstChild().getNodeValue());
+                            trail.getMetadata().setLocation(currentNode.getFirstChild().getNodeValue());
                         }
                         if(TRAIL_DIFFICULTY.equals(currentNode.getNodeName())){
-                            trail.setDifficulty(currentNode.getFirstChild().getNodeValue());
+                            trail.getMetadata().setDifficulty(currentNode.getFirstChild().getNodeValue());
                         }
                         if(TRAIL_NOTES.equals(currentNode.getNodeName())){
-                            trail.setNotes(currentNode.getFirstChild().getNodeValue());
+                            trail.getMetadata().setNotes(currentNode.getFirstChild().getNodeValue());
                         }
                     }
                 }
@@ -84,29 +84,29 @@ class GPXFile {
                 Trail trail = (Trail)gpx.getExtensionData(TRAIL_EXTENSION);
                 Node node;
 
-                if(trail.getName() != null) {
+                if(trail.getMetadata().getName() != null) {
                     node = doc.createElement(TRAIL_NAME);
-                    node.appendChild(doc.createTextNode(trail.getName()));
+                    node.appendChild(doc.createTextNode(trail.getMetadata().getName()));
                     extensionNode.appendChild(node);
                 }
-                if(trail.getDescription() != null) {
+                if(trail.getMetadata().getDescription() != null) {
                     node = doc.createElement(TRAIL_DESCRIPTION);
-                    node.appendChild(doc.createTextNode(trail.getDescription()));
+                    node.appendChild(doc.createTextNode(trail.getMetadata().getDescription()));
                     extensionNode.appendChild(node);
                 }
-                if(trail.getLocation() != null) {
+                if(trail.getMetadata().getLocation() != null) {
                     node = doc.createElement(TRAIL_LOCATION);
-                    node.appendChild(doc.createTextNode(trail.getLocation()));
+                    node.appendChild(doc.createTextNode(trail.getMetadata().getLocation()));
                     extensionNode.appendChild(node);
                 }
-                if(trail.getDifficulty() != null) {
+                if(trail.getMetadata().getDifficulty() != null) {
                     node = doc.createElement(TRAIL_DIFFICULTY);
-                    node.appendChild(doc.createTextNode(trail.getDifficulty()));
+                    node.appendChild(doc.createTextNode(trail.getMetadata().getDifficulty()));
                     extensionNode.appendChild(node);
                 }
-                if(trail.getNotes() != null) {
+                if(trail.getMetadata().getNotes() != null) {
                     node = doc.createElement(TRAIL_NOTES);
-                    node.appendChild(doc.createTextNode(trail.getNotes()));
+                    node.appendChild(doc.createTextNode(trail.getMetadata().getNotes()));
                     extensionNode.appendChild(node);
                 }
             }
@@ -239,7 +239,7 @@ class GPXFile {
         GPX gpx = parseTrailtoGPX(trail);
 
         //create a new file with the given name
-        File file = new File(context.getExternalFilesDir(null), trail.getName()+".gpx");
+        File file = new File(context.getExternalFilesDir(null), trail.getMetadata().getName()+".gpx");
         FileOutputStream out;
         try {
             out = new FileOutputStream(file);

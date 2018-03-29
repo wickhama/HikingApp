@@ -55,4 +55,6 @@
         <item>Medium</item>
         <item>Hard</item>
     </string-array>
+    <string name="title_activity_download_data">DownloadDataActivity</string>
+    <string name="trail_data_download">Download</string>
 </resources>

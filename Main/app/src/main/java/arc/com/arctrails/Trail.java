@@ -10,13 +10,57 @@ import java.util.List;
  */
 
 public class Trail {
-    private String name;
-    private String description;
-    private String location;
-    private String difficulty;
-    private String notes;
+    private Metadata metadata;
     private List<Waypoint> waypoints;
     private List<Track> tracks;
+
+    public static class Metadata{
+        private String name;
+        private String description;
+        private String location;
+        private String difficulty;
+        private String notes;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+        public String getLocation() {
+            return location;
+        }
+
+        public void setLocation(String location) {
+            this.location = location;
+        }
+
+        public String getDifficulty() {
+            return difficulty;
+        }
+
+        public void setDifficulty(String difficulty) {
+            this.difficulty = difficulty;
+        }
+
+        public String getNotes() {
+            return notes;
+        }
+
+        public void setNotes(String notes) {
+            this.notes = notes;
+        }
+    }
 
     public static class Waypoint {
         private String waypointName;
@@ -99,51 +143,20 @@ public class Trail {
     }
 
     public Trail(String name, String description, String location) {
-        this.name = name;
-        this.description = description;
-        this.location = location;
+        this.metadata = new Metadata();
+        metadata.setName(name);
+        metadata.setDescription(description);
+        metadata.setLocation(location);
         this.waypoints = new ArrayList<>();
         this.tracks = new ArrayList<>();
     }
 
-    public String getName() {
-        return name;
+    public Metadata getMetadata() {
+        return metadata;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    public String getDifficulty() {
-        return difficulty;
-    }
-
-    public void setDifficulty(String difficulty) {
-        this.difficulty = difficulty;
-    }
-
-    public String getNotes() {
-        return notes;
-    }
-
-    public void setNotes(String notes) {
-        this.notes = notes;
+    public void setMetadata(Metadata metadata){
+        this.metadata = metadata;
     }
 
     public List<Waypoint> getWaypoints() {

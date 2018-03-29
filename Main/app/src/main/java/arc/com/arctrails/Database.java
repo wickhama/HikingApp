@@ -25,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import static android.widget.Toast.makeText;
 
@@ -36,6 +37,20 @@ public class Database extends AppCompatActivity {
      * This class implements the JSON Database with the application
      */
 
+    public interface DataListListener{
+        void onDataList(List<String> entryIDs);
+    }
+
+    public interface DataTrailListener{
+        void onDataTrail(Trail trail);
+    }
+
+    public interface MetadataListener{
+        void onMetadata(Trail.Metadata trail);
+    }
+
+    //a singleton instance of a database
+    private static Database singleton;
 
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
@@ -47,6 +62,12 @@ public class Database extends AppCompatActivity {
     //For Anonymous Authorization
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
+
+    public static Database getDatabase(){
+        if(singleton == null)
+            singleton = new Database();
+        return singleton;
+    }
 
     public Database(){
 
@@ -80,7 +101,7 @@ public class Database extends AppCompatActivity {
     }
 
 
-    public void trailNameRun(final DatabaseListener DBlistener){
+    public void trailNameRun(final DataListListener DBlistener){
 
         DatabaseReference rootRef = myRef;
         DatabaseReference ref = rootRef.child("Trails");
@@ -109,7 +130,7 @@ public class Database extends AppCompatActivity {
         ref.addListenerForSingleValueEvent(eventListener);
     }
 
-    public void getTrail(final String trailID, final DatabaseListener DBlistener){
+    public void getTrail(final String trailID, final DataTrailListener DBlistener){
 //        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
 
         DatabaseReference rootRef = myRef;
@@ -119,6 +140,28 @@ public class Database extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 DBlistener.onDataTrail(dataSnapshot.child(trailID).getValue(Trail.class));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+
+        ref.addListenerForSingleValueEvent(eventListener);
+    }
+
+    public void getTrailMetadata(final String trailID, final MetadataListener DBlistener){
+//        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+
+        DatabaseReference rootRef = myRef;
+        DatabaseReference ref = rootRef.child("Trails");
+
+        ValueEventListener eventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Trail.Metadata metadata = dataSnapshot.child(trailID).child("metadata").getValue(Trail.Metadata.class);
+                DBlistener.onMetadata(metadata);
             }
 
             @Override

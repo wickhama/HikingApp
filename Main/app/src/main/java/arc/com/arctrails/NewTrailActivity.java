@@ -33,7 +33,7 @@ public class NewTrailActivity extends AppCompatActivity {
     public static final String EXTRA_TRAIL_LOCATION = "arc.com.arctrails.traillocation";
     public static final String EXTRA_TRAIL_DESCRIPTION = "arc.com.arctrails.traildescription";
     public static final String EXTRA_TRAIL_NOTES = "arc.com.arctrails.trailnotes";
-    public static final String EXTRA_TRAIL_DIFFICULTY = "arc.com.arctrails.traildescription";
+    public static final String EXTRA_TRAIL_DIFFICULTY = "arc.com.arctrails.traildifficulty";
 
 
 

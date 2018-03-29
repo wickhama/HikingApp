@@ -141,11 +141,11 @@ public class TrailDataActivity extends AppCompatActivity {
             //Info for preset trails are stored in gpx Version and Creator as
             //GPX Parser does not allow access to any other fields
 
-            nameView.setText(trail.getName());
-            locationView.setText("Location: "+trail.getLocation());
-            difficultyView.setText("Difficulty: "+trail.getDifficulty());
-            descriptionView.setText(trail.getDescription());
-            notesView.setText(trail.getNotes());
+            nameView.setText(trail.getMetadata().getName());
+            locationView.setText("Location: "+trail.getMetadata().getLocation());
+            difficultyView.setText("Difficulty: "+trail.getMetadata().getDifficulty());
+            descriptionView.setText(trail.getMetadata().getDescription());
+            notesView.setText(trail.getMetadata().getNotes());
 
             descriptionView.setMovementMethod(new ScrollingMovementMethod());
             notesView.setMovementMethod(new ScrollingMovementMethod());
@@ -199,8 +199,8 @@ public class TrailDataActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        Database database = new Database();
-                        database.uploadTrail(trail.getName(), trail);
+                        Database database = Database.getDatabase();
+                        database.uploadTrail(trail.getMetadata().getName(), trail);
                         Snackbar.make(findViewById(R.id.trail_data_layout), "Uploading Trail", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
                     }

@@ -103,7 +103,12 @@ public class RecordingActivity extends AppCompatActivity
     }
 
     public void onStopClick(View v) {
-        tryStopRecording();
+        if(recordedTrail != null)
+            tryStopRecording();
+        else
+            Snackbar.make(findViewById(R.id.recording_layout),
+                    "Must be recording in order to stop", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
     }
 
     /**
@@ -236,11 +241,18 @@ public class RecordingActivity extends AppCompatActivity
             if (resultCode == NewTrailActivity.RESULT_SAVE) {
                 //the activity sends the information back through the intent
                 String name = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_NAME);
+                String location = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_LOCATION);
+                String difficulty = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_DIFFICULTY);
                 String description = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_DESCRIPTION);
+                String notes = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_NOTES);
+
                 //make sure there's actually recorded data
                 if (recordedTrail != null) {
-                    recordedTrail.setName(name);
-                    recordedTrail.setDescription(description);
+                    recordedTrail.getMetadata().setName(name);
+                    recordedTrail.getMetadata().setLocation(location);
+                    recordedTrail.getMetadata().setDifficulty(difficulty);
+                    recordedTrail.getMetadata().setDescription(description);
+                    recordedTrail.getMetadata().setNotes(notes);
                     GPXFile.writeGPXFile(recordedTrail, getApplicationContext());
                 }
                 recordedTrail = null;
