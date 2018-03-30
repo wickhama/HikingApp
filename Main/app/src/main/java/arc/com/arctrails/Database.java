@@ -22,6 +22,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -57,6 +58,8 @@ public class Database extends AppCompatActivity {
     private String trailID;
     private ArrayList<String> trailList = new ArrayList<>();
     private DatabaseReference myRef;
+    // Added for image storage
+    private StorageReference storageReference;
 
 
     //For Anonymous Authorization
@@ -74,6 +77,7 @@ public class Database extends AppCompatActivity {
         myRef = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
+
 
         /**
          * Created by Graeme

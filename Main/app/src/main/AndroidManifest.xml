@@ -22,6 +22,8 @@
             android:name=".MenuActivity"
             android:label="@string/title_activity_menu"
             android:theme="@style/AppTheme.NoActionBar">
+            <!--This is the original opening intent-->
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -70,6 +72,7 @@
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
+
         <activity
             android:name=".LocalFileActivity"
             android:label="@string/title_activity_local_file"
@@ -105,6 +108,18 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="arc.com.arctrails.DatabaseFileActivity" />
+        </activity>
+        <activity
+            android:name=".ImageTemp"
+            android:label="@string/title_activity_image_temp"
+            android:theme="@style/AppTheme.NoActionBar">
+
+            <!--This is a temp intent simply for testing the image storage -->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
     </application>
 
