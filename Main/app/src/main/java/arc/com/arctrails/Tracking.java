@@ -1,6 +1,7 @@
 package arc.com.arctrails;
 
 import android.Manifest;
+import android.app.FragmentManager;
 import android.app.Service;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -40,6 +41,8 @@ import java.util.List;
 
 public class Tracking extends Service {
 
+    final static String LOCATION_FOUND = "LOCATION_FOUND";
+
     private FusedLocationProviderClient flocatClient;
     private final IBinder locationBinder = new LocalBinder();
     private LocationRequest locationRequest = new LocationRequest();
@@ -66,13 +69,20 @@ public class Tracking extends Service {
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         locationCallback = new LocationCallback() {
+            private Intent intent = new Intent();
+            private double[] latlng = new double[2];
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 if (locationResult == null) {
                     return;
                 }
+                intent.setAction(LOCATION_FOUND);
                 for (Location location : locationResult.getLocations()) {
                     trail.add(location);
+                    latlng[0] = location.getLatitude();
+                    latlng[1] = location.getLongitude();
+                    intent.putExtra("location", latlng);
+                    sendBroadcast(intent);
                 }
             }
         };

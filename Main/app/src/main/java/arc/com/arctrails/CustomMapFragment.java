@@ -273,6 +273,12 @@ public class CustomMapFragment extends SupportMapFragment implements
         mMap.addPolyline(polylineOptions);
     }
 
+    protected void drawPath(LatLng latLng) {
+        PolylineOptions polyOptions = new PolylineOptions();
+        polyOptions.width(5).geodesic(true).color(Color.rgb(60, 195, 0));
+        mMap.addPolyline(polyOptions);
+    }
+
     /**
      * Created by Ryley
      *

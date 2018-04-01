@@ -1,7 +1,10 @@
 package arc.com.arctrails;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -136,8 +139,13 @@ public class RecordingActivity extends AppCompatActivity
                 //creates a new empty trail
                 recordedTrail = new Trail();
             }
+            //Register Reciever to draw path will tracking
+            LocationReciever locationReciever = new LocationReciever();
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(Tracking.LOCATION_FOUND);
+            registerReceiver(locationReciever, intentFilter);
+
             //then tells the coordinate fragment to record
-            location.record();
             ((ToggleButton)findViewById(R.id.recordButton)).setChecked(true);
         }
     }
@@ -345,5 +353,23 @@ public class RecordingActivity extends AppCompatActivity
         //remove all permission listeners
         mListeners.clear();
     }
+
+    /*@Override
+    public void onLocationChanged(Location location) {
+        if(((ToggleButton)findViewById(R.id.recordButton)).isChecked()) {
+            map.drawPath(new LatLng(location.getLatitude(), location.getLongitude()));
+        }
+    }*/
     // End permissions
+
+    private class LocationReciever extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(((ToggleButton)findViewById(R.id.recordButton)).isChecked()) {
+                double[] location = intent.getDoubleArrayExtra("location");
+                map.drawPath(new LatLng(location[0], location[1]));
+            }
+        }
+    }
 }
