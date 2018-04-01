@@ -144,8 +144,10 @@ public class RecordingActivity extends AppCompatActivity
             IntentFilter intentFilter = new IntentFilter();
             intentFilter.addAction(Tracking.LOCATION_FOUND);
             registerReceiver(locationReciever, intentFilter);
+            map.startRecording();
 
             //then tells the coordinate fragment to record
+            location.record();
             ((ToggleButton)findViewById(R.id.recordButton)).setChecked(true);
         }
     }
@@ -234,6 +236,7 @@ public class RecordingActivity extends AppCompatActivity
                         }
                         //make sure the menu changes
                         ((ToggleButton)findViewById(R.id.recordButton)).setChecked(false);
+                        map.stopRecording();
                     }
                 });
     }
@@ -256,15 +259,15 @@ public class RecordingActivity extends AppCompatActivity
         }
     }
 
-    private void addTrack(ArrayList<Location> data){
+    private void addTrack(ArrayList<LatLng> data){
         if(recordedTrail != null && data != null && !data.isEmpty()) {
             Trail.Waypoint w;
             Trail.Track t;
             ArrayList<Trail.Waypoint> track = new ArrayList<>();
-            for (Location loc : data) {
+            for (LatLng loc : data) {
                 w = new Trail.Waypoint();
-                w.setLatitude(loc.getLatitude());
-                w.setLongitude(loc.getLongitude());
+                w.setLatitude(loc.latitude);
+                w.setLongitude(loc.longitude);
                 track.add(w);
             }
             t = new Trail.Track();
@@ -364,11 +367,15 @@ public class RecordingActivity extends AppCompatActivity
 
     private class LocationReciever extends BroadcastReceiver {
 
+        private ArrayList<LatLng> path;
+
         @Override
         public void onReceive(Context context, Intent intent) {
             if(((ToggleButton)findViewById(R.id.recordButton)).isChecked()) {
-                double[] location = intent.getDoubleArrayExtra("location");
-                map.drawPath(new LatLng(location[0], location[1]));
+                path = intent.getParcelableArrayListExtra("location");
+                map.drawPath(path);
+                /*double[] location = intent.getDoubleArrayExtra("location");
+                map.drawPath(new LatLng(location[0], location[1]));*/
             }
         }
     }

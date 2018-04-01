@@ -59,7 +59,7 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <service
             android:name=".Tracking"
-            android:exported="false"/>
+            android:exported="false" />
 
         <activity android:name=".Database">
             <!--<intent-filter>-->
@@ -91,6 +91,11 @@
             android:label="@string/title_activity_recording"
             android:parentActivityName=".MenuActivity"
             android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.ATTACH_DATA"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="text/plain"/>
+            </intent-filter>
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="arc.com.arctrails.MenuActivity" />

@@ -48,7 +48,7 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
     private Tracking trackingService;
     //Value for if tracking is bounded or not -- Ayla
     private boolean service_bounded;
-    private ArrayList<Location> trail = new ArrayList();
+    private ArrayList<LatLng> trail = new ArrayList();
 
     /**Created by Ryley Increment 1
      *
@@ -123,6 +123,7 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
      * Only called when user wishes to create a new trail.
      */
     public void record() {
+        System.out.println(service_bounded);
         if(!service_bounded) {
             Intent intent = new Intent(getActivity(), Tracking.class);
             getActivity().bindService(intent, bindConnection, Context.BIND_AUTO_CREATE);
@@ -132,7 +133,7 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
         }
     }
 
-    public ArrayList<Location> pauseRecording() {
+    public ArrayList<LatLng> pauseRecording() {
             return trackingService.pauseRecording();
     }
 
@@ -143,9 +144,10 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
     /**Created by Ayla Wickham Increment 3
      * Stops recording and returns an ArrayList<Double[]> of points.
      */
-    public ArrayList<Location> stopRecord() {
+    public ArrayList<LatLng> stopRecord() {
 
-        if((trail=trackingService.stop_Recording()) == null) return new ArrayList();
+        if(trackingService.isTrailEmpty()) return new ArrayList();
+        trail = trackingService.stopRecording();
         getActivity().unbindService(bindConnection);
         service_bounded = false;
         return trail;
