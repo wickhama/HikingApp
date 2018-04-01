@@ -1,4 +1,271 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--xmlns:tools="http://schemas.android.com/tools"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
+    <!--tools:context="arc.com.arctrails.NewTrailActivity"-->
+    <!--tools:showIn="@layout/activity_new_trail">-->
+
+    <!--<EditText-->
+        <!--android:id="@+id/TrailNameField"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="44dp"-->
+        <!--android:layout_marginEnd="16dp"-->
+        <!--android:layout_marginStart="16dp"-->
+        <!--android:layout_marginTop="16dp"-->
+        <!--android:ems="10"-->
+        <!--android:hint="@string/new_trail_name"-->
+        <!--android:inputType="textPersonName"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintHorizontal_bias="0.0"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent" />-->
+
+    <!--<EditText-->
+        <!--android:id="@+id/TrailDescriptionField"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="186dp"-->
+        <!--android:layout_marginEnd="16dp"-->
+        <!--android:layout_marginStart="16dp"-->
+        <!--android:ems="10"-->
+        <!--android:gravity="top|left"-->
+        <!--android:hint="@string/new_trail_description"-->
+        <!--android:inputType="textMultiLine"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintHorizontal_bias="0.0"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/editDifficulty" />-->
+
+    <!--<EditText-->
+        <!--android:id="@+id/TrailNotesField"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_marginBottom="8dp"-->
+        <!--android:layout_marginEnd="16dp"-->
+        <!--android:layout_marginStart="16dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:ems="10"-->
+        <!--android:gravity="top|left"-->
+        <!--android:hint="@string/stringNotes"-->
+        <!--android:inputType="textPersonName"-->
+        <!--app:layout_constraintBottom_toTopOf="@+id/SaveButton"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintHorizontal_bias="0.0"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/TrailDescriptionField"-->
+        <!--app:layout_constraintVertical_bias="0.0" />-->
+
+    <!--<Button-->
+        <!--android:id="@+id/SaveButton"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="16dp"-->
+        <!--android:layout_marginStart="16dp"-->
+        <!--android:onClick="onSavePressed"-->
+        <!--android:text="@string/new_trail_save"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintHorizontal_bias="0.0"-->
+        <!--app:layout_constraintStart_toStartOf="parent" />-->
+
+    <!--<EditText-->
+        <!--android:id="@+id/TrailLocationField"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginEnd="16dp"-->
+        <!--android:layout_marginStart="16dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--android:ems="10"-->
+        <!--android:hint="@string/editLocation"-->
+        <!--android:inputType="textPersonName"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/TrailNameField" />-->
+
+    <!--<Spinner-->
+        <!--android:id="@+id/editDifficulty"-->
+        <!--android:layout_width="165dp"-->
+        <!--android:layout_height="32dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--app:layout_constraintStart_toEndOf="@+id/labelDifficulty"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/TrailLocationField" />-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/labelDifficulty"-->
+        <!--android:layout_width="78dp"-->
+        <!--android:layout_height="31dp"-->
+        <!--android:layout_marginBottom="16dp"-->
+        <!--android:layout_marginStart="16dp"-->
+        <!--android:layout_marginTop="16dp"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:text="Difficulty:"-->
+        <!--android:textAlignment="viewEnd"-->
+        <!--android:textAppearance="@android:style/TextAppearance.Material.Medium"-->
+        <!--app:layout_constraintBottom_toTopOf="@+id/TrailDescriptionField"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/TrailLocationField"-->
+        <!--app:layout_constraintVertical_bias="0.695" />-->
+
+    <!--<ScrollView-->
+        <!--android:layout_width="443dp"-->
+        <!--android:layout_height="627dp"-->
+        <!--android:layout_marginBottom="8dp"-->
+        <!--android:layout_marginEnd="8dp"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginTop="8dp"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintHorizontal_bias="0.545"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent">-->
+
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<ImageView-->
+                <!--android:id="@+id/imageView2"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="227dp"-->
+                <!--app:srcCompat="@color/common_google_signin_btn_text_light_default" />-->
+
+            <!--<EditText-->
+                <!--android:id="@+id/trailNameField"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="44dp"-->
+                <!--android:layout_marginEnd="16dp"-->
+                <!--android:layout_marginStart="16dp"-->
+                <!--android:layout_marginTop="16dp"-->
+                <!--android:ems="10"-->
+                <!--android:hint="@string/new_trail_name"-->
+                <!--android:inputType="textPersonName"-->
+                <!--app:layout_constraintEnd_toEndOf="parent"-->
+                <!--app:layout_constraintHorizontal_bias="0.0"-->
+                <!--app:layout_constraintStart_toStartOf="parent"-->
+                <!--app:layout_constraintTop_toTopOf="parent" />-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/labelDifficulty3"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="31dp"-->
+                <!--android:layout_marginBottom="16dp"-->
+                <!--android:layout_marginStart="16dp"-->
+                <!--android:layout_marginTop="16dp"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:text="Difficulty:"-->
+                <!--android:textAlignment="viewEnd"-->
+                <!--android:textAppearance="@android:style/TextAppearance.Material.Medium"-->
+                <!--app:layout_constraintBottom_toTopOf="@+id/TrailDescriptionField"-->
+                <!--app:layout_constraintStart_toStartOf="parent"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/TrailLocationField"-->
+                <!--app:layout_constraintVertical_bias="1.0" />-->
+
+            <!--<TextView-->
+                <!--android:id="@+id/labelDifficulty2"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="31dp"-->
+                <!--android:layout_marginBottom="16dp"-->
+                <!--android:layout_marginStart="16dp"-->
+                <!--android:layout_marginTop="16dp"-->
+                <!--android:gravity="center_vertical"-->
+                <!--android:text="Difficulty:"-->
+                <!--android:textAlignment="viewEnd"-->
+                <!--android:textAppearance="@android:style/TextAppearance.Material.Medium"-->
+                <!--app:layout_constraintBottom_toTopOf="@+id/TrailDescriptionField"-->
+                <!--app:layout_constraintStart_toStartOf="parent"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/TrailLocationField"-->
+                <!--app:layout_constraintVertical_bias="1.0" />-->
+
+            <!--<Spinner-->
+                <!--android:id="@+id/editDifficulty2"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="32dp"-->
+                <!--android:layout_marginStart="8dp"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--app:layout_constraintStart_toEndOf="@+id/labelDifficulty"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/TrailLocationField" />-->
+
+            <!--<EditText-->
+                <!--android:id="@+id/trailLocationField"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginEnd="16dp"-->
+                <!--android:layout_marginStart="16dp"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:ems="10"-->
+                <!--android:hint="@string/editLocation"-->
+                <!--android:inputType="textPersonName"-->
+                <!--app:layout_constraintEnd_toEndOf="parent"-->
+                <!--app:layout_constraintStart_toStartOf="parent"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/TrailNameField" />-->
+
+            <!--<EditText-->
+                <!--android:id="@+id/trailNotesField"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="0dp"-->
+                <!--android:layout_marginBottom="8dp"-->
+                <!--android:layout_marginEnd="16dp"-->
+                <!--android:layout_marginStart="16dp"-->
+                <!--android:layout_marginTop="8dp"-->
+                <!--android:ems="10"-->
+                <!--android:gravity="top|left"-->
+                <!--android:hint="@string/stringNotes"-->
+                <!--android:inputType="textPersonName"-->
+                <!--app:layout_constraintBottom_toTopOf="@+id/SaveButton"-->
+                <!--app:layout_constraintEnd_toEndOf="parent"-->
+                <!--app:layout_constraintHorizontal_bias="0.0"-->
+                <!--app:layout_constraintStart_toStartOf="parent"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/TrailDescriptionField"-->
+                <!--app:layout_constraintVertical_bias="0.0" />-->
+
+            <!--<EditText-->
+                <!--android:id="@+id/trailDescriptionField"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="186dp"-->
+                <!--android:layout_marginEnd="16dp"-->
+                <!--android:layout_marginStart="16dp"-->
+                <!--android:ems="10"-->
+                <!--android:gravity="top|left"-->
+                <!--android:hint="@string/new_trail_description"-->
+                <!--android:inputType="textMultiLine"-->
+                <!--app:layout_constraintEnd_toEndOf="parent"-->
+                <!--app:layout_constraintHorizontal_bias="0.0"-->
+                <!--app:layout_constraintStart_toStartOf="parent"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/editDifficulty" />-->
+
+            <!--<Button-->
+                <!--android:id="@+id/saveButton"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginEnd="16dp"-->
+                <!--android:layout_marginStart="16dp"-->
+                <!--android:onClick="onSavePressed"-->
+                <!--android:text="@string/new_trail_save"-->
+                <!--app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--app:layout_constraintEnd_toEndOf="parent"-->
+                <!--app:layout_constraintHorizontal_bias="0.0"-->
+                <!--app:layout_constraintStart_toStartOf="parent" />-->
+
+        <!--</LinearLayout>-->
+
+    <!--</ScrollView>-->
+
+
+<!--</android.support.constraint.ConstraintLayout>-->
+
+<!--<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--xmlns:tools="http://schemas.android.com/tools"-->
+<!--android:id="@+id/db_content_view"-->
+<!--android:layout_width="match_parent"-->
+<!--android:layout_height="match_parent"-->
+<!--app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
+<!--tools:context="arc.com.arctrails.DatabaseFileActivity"-->
+<!--tools:showIn="@layout/activity_database_file">-->
+
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,6 +274,10 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="arc.com.arctrails.NewTrailActivity"
     tools:showIn="@layout/activity_new_trail">
+
+
+
+
 
     <EditText
         android:id="@+id/TrailNameField"
@@ -19,6 +290,7 @@
         android:hint="@string/new_trail_name"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -28,12 +300,12 @@
         android:layout_height="186dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
         android:ems="10"
         android:gravity="top|left"
         android:hint="@string/new_trail_description"
         android:inputType="textMultiLine"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editDifficulty" />
 
@@ -51,20 +323,22 @@
         android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/SaveButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TrailDescriptionField" />
+        app:layout_constraintTop_toBottomOf="@+id/TrailDescriptionField"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/SaveButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:onClick="onSavePressed"
         android:text="@string/new_trail_save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
@@ -86,7 +360,6 @@
         android:layout_width="165dp"
         android:layout_height="32dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         app:layout_constraintStart_toEndOf="@+id/labelDifficulty"
         app:layout_constraintTop_toBottomOf="@+id/TrailLocationField" />
 
@@ -103,12 +376,12 @@
         android:textAppearance="@android:style/TextAppearance.Material.Medium"
         app:layout_constraintBottom_toTopOf="@+id/TrailDescriptionField"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TrailLocationField" />
-
-
+        app:layout_constraintTop_toBottomOf="@+id/TrailLocationField"
+        app:layout_constraintVertical_bias="0.695" />
 
 </android.support.constraint.ConstraintLayout>
 
+<!--</android.support.v4.widget.NestedScrollView>-->
 
 
 
