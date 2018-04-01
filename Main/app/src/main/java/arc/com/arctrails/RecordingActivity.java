@@ -1,7 +1,10 @@
 package arc.com.arctrails;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -141,6 +144,13 @@ public class RecordingActivity extends AppCompatActivity
                 //creates a new empty trail
                 recordedTrail = new Trail();
             }
+            //Register Reciever to draw path will tracking
+            LocationReciever locationReciever = new LocationReciever();
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(Tracking.LOCATION_FOUND);
+            registerReceiver(locationReciever, intentFilter);
+            map.startRecording();
+
             //then tells the coordinate fragment to record
             location.record();
             ((ToggleButton)findViewById(R.id.recordButton)).setChecked(true);
@@ -231,6 +241,7 @@ public class RecordingActivity extends AppCompatActivity
                         }
                         //make sure the menu changes
                         ((ToggleButton)findViewById(R.id.recordButton)).setChecked(false);
+                        map.stopRecording();
                     }
                 });
     }
@@ -260,15 +271,15 @@ public class RecordingActivity extends AppCompatActivity
         }
     }
 
-    private void addTrack(ArrayList<Location> data){
+    private void addTrack(ArrayList<LatLng> data){
         if(recordedTrail != null && data != null && !data.isEmpty()) {
             Trail.Waypoint w;
             Trail.Track t;
             ArrayList<Trail.Waypoint> track = new ArrayList<>();
-            for (Location loc : data) {
+            for (LatLng loc : data) {
                 w = new Trail.Waypoint();
-                w.setLatitude(loc.getLatitude());
-                w.setLongitude(loc.getLongitude());
+                w.setLatitude(loc.latitude);
+                w.setLongitude(loc.longitude);
                 track.add(w);
             }
             t = new Trail.Track();
@@ -357,5 +368,27 @@ public class RecordingActivity extends AppCompatActivity
         //remove all permission listeners
         mListeners.clear();
     }
+
+    /*@Override
+    public void onLocationChanged(Location location) {
+        if(((ToggleButton)findViewById(R.id.recordButton)).isChecked()) {
+            map.drawPath(new LatLng(location.getLatitude(), location.getLongitude()));
+        }
+    }*/
     // End permissions
+
+    private class LocationReciever extends BroadcastReceiver {
+
+        private ArrayList<LatLng> path;
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(((ToggleButton)findViewById(R.id.recordButton)).isChecked()) {
+                path = intent.getParcelableArrayListExtra("location");
+                map.drawPath(path);
+                /*double[] location = intent.getDoubleArrayExtra("location");
+                map.drawPath(new LatLng(location[0], location[1]));*/
+            }
+        }
+    }
 }

@@ -23,9 +23,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -279,6 +282,35 @@ public class CustomMapFragment extends SupportMapFragment implements
             polylineOptions.add(iLatLng).width(5).geodesic(true).color(Color.rgb(60,195,0));
         }
         mMap.addPolyline(polylineOptions);
+    }
+
+    //Variables used for Drawing Path from RecordingActivity
+    private boolean polyAdded;
+    private PolylineOptions lineOptions;
+    private Polyline polyline;
+
+    protected void startRecording() {
+        lineOptions = new PolylineOptions();
+        lineOptions.width(5).geodesic(true).color(Color.rgb(195, 60, 50));
+    }
+
+    protected void drawPath(ArrayList<LatLng> path) {
+        if (!polyAdded) {
+            polyline = getMap().addPolyline(lineOptions);
+            polyAdded = true;
+            lineOptions.addAll(path);
+        }
+        else {
+            polyline.setPoints(path);
+        }
+        /*PolylineOptions polyOptions = new PolylineOptions();
+        polyOptions.width(5).geodesic(true).color(Color.rgb(60, 195, 0));
+        mMap.addPolyline(polyOptions);*/
+    }
+
+    protected void stopRecording() {
+        polyAdded = false;
+        clearTrail(false);
     }
 
     /**
