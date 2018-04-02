@@ -96,9 +96,9 @@ public class MenuActivity extends AppCompatActivity
 //            SharedPreferences.Editor editor = wmbPreference.edit();
 //            editor.putBoolean(PREFERENCE_FIRST_RUN, false);
 //            editor.apply();
-//
-//            //Adds Files into phone storage - aw
-//            initAssets.initAssets(this);
+
+            //Adds Files into phone storage - aw
+            initAssets.initAssets(this);
 //        }
 
         mListeners = new HashSet<>();

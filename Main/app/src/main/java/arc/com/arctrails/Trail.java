@@ -1,7 +1,11 @@
 package arc.com.arctrails;
 
+import android.graphics.Bitmap;
+
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by graememorgan on 2018-02-26.
@@ -20,10 +24,24 @@ public class Trail {
         private String location;
         private String difficulty;
         private String notes;
+        // For Image Upload
+        private UUID id;
+        private URI imageUri;
+        private Bitmap imageBitmap;
 
-        public String getName() {
-            return name;
-        }
+        public UUID getId() { return id; }
+
+        public void setId(UUID id) { this.id = id; }
+
+        public URI getImageUri() { return imageUri; }
+
+        public void setImageUri(URI imageUri) { this.imageUri = imageUri; }
+
+        public Bitmap getImageBitmap() { return imageBitmap;}
+
+        public void setImageBitmap(Bitmap imageBitmap) { this.imageBitmap = imageBitmap; }
+
+        public String getName() { return name; }
 
         public void setName(String name) {
             this.name = name;

@@ -1,17 +1,29 @@
 package arc.com.arctrails;
 
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+
 import java.io.File;
+import java.io.FileOutputStream;
+import java.util.UUID;
 
 /**
  * @author Ryley
@@ -34,6 +46,12 @@ public class NewTrailActivity extends AppCompatActivity {
     public static final String EXTRA_TRAIL_DESCRIPTION = "arc.com.arctrails.traildescription";
     public static final String EXTRA_TRAIL_NOTES = "arc.com.arctrails.trailnotes";
     public static final String EXTRA_TRAIL_DIFFICULTY = "arc.com.arctrails.traildifficulty";
+
+    //For image uploading
+    public static final String EXTRA_TRAIL_ID = "arc.com.arctrails.id";
+    public static final String EXTRA_TRAIL_URI = "arc.com.arctrails.imageUri";
+    public static final String EXTRA_TRAIL_IMAGEBITMAP = "arc.com.arctrails.imageBitmap";
+
 
 
 
@@ -73,6 +91,9 @@ public class NewTrailActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
+
+        ImageButton image = findViewById(R.id.imageButton);
+        image.setImageDrawable(getResources().getDrawable(R.drawable.ic_menu_camera));
     }
 
     /**
@@ -123,6 +144,11 @@ public class NewTrailActivity extends AppCompatActivity {
         }
     }
 
+
+
+
+
+
     /**
      * Created by Ryley
      * added in Increment 3
@@ -136,6 +162,8 @@ public class NewTrailActivity extends AppCompatActivity {
         EditText descriptionField = findViewById(R.id.TrailDescriptionField);
         EditText notesField = findViewById(R.id.TrailNotesField);
         Spinner difficultySpinner = findViewById(R.id.editDifficulty);
+
+        ImageView trailImage = findViewById(R.id.imageButton);
 
         //trims whitespace from the user input
         String name = nameField.getText().toString().trim();
@@ -153,6 +181,4 @@ public class NewTrailActivity extends AppCompatActivity {
         setResult(RESULT_SAVE,intent);
         finish();
     }
-
-
 }

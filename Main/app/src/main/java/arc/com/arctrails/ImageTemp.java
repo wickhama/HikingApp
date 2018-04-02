@@ -1,12 +1,15 @@
 package arc.com.arctrails;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -38,6 +41,8 @@ import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.UUID;
 
 public class ImageTemp extends AppCompatActivity {
@@ -63,13 +68,11 @@ public class ImageTemp extends AppCompatActivity {
 
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_temp);
 
-        //this next line might be wrong
         imageContainer = findViewById(R.id.imageButtonTest);
         uploadImage = (Button) findViewById(R.id.uploadImageTest);
 
@@ -77,14 +80,9 @@ public class ImageTemp extends AppCompatActivity {
         currentUser = mAuth.getCurrentUser();
 
 
-
-
-
-
-
-
         /**
-         * Anonymous Auth Again -- this will not be needed later
+         * Anonymous Auth Again -- this will not be needed later as we should move this to a launch
+         * activity.
          */
 
         mAuth.signInAnonymously()
@@ -105,8 +103,9 @@ public class ImageTemp extends AppCompatActivity {
                 });
 
 
-
-
+        /**
+         * Getting images from the gallery.
+         */
         uploadImage = (Button) findViewById(R.id.uploadImageTest);
         addImage = (ImageButton) findViewById(R.id.imageButtonTest);
 
@@ -115,73 +114,72 @@ public class ImageTemp extends AppCompatActivity {
             public void onClick(View v) {
                 Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
                 galleryIntent.setType("image/*");
-                startActivityForResult(galleryIntent,GALLERY_CODE);
+                startActivityForResult(galleryIntent, GALLERY_CODE);
             }
         });
 
 
-            //THIS is causing a crash when no image to upload.
-            uploadImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        /**
+         * UPLOADING images to Firebase Storage.
+         */
+        uploadImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-                    if(imageUri != null) {
-                        //added for UUID
-                        String path = "images/" + UUID.randomUUID() + ".jpg";
-                        storageRef = storage.getReference();
-                        imageRef = storageRef.child(path);
+                if (imageUri != null) {
+                    //added for UUID
+                    String path = "images/" + UUID.randomUUID() + ".jpg";
+                    storageRef = storage.getReference();
+                    imageRef = storageRef.child(path);
 
-                        uploadTask = storageRef.putFile(imageUri);
+                    uploadTask = storageRef.putFile(imageUri);
 
-                        imageRef.getName().equals(imageRef.getName());
-                        imageRef.getPath().equals(imageRef.getPath());
+                    imageRef.getName().equals(imageRef.getName());
+                    imageRef.getPath().equals(imageRef.getPath());
 
-                        Uri file = imageUri;
-                        //Sets path with UUID
-                        imageRef = storageRef.child(path);
+                    Uri file = imageUri;
 
-                        System.out.println("********URI*********" + file);
+                    //Sets path with UUID
+                    imageRef = storageRef.child(path);
 
-                        uploadTask = imageRef.putFile(file);
+                    saveInternal(imageUri);
+
+                    uploadTask = imageRef.putFile(file);
 
 
-                        uploadTask.addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(getApplicationContext(), "File Upload Failure.", Toast.LENGTH_LONG).show();
-                                e.printStackTrace();
-                            }
-                        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                            @Override
-                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                Toast.makeText(getApplicationContext(), "File Upload Success.", Toast.LENGTH_LONG).show();
+                    uploadTask.addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getApplicationContext(), "File Upload Failure.", Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Toast.makeText(getApplicationContext(), "File Upload Success.", Toast.LENGTH_LONG).show();
 
-                                //This will be needed when saving to the Trail object
+                            //This will be needed when saving to the Trail object
                             /*
                             Uri downloadUrl = taskSnapshot.getDownloadUrl();
                             String url = downloadUrl.toString();
                             */
-                            }
-                        });
-                    }
+                        }
+                    });
                 }
-            });
+            }
+        });
 
 
         /**
-         * Picasso library is an add-on for Firebase and it allows the imageview to display images
-         * from the Database.
+         * DOWNLOADING from Firebase Storage
          */
-
-
 
         //Hardcoded to get things working.
         String url = "https://firebasestorage.googleapis.com/v0/b/arctrails-b1a84.appspot.com/o/" +
-                "images%2F0e9f9b66-7088-4294-9be7-00eb4026c5cb.jpg?alt=media&token=2de1ec5e-088d-" +
-                "4db8-8ba7-760193083325";
+                "images%2F20e1ee59-1fe1-4a05-82e8-9f40845ba6d5.jpg?alt=media&token=3b43df3d-1546-" +
+                "4143-a8ae-2be667857cb5";
 
         StorageReference displayRef = storage.getReferenceFromUrl(url);
-//        StorageReference displayRefImage = storageRef.
         ImageView displayImage = (ImageView) findViewById(R.id.photoHolder);
 
         Glide.with(ImageTemp.this)
@@ -190,27 +188,39 @@ public class ImageTemp extends AppCompatActivity {
                 .into(displayImage);
 
 
-
     }// end onCreate
 
-
-    /**
-     *
-     * @param requestCode
-     * @param resultCode
-     * @param data
-     */
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(requestCode == GALLERY_CODE && resultCode == RESULT_OK){
+        if (requestCode == GALLERY_CODE && resultCode == RESULT_OK) {
             imageUri = data.getData();
             addImage.setImageURI(imageUri);
+
         }
 
     }
+
+    //Attempting to save image to internal storage.
+    public void saveInternal(Uri imageUri){
+
+        try {
+            System.out.println("**********************Saving to Internal***************");
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
+            new ImageFile(this).
+                    setFileName("myImage.jpg").
+                    setDirectoryName("images").
+                    save(bitmap);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
 
 }// end class
 

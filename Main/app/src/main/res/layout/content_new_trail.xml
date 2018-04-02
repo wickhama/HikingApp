@@ -256,15 +256,15 @@
 
 <!--</android.support.constraint.ConstraintLayout>-->
 
-<!--<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--xmlns:tools="http://schemas.android.com/tools"-->
-<!--android:id="@+id/db_content_view"-->
-<!--android:layout_width="match_parent"-->
-<!--android:layout_height="match_parent"-->
-<!--app:layout_behavior="@string/appbar_scrolling_view_behavior"-->
-<!--tools:context="arc.com.arctrails.DatabaseFileActivity"-->
-<!--tools:showIn="@layout/activity_database_file">-->
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/db_content_view"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+app:layout_behavior="@string/appbar_scrolling_view_behavior"
+tools:context="arc.com.arctrails.DatabaseFileActivity"
+tools:showIn="@layout/activity_database_file">
 
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -276,7 +276,19 @@
     tools:showIn="@layout/activity_new_trail">
 
 
-
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="0dp"
+        android:layout_height="250dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@id/TrailNameField"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@color/common_google_signin_btn_text_light_default" />
 
 
     <EditText
@@ -292,18 +304,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/imageButton"/>
 
     <EditText
         android:id="@+id/TrailDescriptionField"
         android:layout_width="0dp"
-        android:layout_height="186dp"
+        android:layout_height="300dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:ems="10"
         android:gravity="top|left"
         android:hint="@string/new_trail_description"
         android:inputType="textMultiLine"
+        app:layout_constraintBottom_toTopOf="@+id/TrailNotesField"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -312,21 +326,18 @@
     <EditText
         android:id="@+id/TrailNotesField"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="150dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
         android:ems="10"
         android:gravity="top|left"
         android:hint="@string/stringNotes"
-        android:inputType="textPersonName"
+        android:inputType="textMultiLine"
         app:layout_constraintBottom_toTopOf="@+id/SaveButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TrailDescriptionField"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/SaveButton"
@@ -357,31 +368,35 @@
 
     <Spinner
         android:id="@+id/editDifficulty"
-        android:layout_width="165dp"
-        android:layout_height="32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@id/TrailDescriptionField"
         app:layout_constraintStart_toEndOf="@+id/labelDifficulty"
         app:layout_constraintTop_toBottomOf="@+id/TrailLocationField" />
 
     <TextView
         android:id="@+id/labelDifficulty"
-        android:layout_width="78dp"
-        android:layout_height="31dp"
-        android:layout_marginBottom="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:gravity="center_vertical"
         android:text="Difficulty:"
         android:textAlignment="viewEnd"
         android:textAppearance="@android:style/TextAppearance.Material.Medium"
         app:layout_constraintBottom_toTopOf="@+id/TrailDescriptionField"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TrailLocationField"
-        app:layout_constraintVertical_bias="0.695" />
+        app:layout_constraintTop_toBottomOf="@+id/TrailLocationField" />
+
+
 
 </android.support.constraint.ConstraintLayout>
 
-<!--</android.support.v4.widget.NestedScrollView>-->
+</android.support.v4.widget.NestedScrollView>
 
 
 
