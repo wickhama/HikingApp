@@ -15,6 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import java.util.HashSet;
 import java.util.Set;
@@ -88,7 +89,7 @@ public class MenuActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
 
         //checks if this is the first time the app has been run
-        SharedPreferences wmbPreference = PreferenceManager.getDefaultSharedPreferences(this);
+//        SharedPreferences wmbPreference = PreferenceManager.getDefaultSharedPreferences(this);
 //        boolean isFirstRun = wmbPreference.getBoolean(PREFERENCE_FIRST_RUN, true);
 //        if (isFirstRun)
 //        {
@@ -117,6 +118,9 @@ public class MenuActivity extends AppCompatActivity
         //Has this activity listen for menu events
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        Menu menu = navigationView.getMenu();
+        //initially there is no map, so remove the options
+        menu.findItem(R.id.trail_menu).getSubMenu().setGroupVisible(R.id.map_options,false);
 
         //create a database instance to improve load times later
         Database.getDatabase();
@@ -150,7 +154,6 @@ public class MenuActivity extends AppCompatActivity
      */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        //closes the menu
         int id = item.getItemId();
 
         if (id == R.id.nav_load) {
@@ -158,24 +161,36 @@ public class MenuActivity extends AppCompatActivity
             Intent intent = new Intent(this, LocalFileActivity.class);
             //starts the activity with the LOAD_LOCAL_FILE_CODE result code
             startActivityForResult(intent, LOAD_LOCAL_FILE_CODE);
+
         } else if (id == R.id.nav_database) {
             //allows a user to download files
             Intent intent = new Intent(this, DatabaseFileActivity.class);
             //starts the activity with the LOAD_LOCAL_FILE_CODE result code
             startActivityForResult(intent, DATABASE_FILE_CODE);
+
         } else if (id == R.id.nav_clear) {
             //clear existing trails from the map and center on the current location
             CustomMapFragment map = (CustomMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
             map.clearTrail(true);
+
+            //once the trail is gone, remove the options from the menu
+            NavigationView navigationView = findViewById(R.id.nav_view);
+            Menu menu = navigationView.getMenu();
+            menu.findItem(R.id.trail_menu).getSubMenu().setGroupVisible(R.id.map_options,false);
+
+        } else if (id == R.id.nav_locate) {
+            CustomMapFragment map = (CustomMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+            map.moveCameraToTrail();
+
         } else if (id == R.id.nav_record) {
             //allows a user to download files
             Intent intent = new Intent(this, RecordingActivity.class);
             //starts the activity with the LOAD_LOCAL_FILE_CODE result code
             startActivityForResult(intent, RECORD_TRAIL_CODE);
-        } else if (id == R.id.nav_edit) {
 
-        } else if (id == R.id.nav_settings) {
-
+        } else if (id == R.id.nav_info) {
+            Intent intent = new Intent(this, InformationActivity.class);
+            startActivity(intent);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -210,11 +225,15 @@ public class MenuActivity extends AppCompatActivity
                 //draw the trail
                 CustomMapFragment map = (CustomMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
                 map.makeTrail(trail);
+                //enable map options in the menu
+                NavigationView navigationView = findViewById(R.id.nav_view);
+                Menu menu = navigationView.getMenu();
+                menu.findItem(R.id.trail_menu).getSubMenu().setGroupVisible(R.id.map_options,true);
             }
         }
         else if(requestCode == DATABASE_FILE_CODE)
         {
-
+            //when it returns from the database menu, should anything happen?
         }
         else if(requestCode == RECORD_TRAIL_CODE)
         {

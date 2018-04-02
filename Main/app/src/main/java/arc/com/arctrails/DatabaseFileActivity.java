@@ -92,7 +92,6 @@ public class DatabaseFileActivity extends AppCompatActivity
         }else{
             Snackbar.make(findViewById(R.id.db_content_view), "Error conecting to DB", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
-
         }
     }
 
