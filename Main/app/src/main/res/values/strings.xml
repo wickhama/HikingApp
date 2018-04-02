@@ -29,12 +29,11 @@
     <string name="addToDb">Add to DB1</string>
     <string name="testDBTitle">Test Activity for DB</string>
     <string name="title_activity_local_file">Load a file</string>
-    <string name="title_activity_database_file">Download new Trails</string>
+    <string name="title_activity_database_file">Download Trails</string>
     <string name="title_activity_recording">Trail Recorder</string>
     <string name="Record_off">Record</string>
     <string name="Record_on">Pause</string>
     <string name="trail_data_upload">Upload</string>
-<!--<<<<<<< Updated upstream-->
     <string name="waypoint_title">Add a Waypoint</string>
     <string name="waypoint_name">WName (optional)</string>
     <string name="Waypoint_comment">comment (optional)</string>
@@ -59,9 +58,28 @@
     </string-array>
     <string name="title_activity_download_data">DownloadDataActivity</string>
     <string name="trail_data_download">Download</string>
-=======
     <string name="title_activity_image_temp">ImageTemp</string>
     <string name="upload_image_test">Upload Image</string>
     <string name="add_image_test">Add Image</string>
->>>>>>> Stashed changes
+    <string name="title_activity_information">App Info</string>
+    <string name="information_text">
+        "Developers:\n\n"
+
+        "Caleigh LePage\n"
+        "Ryley Jewsbury\n"
+        "Reece Milliner\n"
+        "Graeme Morgan\n"
+        "Ayla Wickham\n\n"
+
+        "Acknowledgements:\n\n"
+
+        "Picnic Table icon made by Freepik from www.flaticon.com\n"
+        "Washroom icon made by Freepik from www.flaticon.com\n"
+        "Waves icon made by Freepik from www.flaticon.com\n\n"
+
+        "All other icons from material.io/icons\n\n"
+
+        "File storage handled by the GPXParser library from Alternative Vision:\n\n"
+        "gpxparser.alternativevision.ro"
+    </string>
 </resources>

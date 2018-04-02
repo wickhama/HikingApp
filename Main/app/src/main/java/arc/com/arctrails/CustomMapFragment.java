@@ -23,9 +23,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -69,6 +72,7 @@ public class CustomMapFragment extends SupportMapFragment implements
      */
     // The TAG does nothing within the cat, but provides output on logcat within the IDE
     private static final String TAG = CustomMapFragment.class.getSimpleName();
+    private static final int TRAIL_COLOR = Color.rgb(60,195,0);
 
     // Added by Ryley for calling the location request fragment
     private LocationRequestListener mRequestListener;
@@ -91,6 +95,7 @@ public class CustomMapFragment extends SupportMapFragment implements
     // Instances for saving the state before closing
     private static final String KEY_CAMERA_POSITION = "camera_position";
     private static final String KEY_LOCATION = "location";
+    private LatLngBounds.Builder mBuilder;
 
     public GoogleMap getMap(){
         return mMap;
@@ -271,14 +276,46 @@ public class CustomMapFragment extends SupportMapFragment implements
      * Draw a polyline path from an arrayList of waypoints and update camera to the start of the
      * trail. To make it more nature-esque, I coloured the path a custom green colour.
      */
-    private void drawPath(List<Trail.Waypoint> points) {
+    private void drawPath(List<Trail.Waypoint> points, LatLngBounds.Builder builder) {
         PolylineOptions polylineOptions = new PolylineOptions();
         int len = points.size();
         for (int i=0; i<len; ++i) {
             LatLng iLatLng = new LatLng(points.get(i).getLatitude(),points.get(i).getLongitude());
-            polylineOptions.add(iLatLng).width(5).geodesic(true).color(Color.rgb(60,195,0));
+            if(builder != null)
+                builder.include(iLatLng);
+
+            polylineOptions.add(iLatLng).width(5).geodesic(true).color(TRAIL_COLOR);
         }
         mMap.addPolyline(polylineOptions);
+    }
+
+    //Variables used for Drawing Path from RecordingActivity
+    private boolean polyAdded;
+    private PolylineOptions lineOptions;
+    private Polyline polyline;
+
+    protected void startRecording() {
+        lineOptions = new PolylineOptions();
+        lineOptions.width(5).geodesic(true).color(Color.rgb(195, 60, 50));
+    }
+
+    protected void drawPath(ArrayList<LatLng> path) {
+        if (!polyAdded) {
+            polyline = getMap().addPolyline(lineOptions);
+            polyAdded = true;
+            lineOptions.addAll(path);
+        }
+        else {
+            polyline.setPoints(path);
+        }
+        /*PolylineOptions polyOptions = new PolylineOptions();
+        polyOptions.width(5).geodesic(true).color(Color.rgb(60, 195, 0));
+        mMap.addPolyline(polyOptions);*/
+    }
+
+    protected void stopRecording() {
+        polyAdded = false;
+        clearTrail(false);
     }
 
     /**
@@ -317,24 +354,25 @@ public class CustomMapFragment extends SupportMapFragment implements
         List<Trail.Waypoint> points;
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         // Check added to make sure there's at least 1 waypoint, added by Ayla
-        if((points = trail.getWaypoints()) != null && !points.isEmpty()) {
+        if((points = trail.getWaypoints()) != null) {
             for (Trail.Waypoint w : points) {
                 makeWaypoint(w, builder);
             }
-            LatLngBounds bounds = builder.build();
-            mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 200));
-
         }
-        else {
-            //if there's a trail in the file,
-            if(!tracks.isEmpty() && !tracks.get(0).getTrackPoints().isEmpty()) {
-                //zoom in on the start of the trail
-                LatLng zLatLng = new LatLng(tracks.iterator().next().getTrackPoints().get(0).getLatitude(), tracks.iterator().next().getTrackPoints().get(0).getLongitude());
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(zLatLng, 15));
+        if(tracks != null) {
+            for (Trail.Track t : tracks) {
+                drawPath(t.getTrackPoints(), builder);
             }
         }
-        for (Trail.Track t : tracks) {
-            drawPath(t.getTrackPoints());
+        mBuilder = builder;
+        moveCameraToTrail();
+    }
+
+    public void moveCameraToTrail()
+    {
+        if(mBuilder != null) {
+            LatLngBounds bounds = mBuilder.build();
+            mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 200));
         }
     }
 
