@@ -1,6 +1,7 @@
 package arc.com.arctrails;
 
 import android.Manifest;
+import android.app.FragmentManager;
 import android.app.Service;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -40,12 +41,14 @@ import java.util.List;
 
 public class Tracking extends Service {
 
+    final static String LOCATION_FOUND = "LOCATION_FOUND";
+
     private FusedLocationProviderClient flocatClient;
     private final IBinder locationBinder = new LocalBinder();
     private LocationRequest locationRequest = new LocationRequest();
     private LocationCallback locationCallback;
 
-    private ArrayList<Location> trail;
+    private ArrayList<LatLng> trail;
     private GoogleMap map;
     private PolylineOptions polylineOptions;
 
@@ -66,13 +69,17 @@ public class Tracking extends Service {
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         locationCallback = new LocationCallback() {
+            private Intent intent = new Intent();
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 if (locationResult == null) {
                     return;
                 }
+                intent.setAction(LOCATION_FOUND);
                 for (Location location : locationResult.getLocations()) {
-                    trail.add(location);
+                    trail.add(new LatLng(location.getLatitude(), location.getLongitude()));
+                    intent.putExtra("location", trail);
+                    sendBroadcast(intent);
                 }
             }
         };
@@ -83,13 +90,14 @@ public class Tracking extends Service {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             stopSelf();
         }
-        double lat, lon;
+        /*double lat, lon;
         lat = trail.get(trail.size()-1).getLatitude();
         lon = trail.get(trail.size()-1).getLongitude();
-        return new LatLng(lat, lon);
+        return new LatLng(lat, lon);*/
+        return trail.get(trail.size()-1);
     }
 
-    public ArrayList<Location> pauseRecording() {
+    public ArrayList<LatLng> pauseRecording() {
         flocatClient.removeLocationUpdates(locationCallback);
         return trail;
     }
@@ -107,7 +115,7 @@ public class Tracking extends Service {
     @Returns List<Location> : trail Coordinates
     Ayla
      */
-    public ArrayList<Location> stop_Recording() {
+    public ArrayList<LatLng> stopRecording() {
         return trail;
     }
 
@@ -134,7 +142,7 @@ public class Tracking extends Service {
         flocatClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
             @Override
             public void onComplete(@NonNull Task<Location> task) {
-                if(task.isSuccessful()) trail.add(task.getResult());
+                if(task.isSuccessful()) trail.add(new LatLng(task.getResult().getLatitude(), task.getResult().getLongitude()));
             }
         });
 
