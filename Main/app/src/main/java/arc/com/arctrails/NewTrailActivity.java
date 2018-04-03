@@ -81,8 +81,15 @@ public class NewTrailActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setResult(RESULT_BACK);
-                finish();
+                AlertUtils.showConfirm(NewTrailActivity.this, "Closing Trail",
+                        "Exiting without saving will lose all recorded data. Continue?",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                setResult(RESULT_BACK);
+                                finish();
+                            }
+                        });
             }
         });
 
@@ -97,6 +104,18 @@ public class NewTrailActivity extends AppCompatActivity {
 
         ImageButton image = findViewById(R.id.imageButton);
         image.setImageDrawable(getResources().getDrawable(R.drawable.ic_menu_camera));
+    }
+
+    @Override
+    public void onBackPressed(){
+        AlertUtils.showConfirm(NewTrailActivity.this, "Closing Trail",
+                "Exiting without saving will lose all recorded data. Continue?",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        NewTrailActivity.super.onBackPressed();
+                    }
+                });
     }
 
     /**

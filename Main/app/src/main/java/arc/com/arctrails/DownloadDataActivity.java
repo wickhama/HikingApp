@@ -129,10 +129,9 @@ public class DownloadDataActivity extends AppCompatActivity {
                 GPXFile.writeGPXFile(mTrail,DownloadDataActivity.this);
                 Snackbar.make(findViewById(R.id.downloadDataLayout), "Downloaded "+mTrail.getMetadata().getName(), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-
-
             }
         });
-        Database.getDatabase().downloadImage(mTrail, this);
+        if(mTrail.getMetadata().hasImage())
+            Database.getDatabase().downloadImage(mTrail, this);
     }
 }
