@@ -24,22 +24,29 @@ public class Trail {
         private String location;
         private String difficulty;
         private String notes;
-        // For Image Upload
-        private UUID id;
-        private URI imageUri;
-        private Bitmap imageBitmap;
+        private String id;
+        private Boolean hasImage;
 
-        public UUID getId() { return id; }
+        public Boolean hasImage() {
+            return hasImage;
+        }
 
-        public void setId(UUID id) { this.id = id; }
+        public Boolean getHasImage() {
+            return hasImage;
+        }
 
-        public URI getImageUri() { return imageUri; }
+        public void setHasImage(Boolean hasImage) {
+            this.hasImage = hasImage;
+        }
 
-        public void setImageUri(URI imageUri) { this.imageUri = imageUri; }
+        public String getId() {
+            return id;
+        }
 
-        public Bitmap getImageBitmap() { return imageBitmap;}
+        public void setId(String id) {
+            this.id = id;
+        }
 
-        public void setImageBitmap(Bitmap imageBitmap) { this.imageBitmap = imageBitmap; }
 
         public String getName() { return name; }
 

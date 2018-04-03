@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -17,9 +19,13 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -50,12 +56,9 @@ public class NewTrailActivity extends AppCompatActivity {
     //For image uploading
     public static final String EXTRA_TRAIL_ID = "arc.com.arctrails.id";
     public static final String EXTRA_TRAIL_URI = "arc.com.arctrails.imageUri";
-    public static final String EXTRA_TRAIL_IMAGEBITMAP = "arc.com.arctrails.imageBitmap";
-
-
-
-
-
+    public static final String EXTRA_TRAIL_HAS_IMAGE = "arc.com.arctrails.hasImage";
+    private static final int GALLERY_CODE = 1;
+    private Uri imageUri;
 
     /**
      * Created by Ryley
@@ -144,10 +147,11 @@ public class NewTrailActivity extends AppCompatActivity {
         }
     }
 
-
-
-
-
+    public void onImageClick(View v) {
+        Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        galleryIntent.setType("image/*");
+        startActivityForResult(galleryIntent, GALLERY_CODE);
+    }
 
     /**
      * Created by Ryley
@@ -163,14 +167,13 @@ public class NewTrailActivity extends AppCompatActivity {
         EditText notesField = findViewById(R.id.TrailNotesField);
         Spinner difficultySpinner = findViewById(R.id.editDifficulty);
 
-        ImageView trailImage = findViewById(R.id.imageButton);
-
         //trims whitespace from the user input
         String name = nameField.getText().toString().trim();
         String location = locationField.getText().toString().trim();
         String description = descriptionField.getText().toString().trim();
         String notes = notesField.getText().toString().trim();
         String difficulty = difficultySpinner.getSelectedItem().toString().trim();
+        String id = UUID.randomUUID().toString();
 
         Intent intent = new Intent();
         intent.putExtra(EXTRA_TRAIL_NAME,name);
@@ -178,7 +181,27 @@ public class NewTrailActivity extends AppCompatActivity {
         intent.putExtra(EXTRA_TRAIL_DESCRIPTION, description);
         intent.putExtra(EXTRA_TRAIL_NOTES, notes);
         intent.putExtra(EXTRA_TRAIL_DIFFICULTY, difficulty);
+        intent.putExtra(EXTRA_TRAIL_ID, id);
+        if(imageUri != null)
+            intent.putExtra(EXTRA_TRAIL_URI, imageUri.toString());
+        intent.putExtra(EXTRA_TRAIL_HAS_IMAGE, imageUri != null);
         setResult(RESULT_SAVE,intent);
         finish();
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == GALLERY_CODE && resultCode == RESULT_OK) {
+            imageUri = data.getData();
+            ImageButton button = ((ImageButton)findViewById(R.id.imageButton));
+            button.setImageURI(imageUri);
+            button.setScaleType(ImageView.ScaleType.FIT_XY);
+
+        }
+
+    }
+
+
 }

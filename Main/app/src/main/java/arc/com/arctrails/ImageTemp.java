@@ -203,7 +203,7 @@ public class ImageTemp extends AppCompatActivity {
 
     }
 
-    //Attempting to save image to internal storage.
+    //save image to internal storage.
     public void saveInternal(Uri imageUri){
 
         try {
@@ -211,7 +211,7 @@ public class ImageTemp extends AppCompatActivity {
             Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
             new ImageFile(this).
                     setFileName("myImage.jpg").
-                    setDirectoryName("images").
+                    //setDirectoryName("images").
                     save(bitmap);
 
         } catch (IOException e) {

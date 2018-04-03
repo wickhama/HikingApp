@@ -38,7 +38,9 @@ class GPXFile {
             TRAIL_DESCRIPTION = "desc",
             TRAIL_LOCATION = "location",
             TRAIL_DIFFICULTY = "difficulty",
-            TRAIL_NOTES = "notes";
+            TRAIL_NOTES = "notes",
+            TRAIL_ID = "id",
+            TRAIL_HAS_IMAGE = "has_image";
 
     private static GPXParser gpxParser;
 
@@ -78,6 +80,14 @@ class GPXFile {
                             if(currentNode.getFirstChild() != null)
                                 trail.getMetadata().setNotes(currentNode.getFirstChild().getNodeValue());
                         }
+                        if(TRAIL_ID.equals(currentNode.getNodeName())){
+                            if(currentNode.getFirstChild() != null)
+                                trail.getMetadata().setId(currentNode.getFirstChild().getNodeValue());
+                        }
+                        if(TRAIL_HAS_IMAGE.equals(currentNode.getNodeName())){
+                            if(currentNode.getFirstChild() != null)
+                                trail.getMetadata().setHasImage(true);
+                        }
                     }
                 }
                 return trail;
@@ -111,6 +121,16 @@ class GPXFile {
                 if(trail.getMetadata().getNotes() != null) {
                     node = doc.createElement(TRAIL_NOTES);
                     node.appendChild(doc.createTextNode(trail.getMetadata().getNotes()));
+                    extensionNode.appendChild(node);
+                }
+                if(trail.getMetadata().getId() != null) {
+                    node = doc.createElement(TRAIL_ID);
+                    node.appendChild(doc.createTextNode(trail.getMetadata().getId()));
+                    extensionNode.appendChild(node);
+                }
+                if(trail.getMetadata().hasImage()) {
+                    node = doc.createElement(TRAIL_HAS_IMAGE);
+                    node.appendChild(doc.createTextNode("true"));
                     extensionNode.appendChild(node);
                 }
             }
@@ -241,6 +261,8 @@ class GPXFile {
             buildParser();
 
         GPX gpx = parseTrailtoGPX(trail);
+
+        System.out.println("~~~~~~~~~~~~~~~"+trail.getMetadata().getName());
 
         //create a new file with the given name
         File file = new File(context.getExternalFilesDir(null), trail.getMetadata().getName()+".gpx");

@@ -10,7 +10,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.File;
 
 public class DownloadDataActivity extends AppCompatActivity {
 
@@ -25,6 +33,9 @@ public class DownloadDataActivity extends AppCompatActivity {
     private String trailID;
     //the trail information is being displayed from
     private Trail mTrail;
+    //Storage Instance to Firebase Image Storage
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +65,19 @@ public class DownloadDataActivity extends AppCompatActivity {
                 mTrail = new Trail();
                 mTrail.setMetadata(metadata);
                 setInfo(mTrail);
+
+                /**
+                 * DOWNLOADING from Firebase Storage
+                 * call here
+                 */
+                ImageView displayImage = (ImageView)findViewById(R.id.imageView);
+                System.out.println("&&&&&&&&&&&&STARTING&&&&&&");
+                Database.getDatabase().getImageUrl(mTrail, displayImage, DownloadDataActivity.this);
+
+
+
+
+
             }
         });
 
@@ -101,10 +125,14 @@ public class DownloadDataActivity extends AppCompatActivity {
             @Override
             public void onDataTrail(Trail trail) {
                 mTrail = trail;
+
                 GPXFile.writeGPXFile(mTrail,DownloadDataActivity.this);
                 Snackbar.make(findViewById(R.id.downloadDataLayout), "Downloaded "+mTrail.getMetadata().getName(), Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+
+
             }
         });
+        Database.getDatabase().downloadImage(mTrail, this);
     }
 }

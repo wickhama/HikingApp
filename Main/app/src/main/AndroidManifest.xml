@@ -120,12 +120,12 @@
             android:theme="@style/AppTheme.NoActionBar">
 
             <!-- This is a temp intent simply for testing the image storage -->
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
+             <!--<intent-filter>-->
+             <!--<action android:name="android.intent.action.MAIN" />-->
 
 
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
+             <!--<category android:name="android.intent.category.LAUNCHER" />-->
+             <!--</intent-filter>-->
         </activity>
         <activity
             android:name=".InformationActivity"
@@ -134,8 +134,8 @@
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="arc.com.arctrails.MenuActivity" />
-        </activity>
+        android:value="arc.com.arctrails.MenuActivity" />
+    </activity>
     </application>
 
 </manifest>

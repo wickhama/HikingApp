@@ -6,9 +6,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -23,6 +26,7 @@ import com.google.android.gms.maps.LocationSource;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -256,6 +260,9 @@ public class RecordingActivity extends AppCompatActivity
                 String difficulty = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_DIFFICULTY);
                 String description = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_DESCRIPTION);
                 String notes = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_NOTES);
+                String uuid = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_ID);
+                String uri = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_URI);
+                boolean hasImage = data.getBooleanExtra(NewTrailActivity.EXTRA_TRAIL_HAS_IMAGE, false);
 
                 //make sure there's actually recorded data
                 if (recordedTrail != null) {
@@ -264,10 +271,31 @@ public class RecordingActivity extends AppCompatActivity
                     recordedTrail.getMetadata().setDifficulty(difficulty);
                     recordedTrail.getMetadata().setDescription(description);
                     recordedTrail.getMetadata().setNotes(notes);
+                    recordedTrail.getMetadata().setId(uuid);
+                    recordedTrail.getMetadata().setHasImage(hasImage);
                     GPXFile.writeGPXFile(recordedTrail, getApplicationContext());
+                    if(hasImage) {
+                        saveInternal(uri, uuid);
+                    }
                 }
                 recordedTrail = null;
             }
+        }
+    }
+
+    //Save image to internal storage.
+    private void saveInternal(String imageUri, String fileName){
+
+        try {
+            Uri uri = Uri.parse(imageUri);
+            System.out.println("**********************Saving to Internal***************");
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+            new ImageFile(this).
+                    setFileName(fileName+".jpg").
+                            save(bitmap);
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

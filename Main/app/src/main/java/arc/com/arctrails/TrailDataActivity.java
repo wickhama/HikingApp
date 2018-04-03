@@ -2,6 +2,8 @@ package arc.com.arctrails;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -9,7 +11,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 
@@ -44,6 +52,8 @@ public class TrailDataActivity extends AppCompatActivity {
     private String fileName;
     //the trail information is being displayed from
     private Trail trail;
+    //Storage Reference to Firebase Storage
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
 
     /**
      * Created by Ryley
@@ -76,6 +86,21 @@ public class TrailDataActivity extends AppCompatActivity {
         //read the GPX file into an object
         trail = GPXFile.getGPX(fileName,this);
         setInfo(trail);
+
+
+        if(trail.getMetadata().hasImage()) {
+
+            ImageView displayImage = (ImageView) findViewById(R.id.imageView);
+
+
+            Bitmap bitmap = new ImageFile(TrailDataActivity.this).
+                    setFileName(trail.getMetadata().getId() + ".jpg").
+                    load();
+
+            displayImage.setImageBitmap(bitmap);
+            displayImage.setMaxHeight(bitmap.getHeight());
+        }
+
     }
 
     /**
@@ -203,6 +228,18 @@ public class TrailDataActivity extends AppCompatActivity {
                         database.uploadTrail(trail.getMetadata().getName(), trail);
                         Snackbar.make(findViewById(R.id.trail_data_layout), "Uploading Trail", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
+
+                        // For Firebase upload.
+                        /**
+                         *
+                         */
+
+                        if(trail.getMetadata().hasImage()){
+                            File uploadFile = new File(getExternalFilesDir(null), trail.getMetadata().getId()+".jpg");
+                            database.uploadImage(Uri.parse(uploadFile.toURI().toString()), trail, TrailDataActivity.this);
+
+                        }
+
                     }
                 });
     }
@@ -219,6 +256,16 @@ public class TrailDataActivity extends AppCompatActivity {
             file.delete();
         }catch(SecurityException e){
             AlertUtils.showAlert(this, "SecurityException",e.getLocalizedMessage());
+        }
+
+        if(trail.getMetadata().hasImage())
+        {
+            file = new File(getExternalFilesDir(null),trail.getMetadata().getId()+".jpg");
+            try{
+                file.delete();
+            }catch(SecurityException e){
+                AlertUtils.showAlert(this, "SecurityException",e.getLocalizedMessage());
+            }
         }
     }
 }

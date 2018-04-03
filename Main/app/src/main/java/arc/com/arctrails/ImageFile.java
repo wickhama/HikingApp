@@ -40,10 +40,10 @@ import java.io.IOException;
  */
 public class ImageFile {
 
-    private String directoryName = "images";
+//    private String directoryName = "images";
     private String fileName = "image.jpg";
     private Context context;
-    private boolean external;
+//    private boolean external;
 
     public ImageFile(Context context){
         this.context = context;
@@ -53,16 +53,16 @@ public class ImageFile {
         this.fileName = fileName;
         return this;
     }
-
-    public ImageFile setExternal(boolean external) {
-        this.external = external;
-        return this;
-    }
-
-    public ImageFile setDirectoryName(String directoryName) {
-        this.directoryName = directoryName;
-        return this;
-    }
+//
+//    public ImageFile setExternal(boolean external) {
+//        this.external = external;
+//        return this;
+//    }
+//
+//    public ImageFile setDirectoryName(String directoryName) {
+//        this.directoryName = directoryName;
+//        return this;
+//    }
 
     public void save(Bitmap bitmapImage) {
         FileOutputStream fileOutputStream = null;
@@ -84,35 +84,35 @@ public class ImageFile {
 
     @NonNull
     private File createFile() {
-        File directory;
-        if(external){
-            directory = getAlbumStorageDir(directoryName);
-        }
-        else {
-            directory = context.getDir(directoryName, Context.MODE_PRIVATE);
-        }
-        if(!directory.exists() && !directory.mkdirs()){
-            Log.e("ImageSaver","Error creating directory " + directory);
-        }
+//        File directory;
+//        if(external){
+//            directory = getAlbumStorageDir(directoryName);
+//        }
+//        else {
+//            directory = context.getDir(directoryName, Context.MODE_PRIVATE);
+//        }
+//        if(!directory.exists() && !directory.mkdirs()){
+//            Log.e("ImageSaver","Error creating directory " + directory);
+//        }
 
-        return new File(directory, fileName);
+        return new File(context.getExternalFilesDir(null), fileName);
     }
 
-    private File getAlbumStorageDir(String albumName) {
-        return new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), albumName);
-    }
-
-    public static boolean isExternalStorageWritable() {
-        String state = Environment.getExternalStorageState();
-        return Environment.MEDIA_MOUNTED.equals(state);
-    }
-
-    public static boolean isExternalStorageReadable() {
-        String state = Environment.getExternalStorageState();
-        return Environment.MEDIA_MOUNTED.equals(state) ||
-                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state);
-    }
+//    private File getAlbumStorageDir(String albumName) {
+//        return new File(Environment.getExternalStoragePublicDirectory(
+//                Environment.DIRECTORY_PICTURES), albumName);
+//    }
+//
+//    public static boolean isExternalStorageWritable() {
+//        String state = Environment.getExternalStorageState();
+//        return Environment.MEDIA_MOUNTED.equals(state);
+//    }
+//
+//    public static boolean isExternalStorageReadable() {
+//        String state = Environment.getExternalStorageState();
+//        return Environment.MEDIA_MOUNTED.equals(state) ||
+//                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state);
+//    }
 
     public Bitmap load() {
         FileInputStream inputStream = null;
