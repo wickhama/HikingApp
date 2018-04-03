@@ -376,7 +376,7 @@ public class CustomMapFragment extends SupportMapFragment implements
         }
     }
 
-    private void makeWaypoint(Trail.Waypoint w, LatLngBounds.Builder builder)
+    public void makeWaypoint(Trail.Waypoint w, LatLngBounds.Builder builder)
     {
         LatLng wLatLng = new LatLng(w.getLatitude(), w.getLongitude());
 

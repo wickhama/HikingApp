@@ -133,7 +133,7 @@ public class Database extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-
+                trailList.clear();
                 for(DataSnapshot ds : dataSnapshot.getChildren()){
                     String trail = ds.getKey();//ds.child("description").getValue(String.class);
                     trailList.add(trail);

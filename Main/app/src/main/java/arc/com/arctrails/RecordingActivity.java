@@ -204,6 +204,7 @@ public class RecordingActivity extends AppCompatActivity
             w.setLongitude(waypointLatLng.longitude);
 
             recordedTrail.addWaypoint(w);
+            map.makeWaypoint(w, null);
 
             waypointLatLng = null;
         }
