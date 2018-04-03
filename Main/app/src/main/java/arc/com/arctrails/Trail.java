@@ -25,13 +25,13 @@ public class Trail {
         private String difficulty;
         private String notes;
         private String id;
-        private Boolean hasImage;
+        private boolean hasImage;
 
-        public Boolean hasImage() {
+        public boolean hasImage() {
             return hasImage;
         }
 
-        public Boolean getHasImage() {
+        public boolean getHasImage() {
             return hasImage;
         }
 
