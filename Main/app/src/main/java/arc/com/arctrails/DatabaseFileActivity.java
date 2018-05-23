@@ -102,8 +102,22 @@ public class DatabaseFileActivity extends AppCompatActivity
 
         Intent intent = new Intent(this, DownloadDataActivity.class);
         intent.putExtra(DownloadDataActivity.EXTRA_TRAIL_ID, mTrailIDs.get(id));
-        startActivity(intent);
+        startActivityForResult(intent,DATABASE_TRAIL_CODE);
 
         return true;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if(requestCode == DATABASE_TRAIL_CODE)
+        {
+            //if the trail was started, alert the map
+            if(resultCode == DownloadDataActivity.RESULT_START)
+            {
+                setResult(DownloadDataActivity.RESULT_START,data);
+                finish();
+            }
+        }
     }
 }

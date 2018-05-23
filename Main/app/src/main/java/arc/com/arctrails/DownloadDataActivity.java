@@ -25,10 +25,15 @@ public class DownloadDataActivity extends AppCompatActivity {
     //result codes
     //the user did nothing
     public static final int RESULT_BACK= 0;
+    //the user wants to display the trail
+    public static final int RESULT_START = 1;
 
     //extras
-    //A tag for the file name sent to TrailDataActivity
+    //A tag for the ID of the trail that should be fetched from the database
     public static final String EXTRA_TRAIL_ID = "arc.com.arctrails.trailID";
+    //A tag for the file name sent to TrailDataActivity
+    public static final String EXTRA_FILE_NAME = "arc.com.arctrails.filename";
+
     //the name of the file the data is coming from
     private String trailID;
     //the trail information is being displayed from
@@ -66,18 +71,10 @@ public class DownloadDataActivity extends AppCompatActivity {
                 mTrail.setMetadata(metadata);
                 setInfo(mTrail);
 
-                /**
-                 * DOWNLOADING from Firebase Storage
-                 * call here
-                 */
+                //DOWNLOADING from Firebase Storage
                 ImageView displayImage = (ImageView)findViewById(R.id.imageView);
                 System.out.println("&&&&&&&&&&&&STARTING&&&&&&");
                 Database.getDatabase().getImageUrl(mTrail, displayImage, DownloadDataActivity.this);
-
-
-
-
-
             }
         });
 
@@ -131,7 +128,32 @@ public class DownloadDataActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-        if(mTrail.getMetadata().hasImage())
-            Database.getDatabase().downloadImage(mTrail, this);
+        if(mTrail.getMetadata().getImageIDs().size() > 0)
+            Database.getDatabase().downloadTrailImages(mTrail, this);
+    }
+
+    public void onStartPressed(View view)
+    {
+        Snackbar.make(findViewById(R.id.downloadDataLayout), "Downloading "+mTrail.getMetadata().getName(), Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+
+        if(mTrail.getMetadata().getImageIDs().size() > 0)
+            Database.getDatabase().downloadTrailImages(mTrail, this);
+
+        Database.getDatabase().getTrail(trailID, new Database.DataTrailListener() {
+            @Override
+            public void onDataTrail(Trail trail) {
+                mTrail = trail;
+
+                GPXFile.writeGPXFile(mTrail,DownloadDataActivity.this);
+//                Snackbar.make(findViewById(R.id.downloadDataLayout), "Downloaded "+mTrail.getMetadata().getName(), Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+
+                Intent intent = new Intent();
+                intent.putExtra(EXTRA_FILE_NAME,mTrail.getMetadata().getName()+".gpx");
+                setResult(RESULT_START,intent);
+                finish();
+            }
+        });
     }
 }

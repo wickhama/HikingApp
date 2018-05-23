@@ -88,6 +88,19 @@ public class MenuActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        Trail t = new Trail();
+        Trail.Waypoint w = new Trail.Waypoint();
+        w.setImageID("testing");
+        t.addWaypoint(w);
+        w = new Trail.Waypoint();
+        w.setComment("no image");
+        t.addWaypoint(w);
+        t.getMetadata().addImageID("test1");
+        t.getMetadata().addImageID("test2");
+        t.getMetadata().setName("TEST");
+
+        GPXFile.writeGPXFile(t, this);
+
         //checks if this is the first time the app has been run
 //        SharedPreferences wmbPreference = PreferenceManager.getDefaultSharedPreferences(this);
 //        boolean isFirstRun = wmbPreference.getBoolean(PREFERENCE_FIRST_RUN, true);
@@ -198,6 +211,18 @@ public class MenuActivity extends AppCompatActivity
         return true;
     }
 
+    private void displayTrailFromFile(String fileName)
+    {
+        Trail trail = GPXFile.getGPX(fileName,this);
+        //draw the trail
+        CustomMapFragment map = (CustomMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        map.makeTrail(trail);
+        //enable map options in the menu
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        Menu menu = navigationView.getMenu();
+        menu.findItem(R.id.trail_menu).getSubMenu().setGroupVisible(R.id.map_options,true);
+    }
+
     /**
      * Created by Ryley
      * added for increment 2
@@ -221,19 +246,18 @@ public class MenuActivity extends AppCompatActivity
             {
                 //filename sent back through intent
                 String fileName = data.getStringExtra(TrailDataActivity.EXTRA_FILE_NAME);
-                Trail trail = GPXFile.getGPX(fileName,this);
-                //draw the trail
-                CustomMapFragment map = (CustomMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-                map.makeTrail(trail);
-                //enable map options in the menu
-                NavigationView navigationView = findViewById(R.id.nav_view);
-                Menu menu = navigationView.getMenu();
-                menu.findItem(R.id.trail_menu).getSubMenu().setGroupVisible(R.id.map_options,true);
+                displayTrailFromFile(fileName);
             }
         }
         else if(requestCode == DATABASE_FILE_CODE)
         {
-            //when it returns from the database menu, should anything happen?
+            //if the trail was started, alert the map
+            if(resultCode == DownloadDataActivity.RESULT_START)
+            {
+                //filename sent back through intent
+                String fileName = data.getStringExtra(DownloadDataActivity.EXTRA_FILE_NAME);
+                displayTrailFromFile(fileName);
+            }
         }
         else if(requestCode == RECORD_TRAIL_CODE)
         {

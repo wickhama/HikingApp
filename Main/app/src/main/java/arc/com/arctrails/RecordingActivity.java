@@ -272,12 +272,12 @@ public class RecordingActivity extends AppCompatActivity
                     recordedTrail.getMetadata().setDifficulty(difficulty);
                     recordedTrail.getMetadata().setDescription(description);
                     recordedTrail.getMetadata().setNotes(notes);
-                    recordedTrail.getMetadata().setId(uuid);
-                    recordedTrail.getMetadata().setHasImage(hasImage);
-                    GPXFile.writeGPXFile(recordedTrail, getApplicationContext());
+                    recordedTrail.getMetadata().setTrailID(uuid);
                     if(hasImage) {
+                        recordedTrail.getMetadata().addImageID(uuid);
                         saveInternal(uri, uuid);
                     }
+                    GPXFile.writeGPXFile(recordedTrail, getApplicationContext());
                 }
                 recordedTrail = null;
             }

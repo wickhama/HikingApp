@@ -71,15 +71,14 @@ tools:showIn="@layout/activity_download_data">
         app:layout_constraintTop_toBottomOf="@+id/data_divider_1" />
 
     <Button
-        android:id="@+id/DownloadButton"
+        android:id="@+id/StartButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:layout_marginStart="16dp"
-        android:onClick="onDownloadPressed"
-        android:text="@string/trail_data_download"
-        app:layout_constraintTop_toBottomOf="@id/Notes"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:onClick="onStartPressed"
+        android:text="@string/trail_data_start"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Notes" />
 
     <TextView
         android:id="@+id/Difficulty"

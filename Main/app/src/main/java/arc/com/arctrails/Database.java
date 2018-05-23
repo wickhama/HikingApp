@@ -204,7 +204,7 @@ public class Database extends AppCompatActivity {
     public void uploadImage(Uri imageUri, Trail trail, final Context context){
         if (imageUri != null) {
             //added for UUID
-            String path = "images/" + trail.getMetadata().getId() + ".jpg";
+            String path = "images/" + trail.getMetadata().getTrailID() + ".jpg";
             storageRef = storage.getReference();
             imageRef = storageRef.child(path);
 
@@ -245,10 +245,12 @@ public class Database extends AppCompatActivity {
     }
 
     //Called from DownloadDataActivity, this returns a working URL from the Trail Image.
+    //TODO: fix this so that it can load any image in the image IDs, not just image 0
     public void getImageUrl(Trail trail, final ImageView displayImage, Context context){
-        if (trail.getMetadata().hasImage()) {
+        if (trail.getMetadata().getImageIDs() != null
+                && trail.getMetadata().getImageIDs().size() > 0) {
             storageRef = storage.getReference();
-            imageRef = storageRef.child("images/"+trail.getMetadata().getId()+".jpg");
+            imageRef = storageRef.child("images/"+trail.getMetadata().getImageIDs().get(0)+".jpg");
 
             Glide.with(context)
                             .using(new FirebaseImageLoader())
@@ -259,27 +261,25 @@ public class Database extends AppCompatActivity {
         }
     }
 
-    public void downloadImage(Trail trail, Context context){
+    public void downloadTrailImages(Trail trail, Context context){
 
+        for(String imageID : trail.getMetadata().getImageIDs()) {
+            File localFile = new File(context.getExternalFilesDir(null), imageID + ".jpg");
 
-        File localFile = new File(context.getExternalFilesDir(null), trail.getMetadata().getId()+".jpg");
+            StorageReference islandRef = storageRef.child("images/" + trail.getMetadata().getImageIDs().get(0) + ".jpg");
 
-
-        StorageReference islandRef = storageRef.child("images/"+trail.getMetadata().getId()+".jpg");
-
-
-        islandRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                // Local temp file has been created
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle any errors
-            }
-        });
-
+            islandRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    // Local temp file has been created
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                }
+            });
+        }
     }
 
 }// end Database

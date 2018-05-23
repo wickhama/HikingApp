@@ -24,31 +24,41 @@ public class Trail {
         private String location;
         private String difficulty;
         private String notes;
-        private String id;
-        private boolean hasImage;
+        private String trailID;
+        private List<String> imageIDs;
+        private double rating;
+        private int numRatings;
+        private int numFlags;
 
-        public boolean hasImage() {
-            return hasImage;
+        public Metadata()
+        {
+            imageIDs = new ArrayList<>();
         }
 
-        public boolean getHasImage() {
-            return hasImage;
+        public String getTrailID() {
+            return trailID;
         }
 
-        public void setHasImage(Boolean hasImage) {
-            this.hasImage = hasImage;
+        public void setTrailID(String id) {
+            this.trailID = id;
         }
 
-        public String getId() {
-            return id;
+        public List<String> getImageIDs() {
+            return imageIDs;
         }
 
-        public void setId(String id) {
-            this.id = id;
+        public void setImageIDs(List<String> ids) {
+            this.imageIDs = ids;
         }
 
+        public void addImageID(String id)
+        {
+            imageIDs.add(id);
+        }
 
-        public String getName() { return name; }
+        public String getName() {
+            return name;
+        }
 
         public void setName(String name) {
             this.name = name;
@@ -85,12 +95,39 @@ public class Trail {
         public void setNotes(String notes) {
             this.notes = notes;
         }
+
+        public double getRating() {
+            return rating;
+        }
+
+        public void setRating(double rating) {
+            this.rating = rating;
+        }
+
+        public int getNumRatings() {
+            return numRatings;
+        }
+
+        public void setNumRatings(int numRatings) {
+            this.numRatings = numRatings;
+        }
+
+        public int getNumFlags() {
+            return numFlags;
+        }
+
+        public void setNumFlags(int numFlags) {
+            this.numFlags = numFlags;
+        }
     }
 
     public static class Waypoint {
         private String waypointName;
         private String type;
         private String comment;
+
+        private String imageID;
+
         private double latitude;
         private double longitude;
 
@@ -100,6 +137,14 @@ public class Trail {
             waypointName = name;
             latitude = lat;
             longitude = lng;
+        }
+
+        public String getImageID() {
+            return imageID;
+        }
+
+        public void setImageID(String imageID) {
+            this.imageID = imageID;
         }
 
         public String getWaypointName() {
@@ -192,7 +237,9 @@ public class Trail {
         this.waypoints = waypoints;
     }
 
-    public void addWaypoint(Waypoint waypoint){ waypoints.add(waypoint); }
+    public void addWaypoint(Waypoint waypoint){
+        waypoints.add(waypoint);
+    }
 
     public List<Track> getTracks() {
         return tracks;
@@ -202,5 +249,7 @@ public class Trail {
         this.tracks = tracks;
     }
 
-    public void addTrack(Track track){ tracks.add(track); }
+    public void addTrack(Track track){
+        tracks.add(track);
+    }
 }

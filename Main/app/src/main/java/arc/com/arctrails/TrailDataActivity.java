@@ -44,7 +44,6 @@ public class TrailDataActivity extends AppCompatActivity {
     //the user deleted this file
     public static final int RESULT_DELETE= 2;
 
-
     //extras
     //A tag for the file name sent to TrailDataActivity
     public static final String EXTRA_FILE_NAME = "arc.com.arctrails.filename";
@@ -88,13 +87,13 @@ public class TrailDataActivity extends AppCompatActivity {
         setInfo(trail);
 
 
-        if(trail.getMetadata().hasImage()) {
+        if(trail.getMetadata().getImageIDs().size() > 0) {
 
             ImageView displayImage = (ImageView) findViewById(R.id.imageView);
 
 
             Bitmap bitmap = new ImageFile(TrailDataActivity.this).
-                    setFileName(trail.getMetadata().getId() + ".jpg").
+                    setFileName(trail.getMetadata().getImageIDs().get(0) + ".jpg").
                     load();
 
             displayImage.setImageBitmap(bitmap);
@@ -234,8 +233,8 @@ public class TrailDataActivity extends AppCompatActivity {
                          *
                          */
 
-                        if(trail.getMetadata().hasImage()){
-                            File uploadFile = new File(getExternalFilesDir(null), trail.getMetadata().getId()+".jpg");
+                        if(trail.getMetadata().getImageIDs().size() > 0){
+                            File uploadFile = new File(getExternalFilesDir(null), trail.getMetadata().getImageIDs().get(0)+".jpg");
                             database.uploadImage(Uri.parse(uploadFile.toURI().toString()), trail, TrailDataActivity.this);
 
                         }
@@ -258,9 +257,9 @@ public class TrailDataActivity extends AppCompatActivity {
             AlertUtils.showAlert(this, "SecurityException",e.getLocalizedMessage());
         }
 
-        if(trail.getMetadata().hasImage())
+        if(trail.getMetadata().getImageIDs().size() > 0)
         {
-            file = new File(getExternalFilesDir(null),trail.getMetadata().getId()+".jpg");
+            file = new File(getExternalFilesDir(null),trail.getMetadata().getImageIDs().get(0)+".jpg");
             try{
                 file.delete();
             }catch(SecurityException e){
