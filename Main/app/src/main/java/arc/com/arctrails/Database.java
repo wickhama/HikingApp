@@ -51,7 +51,7 @@ public class Database extends AppCompatActivity {
      */
 
     public interface DataListListener{
-        void onDataList(List<String> entryIDs);
+        void onDataList(List<Trail.Metadata> entryIDs);
     }
 
     public interface DataTrailListener{
@@ -68,7 +68,7 @@ public class Database extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference databaseReference;
     private String trailID;
-    private ArrayList<String> trailList = new ArrayList<>();
+//    private ArrayList<String> trailList = new ArrayList<>();
     private DatabaseReference myRef;
     // Added for image storage
     private StorageReference storageReference;
@@ -124,7 +124,37 @@ public class Database extends AppCompatActivity {
     }
 
 
-    public void trailNameRun(final DataListListener DBlistener){
+//    public void trailNameRun(final DataListListener DBlistener){
+//
+//        DatabaseReference rootRef = myRef;
+//        DatabaseReference ref = rootRef.child("Trails");
+//
+//        ValueEventListener eventListener = new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//
+//                trailList.clear();
+//                for(DataSnapshot ds : dataSnapshot.getChildren()){
+//                    String trail = ds.getKey();//ds.child("description").getValue(String.class);
+//                    trailList.add(trail);
+//                }
+//
+//                DBlistener.onDataList(trailList);
+//                System.out.println("TrailList from ValueEventListener: " + trailList.toString());
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        };
+//
+//        ref.addListenerForSingleValueEvent(eventListener);
+//    }
+
+    //ADDED for new Download ScrollView : Read all Trail Meta Data
+    public void trailMetaData(final DataListListener DBlistener){
 
         DatabaseReference rootRef = myRef;
         DatabaseReference ref = rootRef.child("Trails");
@@ -132,10 +162,10 @@ public class Database extends AppCompatActivity {
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                ArrayList<Trail.Metadata> trailList = new ArrayList<>();
 
-                trailList.clear();
                 for(DataSnapshot ds : dataSnapshot.getChildren()){
-                    String trail = ds.getKey();//ds.child("description").getValue(String.class);
+                    Trail.Metadata trail = ds.child("metadata").getValue(Trail.Metadata.class);//ds.child("description").getValue(String.class);
                     trailList.add(trail);
                 }
 
