@@ -1,18 +1,35 @@
 package arc.com.arctrails;
 
+import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.graphics.Color.RED;
+import static android.graphics.Color.WHITE;
 
 public class DatabaseFileActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
@@ -28,6 +45,7 @@ public class DatabaseFileActivity extends AppCompatActivity
     private List<String> mTrailIDs;
 
     private Database trailDB;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +74,10 @@ public class DatabaseFileActivity extends AppCompatActivity
 
         //loads the initial state of the menu
         trailDB = Database.getDatabase();
-        trailDB.trailNameRun(new Database.DataListListener() {
+//        trailDB.trailNameRun(new Database.DataListListener() {
+        trailDB.trailMetaData(new Database.DataListListener() {
             @Override
-            public void onDataList(List<String> entryIDs) {
+            public void onDataList(List<Trail.Metadata> entryIDs) {
                 buildMenu(entryIDs);
             }
         });
@@ -70,7 +89,7 @@ public class DatabaseFileActivity extends AppCompatActivity
      *
      * Updates the side menu to include all GPX files saved on the device
      */
-    public void buildMenu(List<String> names)
+    public void buildMenu(List<Trail.Metadata> metadataList)
     {
         NavigationView navView = findViewById(R.id.nav_view_database);
         Menu menu = navView.getMenu();
@@ -80,17 +99,51 @@ public class DatabaseFileActivity extends AppCompatActivity
         menu.clear();
         mTrailIDs.clear();
 
-        System.out.println("Trails list: " + names.toString());
+//        System.out.println("Trails list: " + names.toString());
 
 
-        if(names != null) {
-            for(String trailID : names) {
+        if(metadataList != null) {
+            int i=0;
+            for(Trail.Metadata metadata : metadataList) {
                 int id = mTrailIDs.size();
-                menu.add(R.id.nav_group_database, id, Menu.NONE, trailID).setCheckable(true);
-                mTrailIDs.add(trailID);
+
+                Drawable d = getDrawable(R.drawable.circle);
+                d.mutate();
+
+                int color = RED;
+
+                if(i%3==0){
+                    color = RED;
+                }
+                else if(i%3==1){
+                    color = Color.YELLOW;
+                }
+                else if(i%3==2){
+                    color = Color.GREEN;
+                }
+
+                d.setColorFilter(color, PorterDuff.Mode.SRC_ATOP );
+
+                i++;
+
+                String ratingText = "";
+
+                if(metadata.getNumRatings() > 0){
+                    long rating = Math.round(metadata.getRating());
+                    int j = 0;
+                    for(;j < rating; j++)
+                        ratingText += "★";
+                    for(;j < 5; j++)
+                        ratingText += "☆";
+                }else{
+                    ratingText = "☆☆☆☆☆";
+                }
+
+                menu.add(R.id.nav_group_database, id, Menu.NONE, String.format("%-15s%s",ratingText, metadata.getName())).setCheckable(true).setIcon(d);
+                mTrailIDs.add(metadata.getName());
             }
         }else{
-            Snackbar.make(findViewById(R.id.db_content_view), "Error conecting to DB", Snackbar.LENGTH_LONG)
+            Snackbar.make(findViewById(R.id.db_content_view), "Error connecting to DB", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         }
     }
