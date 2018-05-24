@@ -2,7 +2,11 @@ package arc.com.arctrails;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
@@ -89,7 +93,7 @@ public class DownloadDataActivity extends AppCompatActivity {
         TextView notesView = findViewById(R.id.Notes);
         TextView ratingView = findViewById(R.id.RatingText);
 
-        if(trail == null){
+        if(trail == null || trail.getMetadata() == null){
             AlertUtils.showAlert(this,"Database Error",
                     "There was a problem connecting to the database. Please try again later.",
                     new DialogInterface.OnClickListener() {
@@ -105,7 +109,8 @@ public class DownloadDataActivity extends AppCompatActivity {
         else {
             nameView.setText(trail.getMetadata().getName());
             locationView.setText("Location: "+trail.getMetadata().getLocation());
-            difficultyView.setText("Difficulty: "+trail.getMetadata().getDifficulty());
+            difficultyView.setText("Difficulty: "+
+                    getResources().getStringArray(R.array.difficulty_array)[trail.getMetadata().getDifficulty()]);
             descriptionView.setText(trail.getMetadata().getDescription());
             notesView.setText(trail.getMetadata().getNotes());
 
@@ -121,6 +126,13 @@ public class DownloadDataActivity extends AppCompatActivity {
 
                 ratingView.setText(ratingText);
             }
+
+            SharedPreferences wmbPreference = PreferenceManager.getDefaultSharedPreferences(this);
+            boolean hasFlagged = wmbPreference.getBoolean("Flag-"+trail.getMetadata().getTrailID(), false);
+            boolean hasRated = wmbPreference.getBoolean("Rate-"+trail.getMetadata().getTrailID(), false);
+
+            setFlagHighlight(hasFlagged);
+            setRateHighlight(hasRated);
 
             descriptionView.setMovementMethod(new ScrollingMovementMethod());
             notesView.setMovementMethod(new ScrollingMovementMethod());
@@ -156,11 +168,90 @@ public class DownloadDataActivity extends AppCompatActivity {
     {
         Snackbar.make(findViewById(R.id.downloadDataLayout), "Flag Pressed", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show();
+
+        final SharedPreferences wmbPreference = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean hasFlagged = wmbPreference.getBoolean("Flag-"+mTrail.getMetadata().getTrailID(), false);
+
+        if(hasFlagged){
+            //if they've flagged it already, clicking removes the flag
+            SharedPreferences.Editor editor = wmbPreference.edit();
+            editor.putBoolean("Flag-"+mTrail.getMetadata().getTrailID(), false);
+            editor.apply();
+
+            setFlagHighlight(false);
+
+            //send a message to the database
+        }
+        else{
+            //otherwise, clicking asks them if they want to flag
+            AlertUtils.showConfirm(this, "Flag this Trail",
+                    "Trails can be flagged to notify administrators of inappropriate content." +
+                            "Are you sure you want to flag this trail?",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            SharedPreferences.Editor editor = wmbPreference.edit();
+                            editor.putBoolean("Flag-"+mTrail.getMetadata().getTrailID(), true);
+                            editor.apply();
+
+                            setFlagHighlight(true);
+
+                            //send a message to the database
+                        }
+                    });
+        }
     }
 
     public void onRatePressed(View view)
     {
-        Snackbar.make(findViewById(R.id.downloadDataLayout), "Rate Pressed", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
+        final SharedPreferences wmbPreference = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean hasFlagged = wmbPreference.getBoolean("Rate-"+mTrail.getMetadata().getTrailID(), false);
+
+        if(hasFlagged){
+            //if they've flagged it already, clicking removes the flag
+            SharedPreferences.Editor editor = wmbPreference.edit();
+            editor.putBoolean("Rate-"+mTrail.getMetadata().getTrailID(), false);
+            editor.apply();
+
+            setRateHighlight(false);
+        }
+        else{
+            //otherwise, clicking asks them if they want to flag
+            AlertUtils.showConfirm(this, "Rate this Trail",
+                    "Testing",
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            //if they're sure, send the flag to the database
+                            SharedPreferences.Editor editor = wmbPreference.edit();
+                            editor.putBoolean("Rate-"+mTrail.getMetadata().getTrailID(), true);
+                            editor.apply();
+
+                            setRateHighlight(true);
+                        }
+                    });
+        }
+    }
+
+    public void setFlagHighlight(boolean highlight)
+    {
+        FloatingActionButton flag = findViewById(R.id.FlagButton);
+        if(highlight) {
+            flag.setImageTintList(ColorStateList.valueOf(getResources().getColor(android.R.color.holo_red_dark,null)));
+        }
+        else{
+            flag.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.cardview_dark_background,null)));
+        }
+    }
+
+    public void setRateHighlight(boolean highlight)
+    {
+        FloatingActionButton rate = findViewById(R.id.RateButton);
+        if(highlight) {
+            rate.setImageTintList(ColorStateList.valueOf(getResources().getColor(android.R.color.holo_orange_dark,null)));
+        }
+        else{
+            rate.setImageTintList(ColorStateList.valueOf(getResources().getColor(R.color.cardview_dark_background,null)));
+        }
     }
 }

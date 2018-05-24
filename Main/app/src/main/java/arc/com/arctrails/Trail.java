@@ -22,7 +22,7 @@ public class Trail {
         private String name;
         private String description;
         private String location;
-        private String difficulty;
+        private int difficulty;
         private String notes;
         private String trailID;
         private List<String> imageIDs;
@@ -80,11 +80,11 @@ public class Trail {
             this.location = location;
         }
 
-        public String getDifficulty() {
+        public int getDifficulty() {
             return difficulty;
         }
 
-        public void setDifficulty(String difficulty) {
+        public void setDifficulty(int difficulty) {
             this.difficulty = difficulty;
         }
 

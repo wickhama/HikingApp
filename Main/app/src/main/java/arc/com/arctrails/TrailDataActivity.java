@@ -167,7 +167,8 @@ public class TrailDataActivity extends AppCompatActivity {
 
             nameView.setText(trail.getMetadata().getName());
             locationView.setText("Location: "+trail.getMetadata().getLocation());
-            difficultyView.setText("Difficulty: "+trail.getMetadata().getDifficulty());
+            difficultyView.setText("Difficulty: "+
+                    getResources().getStringArray(R.array.difficulty_array)[trail.getMetadata().getDifficulty()]);
             descriptionView.setText(trail.getMetadata().getDescription());
             notesView.setText(trail.getMetadata().getNotes());
 

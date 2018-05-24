@@ -191,7 +191,7 @@ public class NewTrailActivity extends AppCompatActivity {
         String location = locationField.getText().toString().trim();
         String description = descriptionField.getText().toString().trim();
         String notes = notesField.getText().toString().trim();
-        String difficulty = difficultySpinner.getSelectedItem().toString().trim();
+        int difficulty = difficultySpinner.getSelectedItemPosition();
         String id = UUID.randomUUID().toString();
 
         Intent intent = new Intent();

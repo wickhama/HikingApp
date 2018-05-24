@@ -52,9 +52,11 @@
     <string name="stringNotes">Notes</string>
 
     <string-array name="difficulty_array">
+        <item>Easiest</item>
         <item>Easy</item>
-        <item>Medium</item>
-        <item>Hard</item>
+        <item>More Difficult</item>
+        <item>Very Difficult</item>
+        <item>Extremely Difficult</item>
     </string-array>
     <string name="title_activity_download_data">DownloadDataActivity</string>
     <string name="trail_data_download">Download</string>

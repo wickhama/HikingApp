@@ -92,7 +92,7 @@ class GPXFile {
                         }
                         if(TRAIL_DIFFICULTY.equals(currentNode.getNodeName())){
                             if(currentNode.getFirstChild() != null)
-                                trail.getMetadata().setDifficulty(currentNode.getFirstChild().getNodeValue());
+                                trail.getMetadata().setDifficulty(Integer.parseInt(currentNode.getFirstChild().getNodeValue()));
                         }
                         if(TRAIL_NOTES.equals(currentNode.getNodeName())){
                             if(currentNode.getFirstChild() != null)
@@ -140,9 +140,9 @@ class GPXFile {
                     node.appendChild(doc.createTextNode(trail.getMetadata().getLocation()));
                     extensionNode.appendChild(node);
                 }
-                if(trail.getMetadata().getDifficulty() != null) {
+                if(trail.getMetadata().getDifficulty() >= 0) {
                     node = doc.createElement(TRAIL_DIFFICULTY);
-                    node.appendChild(doc.createTextNode(trail.getMetadata().getDifficulty()));
+                    node.appendChild(doc.createTextNode(""+trail.getMetadata().getDifficulty()));
                     extensionNode.appendChild(node);
                 }
                 if(trail.getMetadata().getNotes() != null) {

@@ -258,7 +258,7 @@ public class RecordingActivity extends AppCompatActivity
                 //the activity sends the information back through the intent
                 String name = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_NAME);
                 String location = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_LOCATION);
-                String difficulty = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_DIFFICULTY);
+                int difficulty = data.getIntExtra(NewTrailActivity.EXTRA_TRAIL_DIFFICULTY,0);
                 String description = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_DESCRIPTION);
                 String notes = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_NOTES);
                 String uuid = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_ID);
