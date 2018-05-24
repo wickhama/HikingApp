@@ -397,7 +397,7 @@ public class CustomMapFragment extends SupportMapFragment implements
                     options.icon(getMarkerIconFromDrawable(getResources().getDrawable(R.drawable.ic_local_parking_black_24px)));
                     break;
                 case "View Point":
-                    options.icon(getMarkerIconFromDrawable(getResources().getDrawable(R.drawable.ic_photo_camera_black_24px)));
+                    options.icon(getMarkerIconFromDrawable(getResources().getDrawable(R.drawable.ic_menu_camera)));
                     break;
                 case "Picnic Area":
                     options.icon(getMarkerIconFromDrawable(getResources().getDrawable(R.drawable.picnic_desk)));

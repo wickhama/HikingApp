@@ -87,15 +87,15 @@ public class DownloadDataActivity extends AppCompatActivity {
         TextView locationView = findViewById(R.id.TrailLocationField);
         TextView difficultyView = findViewById(R.id.Difficulty);
         TextView notesView = findViewById(R.id.Notes);
+        TextView ratingView = findViewById(R.id.RatingText);
 
-        //if the file could not be parsed, ask them if they would like to delete
         if(trail == null){
             AlertUtils.showAlert(this,"Database Error",
                     "There was a problem connecting to the database. Please try again later.",
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            //do nothing and leave if they dont want to delete
+                            //do nothing and leave
                             setResult(RESULT_BACK);
                             finish();
                         }
@@ -109,27 +109,22 @@ public class DownloadDataActivity extends AppCompatActivity {
             descriptionView.setText(trail.getMetadata().getDescription());
             notesView.setText(trail.getMetadata().getNotes());
 
+            if(trail.getMetadata().getNumRatings() > 0){
+                long rating = Math.round(trail.getMetadata().getRating());
+                String ratingText = "";
+                int i = 0;
+                for(;i < rating; i++)
+                    ratingText += "★";
+                for(;i < 5; i++)
+                    ratingText += "☆";
+                ratingText += " | "+trail.getMetadata().getNumRatings()+" Votes";
+
+                ratingView.setText(ratingText);
+            }
+
             descriptionView.setMovementMethod(new ScrollingMovementMethod());
             notesView.setMovementMethod(new ScrollingMovementMethod());
         }
-    }
-
-    public void onDownloadPressed(View view)
-    {
-        Snackbar.make(findViewById(R.id.downloadDataLayout), "Downloading "+mTrail.getMetadata().getName(), Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
-        Database.getDatabase().getTrail(trailID, new Database.DataTrailListener() {
-            @Override
-            public void onDataTrail(Trail trail) {
-                mTrail = trail;
-
-                GPXFile.writeGPXFile(mTrail,DownloadDataActivity.this);
-                Snackbar.make(findViewById(R.id.downloadDataLayout), "Downloaded "+mTrail.getMetadata().getName(), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-        if(mTrail.getMetadata().getImageIDs().size() > 0)
-            Database.getDatabase().downloadTrailImages(mTrail, this);
     }
 
     public void onStartPressed(View view)
@@ -155,5 +150,17 @@ public class DownloadDataActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    public void onFlagPressed(View view)
+    {
+        Snackbar.make(findViewById(R.id.downloadDataLayout), "Flag Pressed", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+    }
+
+    public void onRatePressed(View view)
+    {
+        Snackbar.make(findViewById(R.id.downloadDataLayout), "Rate Pressed", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
     }
 }

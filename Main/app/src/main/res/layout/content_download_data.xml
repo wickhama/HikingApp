@@ -27,22 +27,22 @@ tools:showIn="@layout/activity_download_data">
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:scaleType="fitXY"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@color/common_google_signin_btn_text_light_default"
-        android:scaleType="fitXY"/>
+        app:srcCompat="@color/common_google_signin_btn_text_light_default" />
 
     <TextView
         android:id="@+id/TrailName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:text="Loading..."
         android:textSize="30sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/FlagButton" />
 
     <TextView
         android:id="@+id/Notes"
@@ -128,6 +128,57 @@ tools:showIn="@layout/activity_download_data">
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/Description"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/FlagButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:onClick="onFlagPressed"
+        android:src="@drawable/ic_menu_manage"
+        android:tint="?attr/colorError"
+        app:backgroundTint="?attr/colorButtonNormal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/RateButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="16dp"
+        android:onClick="onRatePressed"
+        android:src="@drawable/ic_menu_send"
+        android:tint="@android:color/holo_orange_dark"
+        app:backgroundTint="?attr/colorButtonNormal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <TextView
+        android:id="@+id/RatingText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="@string/null_rating"
+        app:layout_constraintBaseline_toBaselineOf="@+id/FlagText"
+        app:layout_constraintEnd_toStartOf="@+id/RateButton" />
+
+    <TextView
+        android:id="@+id/FlagText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:text="0"
+        app:layout_constraintBottom_toTopOf="@+id/TrailName"
+        app:layout_constraintStart_toEndOf="@+id/FlagButton"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
 </android.support.constraint.ConstraintLayout>
 </android.support.v4.widget.NestedScrollView>

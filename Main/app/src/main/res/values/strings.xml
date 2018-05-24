@@ -82,4 +82,5 @@
         "File storage handled by the GPXParser library from Alternative Vision:\n\n"
         "gpxparser.alternativevision.ro"
     </string>
+    <string name="null_rating">☆☆☆☆☆ | 0 Votes</string>
 </resources>
