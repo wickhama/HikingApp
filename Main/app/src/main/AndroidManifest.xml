@@ -25,7 +25,12 @@
             android:theme="@style/AppTheme.NoActionBar">
 
             <!-- This is the original opening intent -->
+             <intent-filter>
+             <action android:name="android.intent.action.MAIN" />
 
+
+             <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
         </activity>
         <!--
             Added this meta-data to call the gradle scripts I added. I followed a turorial online to do so. Feel free
@@ -139,11 +144,11 @@
         <activity
             android:name=".PictureActivity"
             android:configChanges="orientation|screenSize">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
     </application>
 
