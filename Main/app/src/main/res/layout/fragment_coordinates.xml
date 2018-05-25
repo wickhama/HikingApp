@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
     tools:context="arc.com.arctrails.Coordinates">
 
     <!-- TODO: Update blank fragment layout -->
@@ -10,7 +11,10 @@
         android:id="@+id/latitudeLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="monospace"
+        android:paddingHorizontal="@dimen/cardview_default_elevation"
         android:text="@string/latitude"
+        android:textColor="@color/cardview_light_background"
         android:visibility="visible" />
 
     <TextView
@@ -19,7 +23,10 @@
         android:layout_height="wrap_content"
         android:layout_column="0"
         android:layout_row="1"
+        android:fontFamily="monospace"
+        android:paddingHorizontal="@dimen/cardview_default_elevation"
         android:text="@string/longitude"
+        android:textColor="@color/cardview_light_background"
         android:visibility="visible" />
 
     <TextView
@@ -28,7 +35,10 @@
         android:layout_height="wrap_content"
         android:layout_column="1"
         android:layout_row="0"
-        android:text="0.0" />
+        android:fontFamily="monospace"
+        android:paddingHorizontal="@dimen/cardview_default_elevation"
+        android:text="0.0"
+        android:textColor="@color/cardview_light_background" />
 
     <TextView
         android:id="@+id/longitude"
@@ -36,5 +46,8 @@
         android:layout_height="wrap_content"
         android:layout_column="1"
         android:layout_row="1"
-        android:text="0.0" />
+        android:fontFamily="monospace"
+        android:paddingVertical="@dimen/cardview_default_elevation"
+        android:text="0.0"
+        android:textColor="@color/cardview_light_background" />
 </GridLayout>

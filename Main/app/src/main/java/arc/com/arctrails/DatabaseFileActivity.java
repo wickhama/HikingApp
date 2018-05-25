@@ -139,6 +139,15 @@ public class DatabaseFileActivity extends AppCompatActivity
                     ratingText = "☆☆☆☆☆";
                 }
 
+                //Current Working Friday
+//                if(metadata.getDifficulty() > 0){
+//                    int difficulty = 0;
+//                    int k = 0;
+//                    for(;k < difficulty; k++){
+//
+//                    }
+//                }
+
                 menu.add(R.id.nav_group_database, id, Menu.NONE, String.format("%-15s%s",ratingText, metadata.getName())).setCheckable(true).setIcon(d);
                 mTrailIDs.add(metadata.getTrailID());
             }

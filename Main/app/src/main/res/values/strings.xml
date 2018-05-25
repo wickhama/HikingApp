@@ -11,7 +11,7 @@
     <string name="title_activity_maps">Map</string>
 
     <string name="navigation_menu_wrench">Tools</string>
-    <string name="latitude">Latitude : </string>
+    <string name="latitude">Latitude &#160;: </string>
     <string name="longitude">Longitude : </string>
 
     <string name="title_activity_trail_data">Trail Info</string>
