@@ -88,19 +88,6 @@ public class MenuActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Trail t = new Trail();
-        Trail.Waypoint w = new Trail.Waypoint();
-        w.setImageID("testing");
-        t.addWaypoint(w);
-        w = new Trail.Waypoint();
-        w.setComment("no image");
-        t.addWaypoint(w);
-        t.getMetadata().addImageID("test1");
-        t.getMetadata().addImageID("test2");
-        t.getMetadata().setName("TEST");
-
-        GPXFile.writeGPXFile(t, this);
-
         //checks if this is the first time the app has been run
 //        SharedPreferences wmbPreference = PreferenceManager.getDefaultSharedPreferences(this);
 //        boolean isFirstRun = wmbPreference.getBoolean(PREFERENCE_FIRST_RUN, true);

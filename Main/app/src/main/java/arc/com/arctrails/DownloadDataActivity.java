@@ -24,7 +24,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 
-public class DownloadDataActivity extends AppCompatActivity {
+public class DownloadDataActivity extends AppCompatActivity implements RatingDialog.RatingDialogListener {
 
     //result codes
     //the user did nothing
@@ -194,7 +194,7 @@ public class DownloadDataActivity extends AppCompatActivity {
         else{
             //otherwise, clicking asks them if they want to flag
             AlertUtils.showConfirm(this, "Flag this Trail",
-                    "Trails can be flagged to notify administrators of inappropriate content." +
+                    "Trails can be flagged to notify administrators of inappropriate content. " +
                             "Are you sure you want to flag this trail?",
                     new DialogInterface.OnClickListener() {
                         @Override
@@ -213,32 +213,31 @@ public class DownloadDataActivity extends AppCompatActivity {
 
     public void onRatePressed(View view)
     {
-        final SharedPreferences wmbPreference = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean hasFlagged = wmbPreference.getBoolean("Rate-"+mTrail.getMetadata().getTrailID(), false);
+        SharedPreferences wmbPreference = PreferenceManager.getDefaultSharedPreferences(this);
+        int rated = wmbPreference.getInt("Rate-"+mTrail.getMetadata().getTrailID(), 0);
 
-        if(hasFlagged){
-            //if they've flagged it already, clicking removes the flag
+        if(rated > 0){
             SharedPreferences.Editor editor = wmbPreference.edit();
-            editor.putBoolean("Rate-"+mTrail.getMetadata().getTrailID(), false);
+            editor.putInt("Rate-"+mTrail.getMetadata().getTrailID(), 0);
             editor.apply();
 
             setRateHighlight(false);
         }
         else{
-            //otherwise, clicking asks them if they want to flag
-            AlertUtils.showConfirm(this, "Rate this Trail",
-                    "Testing",
-                    new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            //if they're sure, send the flag to the database
-                            SharedPreferences.Editor editor = wmbPreference.edit();
-                            editor.putBoolean("Rate-"+mTrail.getMetadata().getTrailID(), true);
-                            editor.apply();
+            (new RatingDialog()).show(getFragmentManager(), "rating");
+        }
+    }
 
-                            setRateHighlight(true);
-                        }
-                    });
+    @Override
+    public void onDialogPositiveClick(RatingDialog dialog) {
+        if(dialog.getRating() > 0) {
+            SharedPreferences wmbPreference = PreferenceManager.getDefaultSharedPreferences(this);
+
+            SharedPreferences.Editor editor = wmbPreference.edit();
+            editor.putInt("Rate-" + mTrail.getMetadata().getTrailID(), dialog.getRating());
+            editor.apply();
+
+            setRateHighlight(true);
         }
     }
 

@@ -11,10 +11,10 @@
     <string name="title_activity_maps">Map</string>
 
     <string name="navigation_menu_wrench">Tools</string>
-    <string name="latitude">Latitude &#160;: </string>
+    <string name="latitude">Latitude\u0020\u0020: </string>
     <string name="longitude">Longitude : </string>
 
-    <string name="title_activity_trail_data">Trail Info</string>
+    <string name="title_activity_trail_data"></string>
     <string name="trail_data_start">Start</string>
     <string name="trail_data_delete">Delete</string>
 
@@ -58,7 +58,7 @@
         <item>Very Difficult</item>
         <item>Extremely Difficult</item>
     </string-array>
-    <string name="title_activity_download_data">DownloadDataActivity</string>
+    <string name="title_activity_download_data"></string>
     <string name="trail_data_download">Download</string>
     <string name="title_activity_image_temp">ImageTemp</string>
     <string name="upload_image_test">Upload Image</string>
@@ -85,4 +85,5 @@
         "gpxparser.alternativevision.ro"
     </string>
     <string name="null_rating">☆☆☆☆☆ | 0 Votes</string>
+    <string name="RateTrail">Rate Trail</string>
 </resources>

@@ -104,6 +104,25 @@ public class NewTrailActivity extends AppCompatActivity {
 
         ImageButton image = findViewById(R.id.imageButton);
         image.setImageDrawable(getResources().getDrawable(R.drawable.ic_menu_camera));
+
+        findViewById(R.id.addCamera).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addCamera();
+            }
+        });
+        findViewById(R.id.addGallery).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addGallery();
+            }
+        });
+        findViewById(R.id.removePhoto).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removePhoto();
+            }
+        });
     }
 
     @Override
@@ -222,5 +241,15 @@ public class NewTrailActivity extends AppCompatActivity {
 
     }
 
+    public void addCamera() {
 
+    }
+
+    public void addGallery() {
+
+    }
+
+    public void removePhoto() {
+        
+    }
 }
