@@ -22,7 +22,7 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="0dp"
+            android:layout_width="fill_parent"
             android:layout_height="250dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
@@ -31,7 +31,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@color/common_google_signin_btn_text_light_default"
-            android:scaleType="fitXY"/>
+            android:adjustViewBounds="true"
+            android:layout_centerInParent="true"
+            android:scaleType="centerCrop" />
 
         <TextView
             android:id="@+id/TrailName"

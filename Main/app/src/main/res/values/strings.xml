@@ -51,6 +51,10 @@
     <string name="editLocation">Location</string>
     <string name="stringNotes">Notes</string>
 
+    <string name="start">Capture a picture to crop</string>
+    <string name="picture">Picture</string>
+    <string name="picture_capture">Launch Camera</string>
+
     <string-array name="difficulty_array">
         <item>Easiest</item>
         <item>Easy</item>
