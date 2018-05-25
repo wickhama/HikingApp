@@ -99,33 +99,20 @@ public class DatabaseFileActivity extends AppCompatActivity
         menu.clear();
         mTrailIDs.clear();
 
-//        System.out.println("Trails list: " + names.toString());
-
 
         if(metadataList != null) {
             int i=0;
             for(Trail.Metadata metadata : metadataList) {
                 int id = mTrailIDs.size();
 
-                Drawable d = getDrawable(R.drawable.circle);
-                d.mutate();
-
-                int color = RED;
-
-                if(i%3==0){
-                    color = RED;
-                }
-                else if(i%3==1){
-                    color = Color.YELLOW;
-                }
-                else if(i%3==2){
-                    color = Color.GREEN;
-                }
-
-                d.setColorFilter(color, PorterDuff.Mode.SRC_ATOP );
-
+                Drawable easiest = getDrawable(R.drawable.circle_outline);
+                Drawable easy = getDrawable(R.drawable.circle_solid);
+                Drawable medium = getDrawable(R.drawable.square);
+                Drawable hard = getDrawable(R.drawable.single_black_diamond);
+                Drawable hardest = getDrawable(R.drawable.double_black_diamond);
                 i++;
 
+                //Sets the rating in the list.
                 String ratingText = "";
 
                 if(metadata.getNumRatings() > 0){
@@ -139,17 +126,32 @@ public class DatabaseFileActivity extends AppCompatActivity
                     ratingText = "☆☆☆☆☆";
                 }
 
-                //Current Working Friday
-//                if(metadata.getDifficulty() > 0){
-//                    int difficulty = 0;
-//                    int k = 0;
-//                    for(;k < difficulty; k++){
-//
-//                    }
-//                }
+                //Sets the Difficulty in the list.
 
-                menu.add(R.id.nav_group_database, id, Menu.NONE, String.format("%-15s%s",ratingText, metadata.getName())).setCheckable(true).setIcon(d);
+                Drawable icon;
+
+                switch(metadata.getDifficulty()){
+                    case 0 : icon = easiest;
+                        break;
+
+                    case 1 : icon = easy;
+                        break;
+
+                    case 2 : icon = medium;
+                        break;
+
+                    case 3 : icon = hard;
+                        break;
+
+                    case 4 : icon = hardest;
+                        break;
+
+                    default : icon = null;
+                        break;
+                }
+                menu.add(R.id.nav_group_database, id, Menu.NONE, String.format("%-15s%s",ratingText, metadata.getName())).setCheckable(true).setIcon(icon);
                 mTrailIDs.add(metadata.getTrailID());
+
             }
         }else{
             Snackbar.make(findViewById(R.id.db_content_view), "Error connecting to DB", Snackbar.LENGTH_LONG)

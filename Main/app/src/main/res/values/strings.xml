@@ -85,4 +85,10 @@
         "gpxparser.alternativevision.ro"
     </string>
     <string name="null_rating">☆☆☆☆☆ | 0 Votes</string>
+    <string name="difficultyFilter">Difficulty</string>
+    <string name="ratingFilter">Rating</string>
+    <string name="distanceText">Distance</string>
+    <string name="lengthText">Length</string>
+    <string name="nameText">Name</string>
+    <string name="filterButton">Filter</string>
 </resources>

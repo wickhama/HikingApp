@@ -98,7 +98,8 @@ class GPXFile {
                                 try {
                                     trail.getMetadata().setDifficulty(Integer.parseInt(currentNode.getFirstChild().getNodeValue()));
                                 }
-                                catch(NumberFormatException e){}
+                                catch(NumberFormatException e){
+                                }
                         }
                         if(TRAIL_NOTES.equals(currentNode.getNodeName())){
                             if(currentNode.getFirstChild() != null)
@@ -270,6 +271,8 @@ class GPXFile {
     static Trail getGPX(String filename, Context context) {
         FileInputStream in = null;
 
+
+        System.out.println("%%%%%%%%%%%%%%LOAD: "+filename);
         File file = new File(context.getExternalFilesDir(null), filename);
         try {
             in = new FileInputStream(file);
@@ -299,10 +302,9 @@ class GPXFile {
     static void  writeGPXFile(Trail trail, Context context) {
         GPX gpx = parseTrailtoGPX(trail);
 
-        System.out.println("~~~~~~~~~~~~~~~"+trail.getMetadata().getName());
-
+        System.out.println("%%%%%%%%%%%%%%SAVE: "+trail.getMetadata().getTrailID()+".gpx");
         //create a new file with the given name
-        File file = new File(context.getExternalFilesDir(null), trail.getMetadata().getName()+".gpx");
+        File file = new File(context.getExternalFilesDir(null), trail.getMetadata().getTrailID()+".gpx");
         FileOutputStream out;
         try {
             out = new FileOutputStream(file);

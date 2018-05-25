@@ -1,6 +1,7 @@
 package arc.com.arctrails;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -84,10 +85,41 @@ public class LocalFileActivity extends AppCompatActivity
                 String[] tokens = trailFile.getName().split("\\.");
                 //only display GPX files in the menu
                 if(tokens.length >= 2 && tokens[tokens.length-1].equals("gpx")) {
+
+                    Trail trail = GPXFile.getGPX(trailFile.getName(), this);
                     //when a user clicks a file, we only get an int ID in the callback
                     //so we add the file to an array, and use the index as the ID
                     int id = mTrailFiles.size();
-                    menu.add(R.id.nav_group_local, id, Menu.NONE, tokens[0]).setCheckable(true);
+
+                    Drawable easiest = getDrawable(R.drawable.circle_outline);
+                    Drawable easy = getDrawable(R.drawable.circle_solid);
+                    Drawable medium = getDrawable(R.drawable.square);
+                    Drawable hard = getDrawable(R.drawable.single_black_diamond);
+                    Drawable hardest = getDrawable(R.drawable.double_black_diamond);
+
+                    Drawable icon;
+
+                    switch(trail.getMetadata().getDifficulty()){
+                        case 0 : icon = easiest;
+                        break;
+
+                        case 1 : icon = easy;
+                        break;
+
+                        case 2 : icon = medium;
+                        break;
+
+                        case 3 : icon = hard;
+                        break;
+
+                        case 4 : icon = hardest;
+                        break;
+
+                        default : icon = null;
+                        break;
+                    }
+
+                    menu.add(R.id.nav_group_local, id, Menu.NONE, trail.getMetadata().getName()).setCheckable(true).setIcon(icon);
                     mTrailFiles.add(trailFile);
                 }
             }

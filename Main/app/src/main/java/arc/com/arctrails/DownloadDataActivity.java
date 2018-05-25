@@ -169,7 +169,7 @@ public class DownloadDataActivity extends AppCompatActivity {
 //                        .setAction("Action", null).show();
 
                 Intent intent = new Intent();
-                intent.putExtra(EXTRA_FILE_NAME,mTrail.getMetadata().getName()+".gpx");
+                intent.putExtra(EXTRA_FILE_NAME,mTrail.getMetadata().getTrailID()+".gpx");
                 setResult(RESULT_START,intent);
                 finish();
             }
