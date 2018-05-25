@@ -276,18 +276,17 @@ tools:showIn="@layout/activity_new_trail">
     tools:showIn="@layout/activity_new_trail">
 
 
-    <ImageButton
-        android:id="@+id/imageButton"
+    <ImageView
+        android:id="@+id/image"
         android:layout_width="0dp"
         android:layout_height="250dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:onClick="onImageClick"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@color/common_google_signin_btn_text_light_default" />
+        android:background="@color/common_google_signin_btn_text_light_default" />
 
 
     <EditText
@@ -303,7 +302,7 @@ tools:showIn="@layout/activity_new_trail">
         android:inputType="textPersonName"
         app:layout_constraintEnd_toStartOf="@+id/removePhoto"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton" />
+        app:layout_constraintTop_toBottomOf="@+id/image" />
 
     <EditText
         android:id="@+id/TrailDescriptionField"
@@ -399,7 +398,7 @@ tools:showIn="@layout/activity_new_trail">
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton"
+        app:layout_constraintTop_toBottomOf="@+id/image"
         app:srcCompat="@drawable/ic_menu_camera" />
 
     <ImageButton
@@ -410,7 +409,7 @@ tools:showIn="@layout/activity_new_trail">
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toStartOf="@+id/addCamera"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton"
+        app:layout_constraintTop_toBottomOf="@+id/image"
         app:srcCompat="@drawable/ic_menu_gallery" />
 
     <ImageButton
@@ -421,7 +420,7 @@ tools:showIn="@layout/activity_new_trail">
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toStartOf="@+id/addGallery"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton"
+        app:layout_constraintTop_toBottomOf="@+id/image"
         app:srcCompat="@drawable/ic_menu_camera" />
 
 

@@ -1,15 +1,9 @@
 package arc.com.arctrails;
 
-import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -18,17 +12,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.util.UUID;
 
 /**
@@ -101,9 +86,6 @@ public class NewTrailActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
-
-        ImageButton image = findViewById(R.id.imageButton);
-        image.setImageDrawable(getResources().getDrawable(R.drawable.ic_menu_camera));
 
         findViewById(R.id.addCamera).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -185,12 +167,6 @@ public class NewTrailActivity extends AppCompatActivity {
         }
     }
 
-    public void onImageClick(View v) {
-        Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
-        galleryIntent.setType("image/*");
-        startActivityForResult(galleryIntent, GALLERY_CODE);
-    }
-
     /**
      * Created by Ryley
      * added in Increment 3
@@ -233,10 +209,9 @@ public class NewTrailActivity extends AppCompatActivity {
 
         if (requestCode == GALLERY_CODE && resultCode == RESULT_OK) {
             imageUri = data.getData();
-            ImageButton button = ((ImageButton)findViewById(R.id.imageButton));
-            button.setImageURI(imageUri);
-            button.setScaleType(ImageView.ScaleType.FIT_XY);
-
+            ImageView view = ((ImageView)findViewById(R.id.image));
+            view.setImageURI(imageUri);
+            view.setScaleType(ImageView.ScaleType.FIT_XY);
         }
 
     }
@@ -246,10 +221,12 @@ public class NewTrailActivity extends AppCompatActivity {
     }
 
     public void addGallery() {
-
+        Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        galleryIntent.setType("image/*");
+        startActivityForResult(galleryIntent, GALLERY_CODE);
     }
 
     public void removePhoto() {
-        
+
     }
 }
