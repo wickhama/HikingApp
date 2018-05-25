@@ -28,6 +28,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.MutableData;
+import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
@@ -224,6 +226,22 @@ public class Database extends AppCompatActivity {
         };
 
         ref.addListenerForSingleValueEvent(eventListener);
+    }
+
+    public void addFlag(String trailID) {
+
+    }
+
+    public void removeFlag(String trailID) {
+
+    }
+
+    public void addRating(String trailID, int rating) {
+
+    }
+
+    public void removeRating(String trailID, int rating) {
+
     }
 
     public void uploadTrail(String trailID, Trail trail){
