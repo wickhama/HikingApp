@@ -71,14 +71,26 @@ public class DownloadDataActivity extends AppCompatActivity {
         Database.getDatabase().getTrailMetadata(trailID, new Database.MetadataListener() {
             @Override
             public void onMetadata(Trail.Metadata metadata) {
-                mTrail = new Trail();
-                mTrail.setMetadata(metadata);
-                setInfo(mTrail);
+                if(metadata != null) {
+                    mTrail = new Trail();
+                    mTrail.setMetadata(metadata);
+                    setInfo(mTrail);
 
-                //DOWNLOADING from Firebase Storage
-                ImageView displayImage = (ImageView)findViewById(R.id.imageView);
-                System.out.println("&&&&&&&&&&&&STARTING&&&&&&");
-                Database.getDatabase().getImageUrl(mTrail, displayImage, DownloadDataActivity.this);
+                    //DOWNLOADING from Firebase Storage
+                    ImageView displayImage = (ImageView) findViewById(R.id.imageView);
+                    System.out.println("&&&&&&&&&&&&STARTING&&&&&&");
+                    Database.getDatabase().getImageUrl(mTrail, displayImage, DownloadDataActivity.this);
+                }
+                else
+                    AlertUtils.showAlert(DownloadDataActivity.this, "Database Error",
+                            "There was a problem accessing this trail. Please try again later.",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    setResult(RESULT_BACK);
+                                    finish();
+                                }
+                            });
             }
         });
 
@@ -166,9 +178,6 @@ public class DownloadDataActivity extends AppCompatActivity {
 
     public void onFlagPressed(View view)
     {
-        Snackbar.make(findViewById(R.id.downloadDataLayout), "Flag Pressed", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
-
         final SharedPreferences wmbPreference = PreferenceManager.getDefaultSharedPreferences(this);
         boolean hasFlagged = wmbPreference.getBoolean("Flag-"+mTrail.getMetadata().getTrailID(), false);
 

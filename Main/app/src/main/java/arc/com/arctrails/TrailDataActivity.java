@@ -96,8 +96,10 @@ public class TrailDataActivity extends AppCompatActivity {
                     setFileName(trail.getMetadata().getImageIDs().get(0) + ".jpg").
                     load();
 
-            displayImage.setImageBitmap(bitmap);
-            displayImage.setMaxHeight(bitmap.getHeight());
+            if(bitmap != null) {
+                displayImage.setImageBitmap(bitmap);
+                displayImage.setMaxHeight(bitmap.getHeight());
+            }
         }
 
     }
@@ -225,7 +227,7 @@ public class TrailDataActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         Database database = Database.getDatabase();
-                        database.uploadTrail(trail.getMetadata().getName(), trail);
+                        database.uploadTrail(trail.getMetadata().getTrailID(), trail);
                         Snackbar.make(findViewById(R.id.trail_data_layout), "Uploading Trail", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
 

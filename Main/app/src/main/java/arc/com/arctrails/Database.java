@@ -277,6 +277,7 @@ public class Database extends AppCompatActivity {
     //Called from DownloadDataActivity, this returns a working URL from the Trail Image.
     //TODO: fix this so that it can load any image in the image IDs, not just image 0
     public void getImageUrl(Trail trail, final ImageView displayImage, Context context){
+        System.out.println(trail.getMetadata().getImageIDs());
         if (trail.getMetadata().getImageIDs() != null
                 && trail.getMetadata().getImageIDs().size() > 0) {
             storageRef = storage.getReference();

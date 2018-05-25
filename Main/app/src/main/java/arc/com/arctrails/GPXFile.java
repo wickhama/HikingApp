@@ -45,7 +45,10 @@ class GPXFile {
 
     private static GPXParser gpxParser;
 
-    private static void buildParser(){
+    private static GPXParser getParser(){
+        if(gpxParser != null)
+            return gpxParser;
+
         gpxParser = new GPXParser();
         DummyExtensionParser f = new DummyExtensionParser();
         gpxParser.addExtensionParser(new DummyExtensionParser(){
@@ -92,7 +95,10 @@ class GPXFile {
                         }
                         if(TRAIL_DIFFICULTY.equals(currentNode.getNodeName())){
                             if(currentNode.getFirstChild() != null)
-                                trail.getMetadata().setDifficulty(Integer.parseInt(currentNode.getFirstChild().getNodeValue()));
+                                try {
+                                    trail.getMetadata().setDifficulty(Integer.parseInt(currentNode.getFirstChild().getNodeValue()));
+                                }
+                                catch(NumberFormatException e){}
                         }
                         if(TRAIL_NOTES.equals(currentNode.getNodeName())){
                             if(currentNode.getFirstChild() != null)
@@ -167,6 +173,8 @@ class GPXFile {
                 }
             }
         });
+
+        return gpxParser;
     }
 
     private static Trail parseGPXtoTrail(GPX gpx){
@@ -260,16 +268,13 @@ class GPXFile {
      * Modified by Ryley to alert user to exceptions - *hopefully* never actually gets seen
      */
     static Trail getGPX(String filename, Context context) {
-        if(gpxParser == null)
-            buildParser();
-
         FileInputStream in = null;
 
         File file = new File(context.getExternalFilesDir(null), filename);
         try {
             in = new FileInputStream(file);
             if(in != null) {
-                GPX gpxData = gpxParser.parseGPX(in);
+                GPX gpxData = getParser().parseGPX(in);
                 return parseGPXtoTrail(gpxData);
             }
         } catch(FileNotFoundException e) {
@@ -292,9 +297,6 @@ class GPXFile {
      * Modified by Ryley to alert user to exceptions - *hopefully* never actually gets seen
      */
     static void  writeGPXFile(Trail trail, Context context) {
-        if(gpxParser == null)
-            buildParser();
-
         GPX gpx = parseTrailtoGPX(trail);
 
         System.out.println("~~~~~~~~~~~~~~~"+trail.getMetadata().getName());
@@ -304,7 +306,7 @@ class GPXFile {
         FileOutputStream out;
         try {
             out = new FileOutputStream(file);
-            gpxParser.writeGPX(gpx, out);
+            getParser().writeGPX(gpx, out);
         } catch(FileNotFoundException e) {
             AlertUtils.showAlert(context,"File not found","Please notify the developers.");
         } catch (TransformerException e) {

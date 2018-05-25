@@ -140,7 +140,7 @@ public class DatabaseFileActivity extends AppCompatActivity
                 }
 
                 menu.add(R.id.nav_group_database, id, Menu.NONE, String.format("%-15s%s",ratingText, metadata.getName())).setCheckable(true).setIcon(d);
-                mTrailIDs.add(metadata.getName());
+                mTrailIDs.add(metadata.getTrailID());
             }
         }else{
             Snackbar.make(findViewById(R.id.db_content_view), "Error connecting to DB", Snackbar.LENGTH_LONG)
