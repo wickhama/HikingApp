@@ -6,34 +6,32 @@
     android:layout_height="match_parent">
 
     <Spinner
-        android:id="@+id/distanceSpinner2"
+        android:id="@+id/lengthSpinner"
         android:layout_width="0dp"
         android:layout_height="30dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:entries="@array/waypoint_types"
+        android:entries="@array/length_array"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/distanceSpinner" />
+        app:layout_constraintTop_toBottomOf="@+id/distanceText" />
 
     <Switch
         android:id="@+id/difficultySwitch"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/difficultyText"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="30dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:gravity="center"
         android:text="@string/difficultyFilter"
         app:layout_constraintStart_toEndOf="@+id/difficultySwitch"
@@ -45,8 +43,8 @@
         android:layout_height="30dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:entries="@array/waypoint_types"
+        android:layout_marginTop="8dp"
+        android:entries="@array/difficulty_array"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/difficultyText"
         app:layout_constraintTop_toTopOf="parent" />
@@ -55,15 +53,14 @@
         android:id="@+id/ratingSwitch"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/difficultySwitch" />
 
     <TextView
         android:id="@+id/ratingText"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="30dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -75,25 +72,24 @@
     <Spinner
         android:id="@+id/ratingSpinner"
         android:layout_width="0dp"
-        android:layout_height="30dp"
+        android:layout_height="28dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:entries="@array/waypoint_types"
+        android:entries="@array/rating_array"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/ratingText"
-        app:layout_constraintTop_toBottomOf="@+id/difficultySpinner" />
+        app:layout_constraintTop_toBottomOf="@+id/difficultyText" />
 
     <TextView
         android:id="@+id/distanceText"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="30dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:gravity="center"
         android:text="@string/distanceText"
-        app:layout_constraintStart_toEndOf="@+id/lengthSpinner"
+        app:layout_constraintStart_toEndOf="@+id/distanceSwitch"
         app:layout_constraintTop_toBottomOf="@+id/ratingText" />
 
     <Spinner
@@ -103,25 +99,34 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:entries="@array/waypoint_types"
+        android:entries="@array/distance_array"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/distanceText"
-        app:layout_constraintTop_toBottomOf="@+id/ratingSpinner" />
+        app:layout_constraintTop_toBottomOf="@+id/ratingText" />
 
     <Switch
         android:id="@+id/lengthSwitch"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lengthSpinner" />
+        app:layout_constraintTop_toBottomOf="@+id/distanceSwitch" />
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="@string/name_filter"
+        app:layout_constraintStart_toEndOf="@+id/nameSwitch"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="100dp"
         android:layout_height="30dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -131,12 +136,11 @@
         app:layout_constraintTop_toBottomOf="@+id/distanceText" />
 
     <Switch
-        android:id="@+id/lengthSpinner"
+        android:id="@+id/distanceSwitch"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ratingSwitch" />
 
@@ -144,43 +148,24 @@
         android:id="@+id/nameSwitch"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/lengthSwitch" />
 
-    <TextView
-        android:id="@+id/nameText"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:gravity="center"
-        android:text="@string/nameText"
-        app:layout_constraintStart_toEndOf="@+id/nameSwitch"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-    <Spinner
-        android:id="@+id/nameSpinner"
+    <EditText
+        android:id="@+id/nameFilterInput"
         android:layout_width="0dp"
-        android:layout_height="30dp"
+        android:layout_height="38dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:entries="@array/waypoint_types"
+        android:layout_marginTop="12dp"
+        android:ems="10"
+        android:hint="Trail Name"
+        android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/nameText"
-        app:layout_constraintTop_toBottomOf="@+id/distanceSpinner2" />
-
-    <Button
-        android:id="@+id/filterButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/filterButton"
+        app:layout_constraintHorizontal_bias="0.539"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nameSwitch" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
 </android.support.constraint.ConstraintLayout>

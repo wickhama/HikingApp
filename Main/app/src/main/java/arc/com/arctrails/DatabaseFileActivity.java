@@ -32,7 +32,7 @@ import static android.graphics.Color.RED;
 import static android.graphics.Color.WHITE;
 
 public class DatabaseFileActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener, FilterDialog.FilterDialogListener{
 
     //return result codes
     //result if the user presses back
@@ -79,6 +79,14 @@ public class DatabaseFileActivity extends AppCompatActivity
             @Override
             public void onDataList(List<Trail.Metadata> entryIDs) {
                 buildMenu(entryIDs);
+            }
+        });
+
+        findViewById(R.id.filter_db).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                (new FilterDialog()).show(getFragmentManager(), "filter");
             }
         });
     }
@@ -182,6 +190,14 @@ public class DatabaseFileActivity extends AppCompatActivity
                 setResult(DownloadDataActivity.RESULT_START,data);
                 finish();
             }
+        }
+    }
+
+    @Override
+    public void onDialogPositiveClick(FilterDialog dialog) {
+        if(dialog.useDifficulty()) {
+            //Inset Query code for the db.
+            dialog.getDifficulty();
         }
     }
 }
