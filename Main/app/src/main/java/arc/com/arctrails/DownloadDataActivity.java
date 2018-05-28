@@ -103,7 +103,7 @@ public class DownloadDataActivity extends AppCompatActivity implements RatingDia
         TextView locationView = findViewById(R.id.TrailLocationField);
         TextView difficultyView = findViewById(R.id.Difficulty);
         TextView notesView = findViewById(R.id.Notes);
-        TextView ratingView = findViewById(R.id.RatingText);
+        TextView flagView = findViewById(R.id.FlagText);
 
         if(trail == null || trail.getMetadata() == null){
             AlertUtils.showAlert(this,"Database Error",
@@ -125,30 +125,38 @@ public class DownloadDataActivity extends AppCompatActivity implements RatingDia
                     getResources().getStringArray(R.array.difficulty_array)[trail.getMetadata().getDifficulty()]);
             descriptionView.setText(trail.getMetadata().getDescription());
             notesView.setText(trail.getMetadata().getNotes());
+            flagView.setText(""+trail.getMetadata().getNumFlags());
 
-            if(trail.getMetadata().getNumRatings() > 0){
-                long rating = Math.round(trail.getMetadata().getRating());
-                String ratingText = "";
-                int i = 0;
-                for(;i < rating; i++)
-                    ratingText += "★";
-                for(;i < 5; i++)
-                    ratingText += "☆";
-                ratingText += " | "+trail.getMetadata().getNumRatings()+" Votes";
-
-                ratingView.setText(ratingText);
-            }
+            setRatingText(trail.getMetadata().getNumRatings(), trail.getMetadata().getRating());
 
             SharedPreferences wmbPreference = PreferenceManager.getDefaultSharedPreferences(this);
             boolean hasFlagged = wmbPreference.getBoolean("Flag-"+trail.getMetadata().getTrailID(), false);
-            boolean hasRated = wmbPreference.getBoolean("Rate-"+trail.getMetadata().getTrailID(), false);
+            int hasRated = wmbPreference.getInt("Rate-"+trail.getMetadata().getTrailID(), 0);
 
             setFlagHighlight(hasFlagged);
-            setRateHighlight(hasRated);
+            setRateHighlight(hasRated != 0);
 
             descriptionView.setMovementMethod(new ScrollingMovementMethod());
             notesView.setMovementMethod(new ScrollingMovementMethod());
         }
+    }
+
+    public void setRatingText(int numRatings, double trailRating) {
+        TextView ratingView = findViewById(R.id.RatingText);
+        if(numRatings > 0){
+            long rating = Math.round(trailRating);
+            String ratingText = "";
+            int i = 0;
+            for(;i < rating; i++)
+                ratingText += "★";
+            for(;i < 5; i++)
+                ratingText += "☆";
+            ratingText += " | "+numRatings+" Votes";
+
+            ratingView.setText(ratingText);
+        }
+        else
+            ratingView.setText(R.string.null_rating);
     }
 
     public void onStartPressed(View view)
@@ -183,13 +191,26 @@ public class DownloadDataActivity extends AppCompatActivity implements RatingDia
 
         if(hasFlagged){
             //if they've flagged it already, clicking removes the flag
-            SharedPreferences.Editor editor = wmbPreference.edit();
-            editor.putBoolean("Flag-"+mTrail.getMetadata().getTrailID(), false);
-            editor.apply();
-
-            setFlagHighlight(false);
-
             //send a message to the database
+            Database.getDatabase().removeFlag(mTrail.getMetadata().getTrailID(),
+                    new Database.FlagTransactionListener() {
+                        @Override
+                        public void onComplete(boolean success, long newValue) {
+                            if(success) {
+                                SharedPreferences.Editor editor = wmbPreference.edit();
+                                editor.putBoolean("Flag-"+mTrail.getMetadata().getTrailID(), false);
+                                editor.apply();
+
+                                setFlagHighlight(false);
+                                ((TextView)findViewById(R.id.FlagText)).setText(""+newValue);
+                            }
+                            else {
+                                AlertUtils.showAlert(DownloadDataActivity.this,
+                                        "Database Error",
+                                        "There was a problem connecting to the database. Please try again later");
+                            }
+                        }
+                    });
         }
         else{
             //otherwise, clicking asks them if they want to flag
@@ -199,13 +220,26 @@ public class DownloadDataActivity extends AppCompatActivity implements RatingDia
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            SharedPreferences.Editor editor = wmbPreference.edit();
-                            editor.putBoolean("Flag-"+mTrail.getMetadata().getTrailID(), true);
-                            editor.apply();
-
-                            setFlagHighlight(true);
-
                             //send a message to the database
+                            Database.getDatabase().addFlag(mTrail.getMetadata().getTrailID(),
+                                    new Database.FlagTransactionListener() {
+                                        @Override
+                                        public void onComplete(boolean success, long newValue) {
+                                            if(success) {
+                                                SharedPreferences.Editor editor = wmbPreference.edit();
+                                                editor.putBoolean("Flag-"+mTrail.getMetadata().getTrailID(), true);
+                                                editor.apply();
+
+                                                setFlagHighlight(true);
+                                                ((TextView)findViewById(R.id.FlagText)).setText(""+newValue);
+                                            }
+                                            else {
+                                                AlertUtils.showAlert(DownloadDataActivity.this,
+                                                        "Database Error",
+                                                        "There was a problem connecting to the database. Please try again later");
+                                            }
+                                        }
+                                    });
                         }
                     });
         }
@@ -213,15 +247,29 @@ public class DownloadDataActivity extends AppCompatActivity implements RatingDia
 
     public void onRatePressed(View view)
     {
-        SharedPreferences wmbPreference = PreferenceManager.getDefaultSharedPreferences(this);
-        int rated = wmbPreference.getInt("Rate-"+mTrail.getMetadata().getTrailID(), 0);
+        final SharedPreferences wmbPreference = PreferenceManager.getDefaultSharedPreferences(this);
+        final int rated = wmbPreference.getInt("Rate-"+mTrail.getMetadata().getTrailID(), 0);
 
         if(rated > 0){
-            SharedPreferences.Editor editor = wmbPreference.edit();
-            editor.putInt("Rate-"+mTrail.getMetadata().getTrailID(), 0);
-            editor.apply();
+            Database.getDatabase().removeRating(mTrail.getMetadata().getTrailID(), rated,
+                    new Database.RatingTransactionListener() {
+                        @Override
+                        public void onComplete(boolean success, long numRatings, double rating) {
+                            if(success) {
+                                SharedPreferences.Editor editor = wmbPreference.edit();
+                                editor.putInt("Rate-"+mTrail.getMetadata().getTrailID(), 0);
+                                editor.apply();
 
-            setRateHighlight(false);
+                                setRatingText((int)numRatings, rating);
+                                setRateHighlight(false);
+                            }
+                            else {
+                                AlertUtils.showAlert(DownloadDataActivity.this,
+                                        "Database Error",
+                                        "There was a problem connecting to the database. Please try again later");
+                            }
+                        }
+                    });
         }
         else{
             (new RatingDialog()).show(getFragmentManager(), "rating");
@@ -230,14 +278,29 @@ public class DownloadDataActivity extends AppCompatActivity implements RatingDia
 
     @Override
     public void onDialogPositiveClick(RatingDialog dialog) {
-        if(dialog.getRating() > 0) {
-            SharedPreferences wmbPreference = PreferenceManager.getDefaultSharedPreferences(this);
+        final SharedPreferences wmbPreference = PreferenceManager.getDefaultSharedPreferences(this);
+        final int newRating = dialog.getRating();
 
-            SharedPreferences.Editor editor = wmbPreference.edit();
-            editor.putInt("Rate-" + mTrail.getMetadata().getTrailID(), dialog.getRating());
-            editor.apply();
+        if(newRating > 0) {
+            Database.getDatabase().addRating(mTrail.getMetadata().getTrailID(), newRating,
+                    new Database.RatingTransactionListener() {
+                        @Override
+                        public void onComplete(boolean success, long numRatings, double rating) {
+                            if(success) {
+                                SharedPreferences.Editor editor = wmbPreference.edit();
+                                editor.putInt("Rate-" + mTrail.getMetadata().getTrailID(), newRating);
+                                editor.apply();
 
-            setRateHighlight(true);
+                                setRatingText((int)numRatings, rating);
+                                setRateHighlight(true);
+                            }
+                            else {
+                                AlertUtils.showAlert(DownloadDataActivity.this,
+                                        "Database Error",
+                                        "There was a problem connecting to the database. Please try again later");
+                            }
+                        }
+                    });
         }
     }
 

@@ -64,6 +64,14 @@ public class Database extends AppCompatActivity {
         void onMetadata(Trail.Metadata trail);
     }
 
+    public interface FlagTransactionListener{
+        void onComplete(boolean success, long numFlags);
+    }
+
+    public interface RatingTransactionListener{
+        void onComplete(boolean success, long numRatings, double rating);
+    }
+
     //a singleton instance of a database
     private static Database singleton;
 
@@ -228,20 +236,117 @@ public class Database extends AppCompatActivity {
         ref.addListenerForSingleValueEvent(eventListener);
     }
 
-    public void addFlag(String trailID) {
+    public void addFlag(String trailID, final FlagTransactionListener listener) {
 
+        DatabaseReference metadataRef = myRef.child("Trails").child(trailID).child("metadata").child("numFlags");
+
+        metadataRef.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                long currentVotes = 0;
+                if(mutableData.getValue() != null)
+                    currentVotes = (long)mutableData.getValue();
+
+                mutableData.setValue(currentVotes + 1);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+                listener.onComplete(b, (long)dataSnapshot.getValue());
+            }
+        });
     }
 
-    public void removeFlag(String trailID) {
+    public void removeFlag(String trailID, final FlagTransactionListener listener) {
+        DatabaseReference metadataRef = myRef.child("Trails").child(trailID).child("metadata").child("numFlags");
 
+        metadataRef.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                long currentVotes = 0;
+                if(mutableData.getValue() != null)
+                    currentVotes = (long)mutableData.getValue();
+
+                mutableData.setValue(currentVotes - 1);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+                listener.onComplete(b, (long)dataSnapshot.getValue());
+            }
+        });
     }
 
-    public void addRating(String trailID, int rating) {
+    public void addRating(String trailID, final int rating, final RatingTransactionListener listener) {
+        DatabaseReference metadataRef = myRef.child("Trails").child(trailID).child("metadata");
 
+        metadataRef.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                long currentVotes = 0;
+                double currentRating = 0;
+                //System.out.println("@@@@@@@"+mutableData.getValue());
+                if(mutableData.getValue() != null) {
+                    currentVotes = (long) mutableData.child("numRatings").getValue();
+                    currentRating = ((Number)mutableData.child("rating").getValue()).doubleValue();
+                }
+
+                double newRating = Math.round(currentRating * currentVotes);
+                newRating += rating;
+                newRating = newRating / (currentVotes + 1);
+
+                mutableData.child("numRatings").setValue(currentVotes + 1);
+                mutableData.child("rating").setValue(newRating);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+                listener.onComplete(b,
+                        (long)dataSnapshot.child("numRatings").getValue(),
+                        ((Number)dataSnapshot.child("rating").getValue()).doubleValue());
+            }
+        });
     }
 
-    public void removeRating(String trailID, int rating) {
+    public void removeRating(String trailID, final int rating, final RatingTransactionListener listener) {
+        DatabaseReference metadataRef = myRef.child("Trails").child(trailID).child("metadata");
 
+        metadataRef.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+                long currentVotes = 0;
+                double currentRating = 0;
+                //System.out.println("@@@@@@@"+mutableData.getValue());
+                if(mutableData.getValue() != null) {
+                    currentVotes = (long) mutableData.child("numRatings").getValue();
+                    currentRating = ((Number)mutableData.child("rating").getValue()).doubleValue();
+                }
+
+                if(currentVotes > 1) {
+                    double newRating = Math.round(currentRating * currentVotes);
+                    newRating -= rating;
+                    newRating = newRating / (currentVotes - 1);
+
+                    mutableData.child("numRatings").setValue(currentVotes - 1);
+                    mutableData.child("rating").setValue(newRating);
+                }
+                else {
+                    mutableData.child("numRatings").setValue(0);
+                    mutableData.child("rating").setValue(0.0);
+                }
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+                listener.onComplete(b,
+                        (long)dataSnapshot.child("numRatings").getValue(),
+                        ((Number)dataSnapshot.child("rating").getValue()).doubleValue());
+            }
+        });
     }
 
     public void uploadTrail(String trailID, Trail trail){
