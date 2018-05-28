@@ -62,6 +62,31 @@
         <item>Very Difficult</item>
         <item>Extremely Difficult</item>
     </string-array>
+
+    <string-array name="distance_array">
+        <item>Less than 1km Away</item>
+        <item>1km - 5km Away</item>
+        <item>5km - 10km Away</item>
+        <item>More than 10km Away</item>
+    </string-array>
+
+    <string-array name="length_array">
+        <item>Less than 1km Hike</item>
+        <item>1km - 5km Hike</item>
+        <item>5km - 10km Hike</item>
+        <item>10km - 20km Hike</item>
+        <item>20 + km Hike</item>
+    </string-array>
+
+    <string-array name="rating_array">
+        <item>☆☆☆☆☆</item>
+        <item>★☆☆☆☆</item>
+        <item>★★☆☆☆</item>
+        <item>★★★☆☆</item>
+        <item>★★★★☆</item>
+        <item>★★★★★</item>
+    </string-array>
+
     <string name="title_activity_download_data"></string>
     <string name="trail_data_download">Download</string>
     <string name="title_activity_image_temp">ImageTemp</string>
@@ -96,4 +121,6 @@
     <string name="nameText">Name</string>
     <string name="filterButton">Filter</string>
     <string name="RateTrail">Rate Trail</string>
+    <string name="name_input">Name</string>
+    <string name="name_filter">Name</string>
 </resources>
