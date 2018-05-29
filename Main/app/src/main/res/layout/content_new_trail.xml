@@ -277,7 +277,7 @@ tools:showIn="@layout/activity_new_trail">
 
 
     <ImageView
-        android:id="@+id/image"
+        android:id="@+id/imageView"
         android:layout_width="0dp"
         android:layout_height="250dp"
         android:layout_marginEnd="8dp"
@@ -302,7 +302,7 @@ tools:showIn="@layout/activity_new_trail">
         android:inputType="textPersonName"
         app:layout_constraintEnd_toStartOf="@+id/removePhoto"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <EditText
         android:id="@+id/TrailDescriptionField"
@@ -395,33 +395,30 @@ tools:showIn="@layout/activity_new_trail">
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/image"
-        app:srcCompat="@drawable/ic_menu_camera" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:srcCompat="@drawable/ic_camera_picture" />
 
     <ImageButton
         android:id="@+id/addGallery"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toStartOf="@+id/addCamera"
-        app:layout_constraintTop_toBottomOf="@+id/image"
-        app:srcCompat="@drawable/ic_menu_gallery" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:srcCompat="@drawable/ic_gallery_add" />
 
     <ImageButton
         android:id="@+id/removePhoto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toStartOf="@+id/addGallery"
-        app:layout_constraintTop_toBottomOf="@+id/image"
-        app:srcCompat="@drawable/ic_menu_camera" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:srcCompat="@drawable/ic_remove_dark" />
 
 
 </android.support.constraint.ConstraintLayout>

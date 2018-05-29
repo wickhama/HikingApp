@@ -2,8 +2,13 @@ package arc.com.arctrails;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.ParcelFileDescriptor;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -14,6 +19,8 @@ import android.widget.Spinner;
 import android.widget.ArrayAdapter;
 
 import java.io.File;
+import java.io.FileDescriptor;
+import java.io.IOException;
 import java.util.UUID;
 
 /**
@@ -30,6 +37,11 @@ public class NewTrailActivity extends AppCompatActivity {
     public static final int RESULT_BACK= 0;
     //result if the user chooses to save the file
     public static final int RESULT_SAVE= 1;
+    public static final int RESULT_CAPTURE = 2;
+    public static final int RESULT_LOAD_IMAGE = 3;
+    //result after the image is captured or selected
+    public static final int PICTURE_CROP = 4;
+    public static final int PICTURE_REMOVE = 5;
 
     //the IDs used in the result Intent to send back data
     public static final String EXTRA_TRAIL_NAME = "arc.com.arctrails.trailname";
@@ -42,8 +54,10 @@ public class NewTrailActivity extends AppCompatActivity {
     public static final String EXTRA_TRAIL_ID = "arc.com.arctrails.id";
     public static final String EXTRA_TRAIL_URI = "arc.com.arctrails.imageUri";
     public static final String EXTRA_TRAIL_HAS_IMAGE = "arc.com.arctrails.hasImage";
-    private static final int GALLERY_CODE = 1;
-    private Uri imageUri;
+    private static final int GALLERY_CODE = 3;
+    private Uri picUri;
+
+
 
     /**
      * Created by Ryley
@@ -196,9 +210,9 @@ public class NewTrailActivity extends AppCompatActivity {
         intent.putExtra(EXTRA_TRAIL_NOTES, notes);
         intent.putExtra(EXTRA_TRAIL_DIFFICULTY, difficulty);
         intent.putExtra(EXTRA_TRAIL_ID, id);
-        if(imageUri != null)
-            intent.putExtra(EXTRA_TRAIL_URI, imageUri.toString());
-        intent.putExtra(EXTRA_TRAIL_HAS_IMAGE, imageUri != null);
+        if(picUri != null)
+            intent.putExtra(EXTRA_TRAIL_URI, picUri.toString());
+        intent.putExtra(EXTRA_TRAIL_HAS_IMAGE, picUri != null);
         setResult(RESULT_SAVE,intent);
         finish();
     }
@@ -207,26 +221,83 @@ public class NewTrailActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == GALLERY_CODE && resultCode == RESULT_OK) {
-            imageUri = data.getData();
-            ImageView view = ((ImageView)findViewById(R.id.image));
-            view.setImageURI(imageUri);
-            view.setScaleType(ImageView.ScaleType.FIT_XY);
+        ImageView imageView = findViewById(R.id.imageView);
+        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+        if(requestCode == RESULT_LOAD_IMAGE) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+            Cursor cursor = getContentResolver().query(selectedImage,filePathColumn, null, null, null);
+            cursor.moveToFirst();
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String picturePath = cursor.getString(columnIndex);
+            cursor.close();
+
+            Bitmap bitmap = null;
+            try {
+                bitmap = getBitmapFromUri(selectedImage);
+            }
+            catch (IOException e){
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            imageView.setImageBitmap(bitmap);
+
+            picUri = data.getData();
+            performCrop();
+        }
+        else if(requestCode == PICTURE_CROP) {
+            Bundle extras = data.getExtras();
+            Bitmap bitmap = extras.getParcelable("data");
+
+            imageView.setImageBitmap(bitmap);
+        }
+        else if(requestCode == RESULT_CAPTURE){
+            Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+            imageView.setImageBitmap(bitmap);
+
+            picUri = data.getData();
+            performCrop();
+        }
+        else {
+
         }
 
     }
 
     public void addCamera() {
-
+        Intent intentCapture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(intentCapture, RESULT_CAPTURE);
     }
 
     public void addGallery() {
-        Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
-        galleryIntent.setType("image/*");
-        startActivityForResult(galleryIntent, GALLERY_CODE);
+        Intent intentGallery = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intentGallery.setType("image/*");
+        startActivityForResult(intentGallery, RESULT_LOAD_IMAGE);
     }
 
     public void removePhoto() {
+        ImageView imageView = findViewById(R.id.imageView);
+        imageView.setImageBitmap(null);
+    }
 
+    private void performCrop() {
+        Intent intentCrop = new Intent("com.android.camera.action.CROP");
+        intentCrop.setDataAndType(picUri, "image/*");
+        intentCrop.putExtra("crop", "true");
+        intentCrop.putExtra("aspectX", 16);
+        intentCrop.putExtra("aspectY", 10);
+        intentCrop.putExtra("outputX", 256);
+        intentCrop.putExtra("outputY", 160);
+        intentCrop.putExtra("return-data", true);
+        startActivityForResult(intentCrop, PICTURE_CROP);
+    }
+
+    //This method is to assist in getting an image from the gallery
+    private Bitmap getBitmapFromUri(Uri uri) throws IOException {
+        ParcelFileDescriptor parcelFileDescriptor = getContentResolver().openFileDescriptor(uri, "r");
+        FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+        Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+        parcelFileDescriptor.close();
+        return image;
     }
 }
