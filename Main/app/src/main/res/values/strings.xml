@@ -94,20 +94,23 @@
     <string name="add_image_test">Add Image</string>
     <string name="title_activity_information">App Info</string>
     <string name="information_text">
+        "\n"
+        "ArcTrails was originally developed as a project for the Agile Software Development "
+        "program at the University of Northern British Columbia."
+
         "Developers:\n\n"
 
-        "Caleigh LePage\n"
-        "Ryley Jewsbury\n"
-        "Reece Milliner\n"
-        "Graeme Morgan\n"
-        "Ayla Wickham\n\n"
+        "Ayla Wickham - "
+        "Caleigh LePage - "
+        "Graeme Morgan - "
+        "Reece Milliner - "
+        "Ryley Jewsbury\n\n"
+
+
 
         "Acknowledgements:\n\n"
 
-        "Picnic Table icon made by Freepik from www.flaticon.com\n"
-        "Washroom icon made by Freepik from www.flaticon.com\n"
-        "Waves icon made by Freepik from www.flaticon.com\n\n"
-
+        "Picnic Table, Washroom, and Waves icons made by Freepik from www.flaticon.com\n"
         "All other icons from material.io/icons\n\n"
 
         "File storage handled by the GPXParser library from Alternative Vision:\n\n"
