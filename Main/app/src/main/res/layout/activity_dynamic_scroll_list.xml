@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="arc.com.arctrails.LocalFileActivity">
+    tools:context="arc.com.arctrails.DatabaseFileActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
@@ -31,9 +31,20 @@
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/AppTheme.PopupOverlay" />
 
+            <ImageButton
+                android:id="@+id/filter_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|bottom"
+
+                android:layout_marginBottom="8dp"
+                android:layout_marginRight="16dp"
+                android:tint="@color/cardview_light_background"
+                app:srcCompat="@drawable/ic_search" />
+
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_local_file" />
+    <include layout="@layout/content_dynamic_scroll_list" />
 
 </android.support.design.widget.CoordinatorLayout>

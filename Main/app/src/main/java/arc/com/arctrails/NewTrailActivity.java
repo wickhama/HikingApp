@@ -223,7 +223,7 @@ public class NewTrailActivity extends AppCompatActivity {
 
         ImageView imageView = findViewById(R.id.imageView);
         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-        if(requestCode == RESULT_LOAD_IMAGE) {
+        if(requestCode == RESULT_LOAD_IMAGE && data != null) {
             Uri selectedImage = data.getData();
             String[] filePathColumn = { MediaStore.Images.Media.DATA };
             Cursor cursor = getContentResolver().query(selectedImage,filePathColumn, null, null, null);
@@ -245,13 +245,13 @@ public class NewTrailActivity extends AppCompatActivity {
             picUri = data.getData();
             performCrop();
         }
-        else if(requestCode == PICTURE_CROP) {
+        else if(requestCode == PICTURE_CROP && data != null) {
             Bundle extras = data.getExtras();
             Bitmap bitmap = extras.getParcelable("data");
 
             imageView.setImageBitmap(bitmap);
         }
-        else if(requestCode == RESULT_CAPTURE){
+        else if(requestCode == RESULT_CAPTURE && data != null){
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
             imageView.setImageBitmap(bitmap);
 

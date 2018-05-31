@@ -19,63 +19,26 @@ import org.alternativevision.gpx.beans.GPX;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
-public class LocalFileActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
-
-    //return result codes
-    //result if the user presses back
-    public static final int RESULT_BACK= 0;
-
+public class LocalFileActivity extends DynamicScrollListActivity
+{
     //request result codes
     //ID for TrailDataActivity results
     public static final int DATA_REQUEST_CODE = 2;
 
-    //a list of files currently displayed in the menu
-    private ArrayList<File> mTrailFiles;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_local_file);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        //when the back button is pressed, return nothing
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setResult(RESULT_BACK);
-                finish();
-            }
-        });
-
-        mTrailFiles = new ArrayList<>();
         //loads the initial state of the menu
-        buildMenu();
-
-        //Has this activity listen for menu events
-        NavigationView navigationView = findViewById(R.id.nav_view_local);
-        navigationView.setNavigationItemSelectedListener(this);
+        buildMenu(getMetadataList());
     }
 
-    /**
-     * Created by Ryley
-     * added for increment 2
-     *
-     * Updates the side menu to include all GPX files saved on the device
-     */
-    public void buildMenu()
+    public List<Trail.Metadata> getMetadataList()
     {
-        NavigationView navView = findViewById(R.id.nav_view_local);
-        Menu menu = navView.getMenu();
+        List<Trail.Metadata> metadataList = new ArrayList<>();
 
-        //remove all previous menu options
-        menu.clear();
-        //empty the list of files
-        mTrailFiles.clear();
         //get the app's directory on the phone
         File dir = getExternalFilesDir(null);
         if (dir != null) {
@@ -87,56 +50,21 @@ public class LocalFileActivity extends AppCompatActivity
                 if(tokens.length >= 2 && tokens[tokens.length-1].equals("gpx")) {
 
                     Trail trail = GPXFile.getGPX(trailFile.getName(), this);
-                    //when a user clicks a file, we only get an int ID in the callback
-                    //so we add the file to an array, and use the index as the ID
-                    int id = mTrailFiles.size();
 
-                    Drawable easiest = getDrawable(R.drawable.circle_outline);
-                    Drawable easy = getDrawable(R.drawable.circle_solid);
-                    Drawable medium = getDrawable(R.drawable.square);
-                    Drawable hard = getDrawable(R.drawable.single_black_diamond);
-                    Drawable hardest = getDrawable(R.drawable.double_black_diamond);
-
-                    Drawable icon;
-
-                    switch(trail.getMetadata().getDifficulty()){
-                        case 0 : icon = easiest;
-                        break;
-
-                        case 1 : icon = easy;
-                        break;
-
-                        case 2 : icon = medium;
-                        break;
-
-                        case 3 : icon = hard;
-                        break;
-
-                        case 4 : icon = hardest;
-                        break;
-
-                        default : icon = null;
-                        break;
-                    }
-
-                    menu.add(R.id.nav_group_local, id, Menu.NONE, trail.getMetadata().getName()).setCheckable(true).setIcon(icon);
-                    mTrailFiles.add(trailFile);
+                    metadataList.add(trail.getMetadata());
                 }
             }
         }
+        return metadataList;
     }
 
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        //find the index of the selected file
-        int id = item.getItemId();
-
-        File trailFile = mTrailFiles.get(id);
+    public boolean onTrailSelected(Trail.Metadata metadata) {
         Intent intent = new Intent(this, TrailDataActivity.class);
         //tell the activity which file to use. sending the file name as an extra is preferable
         //to sending the file itself as the file would have to be serialized and deserialized
         //in the other activity, which is an expensive process
-        intent.putExtra(TrailDataActivity.EXTRA_FILE_NAME, trailFile.getName());
+        intent.putExtra(TrailDataActivity.EXTRA_FILE_NAME, metadata.getTrailID()+".gpx");
         //starts the activity with the DATA_REQUEST result code
         startActivityForResult(intent,DATA_REQUEST_CODE);
         return true;
@@ -155,7 +83,15 @@ public class LocalFileActivity extends AppCompatActivity
             }
             //if a file was deleted, repopulate the menu
             if(resultCode == TrailDataActivity.RESULT_DELETE)
-                buildMenu();
+                buildMenu(getMetadataList());
+        }
+    }
+
+    @Override
+    public void onDialogPositiveClick(FilterDialog dialog) {
+        if(dialog.useDifficulty()) {
+            //Inset Query code for the db.
+            dialog.getDifficulty();
         }
     }
 }

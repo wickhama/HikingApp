@@ -2,18 +2,19 @@
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/list_content_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="arc.com.arctrails.LocalFileActivity"
-    tools:showIn="@layout/activity_local_file">
+    tools:context="arc.com.arctrails.DatabaseFileActivity"
+    tools:showIn="@layout/activity_dynamic_scroll_list">
 
     <android.support.design.widget.NavigationView
-        android:id="@+id/nav_view_local"
+        android:id="@+id/nav_view_scroll_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        app:menu="@menu/menu_local_file" />
+        app:menu="@menu/menu_blank" />
 
 </android.support.v4.widget.NestedScrollView>
