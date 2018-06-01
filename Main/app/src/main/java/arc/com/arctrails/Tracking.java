@@ -142,7 +142,8 @@ public class Tracking extends Service {
         flocatClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
             @Override
             public void onComplete(@NonNull Task<Location> task) {
-                if(task.isSuccessful()) trail.add(new LatLng(task.getResult().getLatitude(), task.getResult().getLongitude()));
+                if(task.isSuccessful() && task.getResult() != null)
+                    trail.add(new LatLng(task.getResult().getLatitude(), task.getResult().getLongitude()));
             }
         });
 

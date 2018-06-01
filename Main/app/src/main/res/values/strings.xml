@@ -71,11 +71,11 @@
     </string-array>
 
     <string-array name="length_array">
-        <item>Less than 1km Hike</item>
-        <item>1km - 5km Hike</item>
-        <item>5km - 10km Hike</item>
-        <item>10km - 20km Hike</item>
-        <item>20 + km Hike</item>
+        <item>Less than 1 hour</item>
+        <item>Between 1 - 3 hours</item>
+        <item>Between 3 - 5 hours</item>
+        <item>Full day hike</item>
+        <item>Overnight hike</item>
     </string-array>
 
     <string-array name="rating_array">

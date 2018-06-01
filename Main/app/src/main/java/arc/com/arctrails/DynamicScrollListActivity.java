@@ -43,7 +43,9 @@ public abstract class DynamicScrollListActivity
     private Drawable hard;
     private Drawable hardest;
 
+    private List<Trail.Metadata> metaList;
     private List<Trail.Metadata> mTrailMetadata;
+    private FilterDialog filterDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,18 +68,20 @@ public abstract class DynamicScrollListActivity
         });
 
         location = (Coordinates) getSupportFragmentManager().findFragmentById(R.id.location);
+        metaList = new ArrayList<>();
         mTrailMetadata = new ArrayList<>();
 
         //Has this activity listen for menu events
         NavigationView navigationView = findViewById(R.id.nav_view_scroll_list);
         navigationView.setNavigationItemSelectedListener(this);
 
+        filterDialog = new FilterDialog();
         //have this activity respond to the filter button
         findViewById(R.id.filter_list).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                (new FilterDialog()).show(getFragmentManager(), "filter");
+                filterDialog.show(getFragmentManager(), "filter");
             }
         });
     }
@@ -120,6 +124,11 @@ public abstract class DynamicScrollListActivity
         return icon;
     }
 
+    public void setMetadataList(List<Trail.Metadata> metadataList) {
+        metaList = metadataList;
+        buildMenu(metaList);
+    }
+
     public void buildMenu(List<Trail.Metadata> metadataList)
     {
         NavigationView navView = findViewById(R.id.nav_view_scroll_list);
@@ -154,6 +163,61 @@ public abstract class DynamicScrollListActivity
     }
 
     public abstract boolean onTrailSelected(Trail.Metadata metadata);
+
+    @Override
+    public void onDialogPositiveClick(FilterDialog dialog) {
+        if(dialog.useDifficulty()) {
+            //Inset Query code for the db.
+            dialog.getDifficulty();
+        }
+
+        List<Trail.Metadata> filteredList = new ArrayList<>();
+        for(Trail.Metadata m : metaList){
+            if((!dialog.useDifficulty() || m.getDifficulty() == dialog.getDifficulty()) &&
+                    (!dialog.useRating() || m.getRating() == dialog.getRating())
+            //(!dialog.useDistance() || matchesCategory())
+            ){
+                filteredList.add(m);
+            }
+        }
+
+        buildMenu(filteredList);
+    }
+
+    /**
+     * This additional method compares the location of the user against the distance of trail heads
+     * in the database. This is calculated 'as a crow flies' and is not 100% accurate.
+     */
+
+    public boolean matchesCategory(int myX, int myY, int trailX, int trailY, int categories){
+
+        boolean accept = false;
+
+        //There may be a way to do this using Google libraries?
+        double dist = Math.sqrt( ((myX - trailX)^2) + ((myY - trailY)^2) );
+
+        int distanceCategories = 4;
+
+        switch(distanceCategories){
+
+            case 1 : accept = dist < 1;
+            break;
+
+            case 2 : accept = dist > 1 && dist < 5;
+            break;
+
+            case 3 : accept = dist > 5 && dist < 10;
+            break;
+
+            case 4 : accept = dist > 10;
+            break;
+
+            default: accept = false;
+                break;
+        }
+
+        return accept;
+    }
 
     // Permissions
     /**
