@@ -277,6 +277,7 @@ public class RecordingActivity extends AppCompatActivity
                         recordedTrail.getMetadata().addImageID(uuid);
                         saveInternal(uri, uuid);
                     }
+
                     GPXFile.writeGPXFile(recordedTrail, getApplicationContext());
                 }
                 recordedTrail = null;

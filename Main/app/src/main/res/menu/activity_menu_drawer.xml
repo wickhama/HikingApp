@@ -1,45 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:title="Loading Trails"
+    <item android:title="@string/loading_trails"
         android:id="@+id/trail_menu">
         <menu>
             <item
                 android:id="@+id/nav_load"
                 android:icon="@drawable/ic_perm_media_black_24px"
-                android:title="My Trails"/>
+                android:title="@string/my_trails"/>
             <item
                 android:id="@+id/nav_database"
                 android:icon="@drawable/ic_file_download_black_24px"
-                android:title="Get new Trails" />
+                android:title="@string/get_new_trails" />
             <group android:id="@+id/map_options">
                 <item
                     android:id="@+id/nav_clear"
                     android:icon="@drawable/ic_not_interested_black_24px"
-                    android:title="Clear Map" />
+                    android:title="@string/clear_map" />
 
                 <item
                     android:id="@+id/nav_locate"
                     android:icon="@drawable/ic_location_on_black_24px"
-                    android:title="Go To Trail" />
+                    android:title="@string/go_to_trail" />
             </group>
         </menu>
     </item>
 
-    <item android:title="Creating Trails">
+    <item android:title="@string/creating_trails">
         <menu>
             <item
                 android:id="@+id/nav_record"
                 android:icon="@drawable/ic_add_circle_black_24px"
-                android:title="Record a Trail" />
+                android:title="@string/record_a_trail" />
+            <item
+                android:id="@+id/nav_edit"
+                android:icon="@drawable/ic_edit_pencil"
+                android:title="@string/edit_a_trail" />
         </menu>
     </item>
 
-    <item android:title="About">
+    <item android:title="@string/about">
         <menu>
             <item
                 android:id="@+id/nav_info"
                 android:icon="@drawable/ic_info_black_24px"
-                android:title="Information" />
+                android:title="@string/information" />
         </menu>
     </item>
 </menu>
