@@ -54,6 +54,7 @@ public class NewTrailActivity extends AppCompatActivity {
     public static final String EXTRA_TRAIL_DESCRIPTION = "arc.com.arctrails.traildescription";
     public static final String EXTRA_TRAIL_NOTES = "arc.com.arctrails.trailnotes";
     public static final String EXTRA_TRAIL_DIFFICULTY = "arc.com.arctrails.traildifficulty";
+    public static final String EXTRA_TRAIL_LENGTH = "arc.com.arctrails.traillength";
 
     //For image uploading
     public static final String EXTRA_TRAIL_ID = "arc.com.arctrails.id";
@@ -138,6 +139,7 @@ public class NewTrailActivity extends AppCompatActivity {
         EditText descriptionField = findViewById(R.id.TrailDescriptionField);
         EditText notesField = findViewById(R.id.TrailNotesField);
         Spinner difficultySpinner = findViewById(R.id.editDifficulty);
+        Spinner lengthSpinner = findViewById(R.id.lengthSpinner);
 
         mImages.clear();
         if(!metadata.getImageIDs().isEmpty())
@@ -162,6 +164,7 @@ public class NewTrailActivity extends AppCompatActivity {
         descriptionField.setText(metadata.getDescription());
         notesField.setText(metadata.getNotes());
         difficultySpinner.setSelection(metadata.getDifficulty());
+        lengthSpinner.setSelection(metadata.getLengthCategory());
     }
 
     @Override
@@ -239,6 +242,7 @@ public class NewTrailActivity extends AppCompatActivity {
         EditText descriptionField = findViewById(R.id.TrailDescriptionField);
         EditText notesField = findViewById(R.id.TrailNotesField);
         Spinner difficultySpinner = findViewById(R.id.editDifficulty);
+        Spinner lengthSpinner = findViewById(R.id.editLength);
 
         //trims whitespace from the user input
         String name = nameField.getText().toString().trim();
@@ -246,6 +250,7 @@ public class NewTrailActivity extends AppCompatActivity {
         String description = descriptionField.getText().toString().trim();
         String notes = notesField.getText().toString().trim();
         int difficulty = difficultySpinner.getSelectedItemPosition();
+        int lengthCategory = lengthSpinner.getSelectedItemPosition();
 
         //only generate a new ID if the trail does not exist
         //otherwise use the old ID and replace the file
@@ -262,6 +267,7 @@ public class NewTrailActivity extends AppCompatActivity {
         intent.putExtra(EXTRA_TRAIL_NOTES, notes);
         intent.putExtra(EXTRA_TRAIL_DIFFICULTY, difficulty);
         intent.putExtra(EXTRA_TRAIL_ID, id);
+        intent.putExtra(EXTRA_TRAIL_LENGTH, lengthCategory);
         if(picUri != null)
             intent.putExtra(EXTRA_TRAIL_URI, picUri.toString());
         intent.putExtra(EXTRA_TRAIL_HAS_IMAGE, picUri != null);

@@ -38,6 +38,7 @@ class GPXFile {
             TRAIL_DESCRIPTION = "desc",
             TRAIL_LOCATION = "location",
             TRAIL_DIFFICULTY = "difficulty",
+            TRAIL_LENGTH_CATEGORY = "lengthCategory",
             TRAIL_NOTES = "notes",
             TRAIL_ID = "trailID",
             IMAGE_IDS = "imageIDs",
@@ -101,6 +102,14 @@ class GPXFile {
                                 catch(NumberFormatException e){
                                 }
                         }
+                        if(TRAIL_LENGTH_CATEGORY.equals(currentNode.getNodeName())){
+                            if(currentNode.getFirstChild() != null)
+                                try {
+                                    trail.getMetadata().setLengthCategory(Integer.parseInt(currentNode.getFirstChild().getNodeValue()));
+                                }
+                                catch(NumberFormatException e){
+                                }
+                        }
                         if(TRAIL_NOTES.equals(currentNode.getNodeName())){
                             if(currentNode.getFirstChild() != null)
                                 trail.getMetadata().setNotes(currentNode.getFirstChild().getNodeValue());
@@ -150,6 +159,11 @@ class GPXFile {
                 if(trail.getMetadata().getDifficulty() >= 0) {
                     node = doc.createElement(TRAIL_DIFFICULTY);
                     node.appendChild(doc.createTextNode(""+trail.getMetadata().getDifficulty()));
+                    extensionNode.appendChild(node);
+                }
+                if(trail.getMetadata().getLengthCategory() >= 0) {
+                    node = doc.createElement(TRAIL_LENGTH_CATEGORY);
+                    node.appendChild(doc.createTextNode(""+trail.getMetadata().getLengthCategory()));
                     extensionNode.appendChild(node);
                 }
                 if(trail.getMetadata().getNotes() != null) {
