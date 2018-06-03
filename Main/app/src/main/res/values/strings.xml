@@ -64,10 +64,11 @@
     </string-array>
 
     <string-array name="distance_array">
-        <item>Less than 1km Away</item>
-        <item>1km - 5km Away</item>
+        <item>0km - 5km Away</item>
         <item>5km - 10km Away</item>
-        <item>More than 10km Away</item>
+        <item>10km - 20km Away</item>
+        <item>20km - 50km Away</item>
+        <item>More than 50km Away</item>
     </string-array>
 
     <string-array name="length_array">

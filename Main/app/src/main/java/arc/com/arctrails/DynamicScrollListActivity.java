@@ -178,11 +178,14 @@ public abstract class DynamicScrollListActivity
      */
     @Override
     public void onDialogPositiveClick(FilterDialog dialog) {
-        location.record();
-        currentLocation = location.getLastLocation();
-        double myX = currentLocation.latitude;
-        double myY = currentLocation.longitude;
-        location.stopRecord();
+
+        double myX = 0;
+        double myY = 0;
+        if(hasPermission()) {
+            currentLocation = location.getLastLocation();
+            myX = currentLocation.latitude;
+            myY = currentLocation.longitude;
+        }
 
         //change this and use the Android Location service instead.
 
@@ -197,6 +200,7 @@ public abstract class DynamicScrollListActivity
 
         List<Trail.Metadata> filteredList = new ArrayList<>();
         for(Trail.Metadata m : metaList){
+            System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Distance == " + m.getName());
             if( (!dialog.useDifficulty() || m.getDifficulty() == dialog.getDifficulty() ) &&
                     (!dialog.useRating() || m.getRating() == dialog.getRating() ) &&
                         (!dialog.useDistance() || matchesCategory(myX, myY, m.getHeadLat(), m.getHeadLong(), dialog.getDistance()) == true)){
@@ -228,24 +232,22 @@ public abstract class DynamicScrollListActivity
 
         System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Distance == " + dist);
 
-        //There may be a way to do this using Google libraries?
-//        double dist = Math.sqrt( ((myX - trailX)*(myX - trailX)) + ((myY - trailY)*(myY - trailY)) );
-
-
-
 
         switch(categories){
 
-            case 1 : accept = dist < 1;
+            case 0 : accept = dist < 5;
             break;
 
-            case 2 : accept = dist > 1 && dist < 5;
+            case 1 : accept = dist > 5 && dist < 10;
             break;
 
-            case 3 : accept = dist > 5 && dist < 10;
+            case 2 : accept = dist > 10 && dist < 20;
             break;
 
-            case 4 : accept = dist > 10;
+            case 3 : accept = dist > 20 && dist < 50;
+            break;
+
+            case 4 : accept = dist > 50;
             break;
 
             default: accept = false;
@@ -255,29 +257,6 @@ public abstract class DynamicScrollListActivity
         return accept;
     }
 
-
-//    /**
-//     *Ooh la la
-//     */
-//    public static double distance(double lat1, double lat2, double lon1,
-//                                  double lon2, double el1, double el2) {
-//
-//        final int R = 6371; // Radius of the earth
-//
-//        double latDistance = Math.toRadians(lat2 - lat1);
-//        double lonDistance = Math.toRadians(lon2 - lon1);
-//        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
-//                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
-//                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
-//        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-//        double distance = R * c * 1000; // convert to meters
-//
-//        double height = el1 - el2;
-//
-//        distance = Math.pow(distance, 2) + Math.pow(height, 2);
-//
-//        return Math.sqrt(distance);
-//    }
 
     // Permissions
     /**
