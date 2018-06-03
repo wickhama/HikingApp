@@ -98,7 +98,7 @@ public class RecordingActivity extends AppCompatActivity
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        if(recordedTrail != null)
+        if(recordedTrail != null && !recordedTrail.getTracks().isEmpty())
             map.makeTrail(recordedTrail);
     }
 
