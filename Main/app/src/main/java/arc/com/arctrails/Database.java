@@ -350,8 +350,12 @@ public class Database extends AppCompatActivity {
     }
 
     public void uploadTrail(String trailID, Trail trail){
+        trail.printTrail();
         databaseReference = myRef;
-        databaseReference.child("Trails").child(trailID).setValue(trail);
+        databaseReference.
+                child("Trails").
+                child(trailID).
+                setValue(trail);
     }
 
     public void uploadImage(Uri imageUri, Trail trail, final Context context){

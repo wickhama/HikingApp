@@ -1,5 +1,6 @@
 package arc.com.arctrails;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -7,8 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.location.Location;
+import android.icu.text.AlphabeticIndex;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -22,14 +22,20 @@ import android.view.View;
 import android.widget.ToggleButton;
 
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.LocationSource;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 public class RecordingActivity extends AppCompatActivity
         implements LocationRequestListener, LocationPermissionListener,
@@ -277,6 +283,28 @@ public class RecordingActivity extends AppCompatActivity
                         recordedTrail.getMetadata().addImageID(uuid);
                         saveInternal(uri, uuid);
                     }
+                    AlertDialog.Builder uploadtrail = new AlertDialog.Builder(this);
+                    uploadtrail.setTitle("Upload trail")
+                            .setMessage("Would you like to share your trail with other users?")
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Map<String, Object> trailmap = new HashMap();
+                                    trailmap.put("Trail", recordedTrail);
+                                    trailmap.put("Context", RecordingActivity.this);
+                                    Data trailData = new Data.Builder().putAll(trailmap).build();
+                                    OneTimeWorkRequest uploadData = new OneTimeWorkRequest.Builder(UploadTrailWorker.class).setInputData(trailData).setConstraints(buildUploadConstraints()).build();
+                                    WorkManager.getInstance().enqueue(uploadData);
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    //Do nothing because user does not want to upload trail.
+                                }
+                            })
+                            .show();
+
                     GPXFile.writeGPXFile(recordedTrail, getApplicationContext());
                 }
                 recordedTrail = null;
@@ -419,5 +447,12 @@ public class RecordingActivity extends AppCompatActivity
                 map.drawPath(new LatLng(location[0], location[1]));*/
             }
         }
+    }
+
+    /* Builds Contraints to allow Work request to run under certain conditions
+    ** Ayla
+     */
+    private Constraints buildUploadConstraints() {
+        return new Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).setRequiresBatteryNotLow(true).build();
     }
 }
