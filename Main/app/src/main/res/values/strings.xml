@@ -123,6 +123,7 @@
     <string name="lengthText">Length</string>
     <string name="nameText">Name</string>
     <string name="filterButton">Filter</string>
+    <string name="resetButton">Reset</string>
     <string name="RateTrail">Rate Trail</string>
     <string name="name_input">Name</string>
     <string name="name_filter">Name</string>
