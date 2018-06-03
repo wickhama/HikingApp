@@ -44,6 +44,8 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
     private TextView latView, longView;
     //A listener that handles permission requests
     private LocationRequestListener mRequestListener;
+    //the location currently being displayed
+    private Location displayLocation;
     //Service that records trail --Ayla
     private Tracking trackingService;
     //Value for if tracking is bounded or not -- Ayla
@@ -114,6 +116,8 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
     public LatLng getLastLocation() {
         if(service_bounded)
             return trackingService.getLastLocation();
+        else if(displayLocation != null)
+            return new LatLng(displayLocation.getLatitude(), displayLocation.getLongitude());
         else
             return null;
     }
@@ -146,7 +150,7 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
      */
     public ArrayList<LatLng> stopRecord() {
 
-        if(trackingService.isTrailEmpty()) return new ArrayList();
+        if(trackingService == null || trackingService.isTrailEmpty()) return new ArrayList();
         trail = trackingService.stopRecording();
         getActivity().unbindService(bindConnection);
         service_bounded = false;
@@ -180,6 +184,7 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
     @Override
     public void onLocationChanged(Location location) {
         if(location != null) {
+            displayLocation = location;
             double lat= location.getLatitude();
             double lon = location.getLongitude();
 

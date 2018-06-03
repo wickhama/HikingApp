@@ -96,6 +96,11 @@ public class CustomMapFragment extends SupportMapFragment implements
     private static final String KEY_CAMERA_POSITION = "camera_position";
     private static final String KEY_LOCATION = "location";
     private LatLngBounds.Builder mBuilder;
+    private OnMapReadyCallback mapReadyCallback;
+
+    public void setOnMapReadyCallback(OnMapReadyCallback mapReadyCallback) {
+        this.mapReadyCallback = mapReadyCallback;
+    }
 
     public GoogleMap getMap(){
         return mMap;
@@ -167,6 +172,9 @@ public class CustomMapFragment extends SupportMapFragment implements
         mMap = googleMap;
         mMap.setOnMarkerClickListener(this);
         mRequestListener.requestPermission(this);
+
+        if(mapReadyCallback != null)
+            mapReadyCallback.onMapReady(googleMap);
     }
 
     /**

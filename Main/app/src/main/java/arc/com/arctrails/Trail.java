@@ -4,8 +4,12 @@ import android.graphics.Bitmap;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+
+import androidx.work.Data;
 
 /**
  * Created by graememorgan on 2018-02-26.
@@ -277,5 +281,28 @@ public class Trail {
 
     public void addTrack(Track track){
         tracks.add(track);
+    }
+
+    public void printTrail() {
+        System.out.printf("Metadata:\n" +
+                "Name: %s\n" +
+                "Description: %s\n" +
+                "Location: %s\n" +
+                "Difficulty: %d\n" +
+                "Notes: %s\n" +
+                "TrailID: %s\n" +
+                "Rating: %f\n\n" +
+                "Waypoints:%s\n" +
+                /*"Type: %s\n" +
+                "Comment: %s\n" +
+                "ImageID: %s\n" +
+                "Latitude: %3f\n" +
+                "Longtitude: %3f\n\n" +*/
+                "Tracks:%s\n" +
+                "Trackpoints: ",
+                metadata.name, metadata.description, metadata.location,
+                metadata.difficulty, metadata.notes, metadata.trailID, metadata.rating,
+                getWaypoints(), getTracks()
+        );
     }
 }

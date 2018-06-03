@@ -185,7 +185,7 @@ public class MenuActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_record) {
             //allows a user to download files
-            Intent intent = new Intent(this, NewTrailActivity.class);
+            Intent intent = new Intent(this, RecordingActivity.class);
             //starts the activity with the LOAD_LOCAL_FILE_CODE result code
             startActivityForResult(intent, RECORD_TRAIL_CODE);
 

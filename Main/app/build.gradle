@@ -24,6 +24,11 @@ android {
 }
 
 dependencies {
+    //Needed to use WorkerManager for uploading new trails to the database. AW
+    def work_version = "1.0.0-alpha02"
+    implementation "android.arch.work:work-runtime:$work_version"
+    implementation "android.arch.work:work-firebase:$work_version"
+
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'

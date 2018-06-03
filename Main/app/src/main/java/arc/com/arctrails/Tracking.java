@@ -49,10 +49,8 @@ public class Tracking extends Service {
     private LocationCallback locationCallback;
 
     private ArrayList<LatLng> trail;
-    private GoogleMap map;
-    private PolylineOptions polylineOptions;
 
-    private boolean mAllowRebind;
+    private boolean mAllowRebind = false;
 
     @Override
     public void onCreate() {

@@ -1,5 +1,6 @@
 package arc.com.arctrails;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -7,8 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.location.Location;
+import android.icu.text.AlphabeticIndex;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -22,18 +22,25 @@ import android.view.View;
 import android.widget.ToggleButton;
 
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.LocationSource;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
+
+import androidx.work.Constraints;
+import androidx.work.Data;
+import androidx.work.NetworkType;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkManager;
 
 public class RecordingActivity extends AppCompatActivity
         implements LocationRequestListener, LocationPermissionListener,
-        GoogleMap.OnMapClickListener, WaypointDialog.WaypointDialogListener{
+        GoogleMap.OnMapClickListener, WaypointDialog.WaypointDialogListener, OnMapReadyCallback{
 
     //Identifies the type of permission requests to identify which ones were granted
     //although we only need need fine location for this specific case
@@ -49,6 +56,9 @@ public class RecordingActivity extends AppCompatActivity
     //ID for NewTrailActivity results
     public static final int NEW_TRAIL_REQUEST_CODE = 3;
 
+    //argument extras
+    public static final String EXTRA_FILE_NAME = "arc.com.arctrails.filename";
+
     //the data recorded in the user's most recent trail
     private Trail recordedTrail = null;
 
@@ -59,6 +69,8 @@ public class RecordingActivity extends AppCompatActivity
     private Coordinates location;
 
     private CustomMapFragment map;
+
+    private String fileName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,17 +85,27 @@ public class RecordingActivity extends AppCompatActivity
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(((ToggleButton)findViewById(R.id.recordButton)).isChecked()){
-                    AlertUtils.showAlert(RecordingActivity.this,"Recording in progress", "Please finish the current recording before exiting.");
-                }
-                else{
-                    setResult(RESULT_BACK);
-                    finish();
-                }
+                onBackPressed();
             }
         });
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        map = (CustomMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        map.setOnMapReadyCallback(this);
+
+        fileName = getIntent().getStringExtra(EXTRA_FILE_NAME);
+
+        if(fileName == null)
+            recordedTrail = new Trail();
+        else {
+            recordedTrail = GPXFile.getGPX(fileName, this);
+        }
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        if(recordedTrail != null && !recordedTrail.getTracks().isEmpty())
+            map.makeTrail(recordedTrail);
     }
 
     @Override
@@ -92,7 +114,8 @@ public class RecordingActivity extends AppCompatActivity
             AlertUtils.showAlert(RecordingActivity.this,"Recording in progress", "Please finish the current recording before exiting.");
         }
         else{
-            super.onBackPressed();
+            setResult(RESULT_BACK);
+            finish();
         }
     }
 
@@ -113,6 +136,7 @@ public class RecordingActivity extends AppCompatActivity
         if(recordedTrail != null)
             tryStopRecording();
         else
+            //recordedTrail should never be null as of the addition of the update feature
             Snackbar.make(findViewById(R.id.recording_layout),
                     "Must be recording in order to stop", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
@@ -135,19 +159,12 @@ public class RecordingActivity extends AppCompatActivity
 
             location = (Coordinates) getSupportFragmentManager().findFragmentById(R.id.coordinates);
 
-            map = (CustomMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-
             //if this is the beginning of a new recording,
-            if(recordedTrail == null) {
-                //notifies the fragments about the permission update, so that it will track location data
-                location.onPermissionResult(true);
-                map.onPermissionResult(true);
-                map.getMap().setOnMapClickListener(this);
-                //map.getMap().setLocationSource(new LocationSource());
+            //notifies the fragments about the permission update, so that it will track location data
+            location.onPermissionResult(true);
+            map.onPermissionResult(true);
+            map.getMap().setOnMapClickListener(this);
 
-                //creates a new empty trail
-                recordedTrail = new Trail();
-            }
             //Register Reciever to draw path will tracking
             LocationReciever locationReciever = new LocationReciever();
             IntentFilter intentFilter = new IntentFilter();
@@ -227,12 +244,15 @@ public class RecordingActivity extends AppCompatActivity
                         Coordinates location = (Coordinates) getSupportFragmentManager()
                                 .findFragmentById(R.id.coordinates);
                         //get the location data that was recorded
-                        addTrack(location.stopRecord());
+                        ArrayList<LatLng> track = location.stopRecord();
+                        if(!track.isEmpty())
+                            addTrack(track);
                         //if they actually did record data...
                         if(!recordedTrail.getTracks().isEmpty()) {
 
                             //get other GPX file information
                             Intent intent = new Intent(RecordingActivity.this, NewTrailActivity.class);
+                            intent.putExtra(NewTrailActivity.EXTRA_FILE_NAME, fileName);
                             //starts an activity with the NEW TRAIL result code
                             startActivityForResult(intent, NEW_TRAIL_REQUEST_CODE);
                         }
@@ -278,9 +298,35 @@ public class RecordingActivity extends AppCompatActivity
                         saveInternal(uri, uuid);
                     }
 
+                    AlertDialog.Builder uploadtrail = new AlertDialog.Builder(this);
+                    uploadtrail.setTitle("Upload trail")
+                            .setMessage("Would you like to share your trail with other users?")
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Map<String, Object> trailmap = new HashMap();
+                                    trailmap.put("Trail", recordedTrail);
+                                    trailmap.put("Context", RecordingActivity.this);
+                                    Data trailData = new Data.Builder().putAll(trailmap).build();
+                                    OneTimeWorkRequest uploadData = new OneTimeWorkRequest.Builder(UploadTrailWorker.class).setInputData(trailData).setConstraints(buildUploadConstraints()).build();
+                                    WorkManager.getInstance().enqueue(uploadData);
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    //Do nothing because user does not want to upload trail.
+                                }
+                            })
+                            .show();
                     GPXFile.writeGPXFile(recordedTrail, getApplicationContext());
                 }
                 recordedTrail = null;
+                setResult(RESULT_BACK);
+                finish();
+            }
+            else {
+                map.makeTrail(recordedTrail);
             }
         }
     }
@@ -420,5 +466,12 @@ public class RecordingActivity extends AppCompatActivity
                 map.drawPath(new LatLng(location[0], location[1]));*/
             }
         }
+    }
+
+    /* Builds Contraints to allow Work request to run under certain conditions
+    ** Ayla
+     */
+    private Constraints buildUploadConstraints() {
+        return new Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).setRequiresBatteryNotLow(true).build();
     }
 }
