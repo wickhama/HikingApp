@@ -3,6 +3,7 @@ package arc.com.arctrails;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -14,6 +15,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -46,6 +51,9 @@ public abstract class DynamicScrollListActivity
     private List<Trail.Metadata> metaList;
     private List<Trail.Metadata> mTrailMetadata;
     private FilterDialog filterDialog;
+
+    //For current location
+    private LatLng currentLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,8 +172,23 @@ public abstract class DynamicScrollListActivity
 
     public abstract boolean onTrailSelected(Trail.Metadata metadata);
 
+    /**
+     * Filtering Options
+     */
     @Override
     public void onDialogPositiveClick(FilterDialog dialog) {
+        location.record();
+        currentLocation = location.getLastLocation();
+        double myX = currentLocation.latitude;
+        double myY = currentLocation.longitude;
+        location.stopRecord();
+
+        //change this and use the Android Location service instead.
+
+        Location currentLocation = new Location("");
+
+
+
         if(dialog.useDifficulty()) {
             //Inset Query code for the db.
             dialog.getDifficulty();
@@ -173,10 +196,9 @@ public abstract class DynamicScrollListActivity
 
         List<Trail.Metadata> filteredList = new ArrayList<>();
         for(Trail.Metadata m : metaList){
-            if((!dialog.useDifficulty() || m.getDifficulty() == dialog.getDifficulty()) &&
-                    (!dialog.useRating() || m.getRating() == dialog.getRating())
-            //(!dialog.useDistance() || matchesCategory())
-            ){
+            if( (!dialog.useDifficulty() || m.getDifficulty() == dialog.getDifficulty() ) &&
+                    (!dialog.useRating() || m.getRating() == dialog.getRating() ) &&
+                        (!dialog.useDistance() || matchesCategory(myX, myY, m.getHeadLat(), m.getHeadLong(), dialog.getDistance()) == true)){
                 filteredList.add(m);
             }
         }
@@ -189,16 +211,29 @@ public abstract class DynamicScrollListActivity
      * in the database. This is calculated 'as a crow flies' and is not 100% accurate.
      */
 
-    public boolean matchesCategory(int myX, int myY, int trailX, int trailY, int categories){
+    public boolean matchesCategory(double myX, double myY, double trailX, double trailY, int categories){
 
         boolean accept = false;
+        Location currentLocation = new Location("");
+        Location destLocation = new Location("");
+
+        currentLocation.setLatitude(myX);
+        currentLocation.setLongitude(myY);
+        destLocation.setLatitude(trailX);
+        destLocation.setLongitude(trailY);
+
+        float dist = currentLocation.distanceTo(destLocation);
+        dist = dist/1000;
+
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Distance == " + dist);
 
         //There may be a way to do this using Google libraries?
-        double dist = Math.sqrt( ((myX - trailX)^2) + ((myY - trailY)^2) );
+//        double dist = Math.sqrt( ((myX - trailX)*(myX - trailX)) + ((myY - trailY)*(myY - trailY)) );
 
-        int distanceCategories = 4;
 
-        switch(distanceCategories){
+
+
+        switch(categories){
 
             case 1 : accept = dist < 1;
             break;
@@ -218,6 +253,30 @@ public abstract class DynamicScrollListActivity
 
         return accept;
     }
+
+
+//    /**
+//     *Ooh la la
+//     */
+//    public static double distance(double lat1, double lat2, double lon1,
+//                                  double lon2, double el1, double el2) {
+//
+//        final int R = 6371; // Radius of the earth
+//
+//        double latDistance = Math.toRadians(lat2 - lat1);
+//        double lonDistance = Math.toRadians(lon2 - lon1);
+//        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+//                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+//                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+//        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+//        double distance = R * c * 1000; // convert to meters
+//
+//        double height = el1 - el2;
+//
+//        distance = Math.pow(distance, 2) + Math.pow(height, 2);
+//
+//        return Math.sqrt(distance);
+//    }
 
     // Permissions
     /**
