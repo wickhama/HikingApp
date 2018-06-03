@@ -201,9 +201,10 @@ public abstract class DynamicScrollListActivity
         List<Trail.Metadata> filteredList = new ArrayList<>();
         for(Trail.Metadata m : metaList){
             System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Distance == " + m.getName());
-            if( (!dialog.useDifficulty() || m.getDifficulty() == dialog.getDifficulty() ) &&
-                    (!dialog.useRating() || m.getRating() == dialog.getRating() ) &&
-                        (!dialog.useDistance() || matchesCategory(myX, myY, m.getHeadLat(), m.getHeadLong(), dialog.getDistance()) == true)){
+            if( (!dialog.useDifficulty() || m.getDifficulty() == dialog.getDifficulty() )
+                    && (!dialog.useRating() || m.getRating() == dialog.getRating() )
+                    && (!dialog.useDistance() || matchesCategory(myX, myY, m.getHeadLat(), m.getHeadLong(), dialog.getDistance()) == true)
+                    && (!dialog.useLength() || m.getLengthCategory() == dialog.getLength() )){
                 filteredList.add(m);
             }
         }

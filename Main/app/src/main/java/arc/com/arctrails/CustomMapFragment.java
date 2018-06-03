@@ -1,6 +1,7 @@
 package arc.com.arctrails;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -21,6 +22,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -174,7 +176,7 @@ public class CustomMapFragment extends SupportMapFragment implements
 //            // in a raw resource file.
 //            boolean success = googleMap.setMapStyle(
 //                    MapStyleOptions.loadRawResourceStyle(
-//                            this, R.raw.style_json));
+//                            this, R.raw.mapstyle));
 //
 //            if (!success) {
 //                Log.e(TAG, "Style parsing failed.");
@@ -182,7 +184,7 @@ public class CustomMapFragment extends SupportMapFragment implements
 //        } catch (Resources.NotFoundException e) {
 //            Log.e(TAG, "Can't find style. Error: ", e);
 //        }
-
+//
         mMap = googleMap;
         mMap.setOnMarkerClickListener(this);
         mRequestListener.requestPermission(this);
