@@ -14,11 +14,11 @@ public class EditFileActivity extends LocalFileActivity {
 
     @Override
     public boolean onTrailSelected(Trail.Metadata metadata) {
-        Intent intent = new Intent(this, NewTrailActivity.class);
+        Intent intent = new Intent(this, RecordingActivity.class);
         //tell the activity which file to use. sending the file name as an extra is preferable
         //to sending the file itself as the file would have to be serialized and deserialized
         //in the other activity, which is an expensive process
-        intent.putExtra(NewTrailActivity.EXTRA_FILE_NAME, metadata.getTrailID()+".gpx");
+        intent.putExtra(RecordingActivity.EXTRA_FILE_NAME, metadata.getTrailID()+".gpx");
         //starts the activity with the DATA_REQUEST result code
         startActivityForResult(intent,EDIT_DATA_CODE);
         return true;

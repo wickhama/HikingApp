@@ -226,10 +226,6 @@ public class NewTrailActivity extends AppCompatActivity {
         }
     }
 
-    public void onRecordPressed(View v) {
-
-    }
-
     /**
      * Created by Ryley
      * added in Increment 3
@@ -250,7 +246,14 @@ public class NewTrailActivity extends AppCompatActivity {
         String description = descriptionField.getText().toString().trim();
         String notes = notesField.getText().toString().trim();
         int difficulty = difficultySpinner.getSelectedItemPosition();
-        String id = UUID.randomUUID().toString();
+
+        //only generate a new ID if the trail does not exist
+        //otherwise use the old ID and replace the file
+        String id;
+        if(mTrail == null)
+            id = UUID.randomUUID().toString();
+        else
+            id = mTrail.getMetadata().getTrailID();
 
         Intent intent = new Intent();
         intent.putExtra(EXTRA_TRAIL_NAME,name);

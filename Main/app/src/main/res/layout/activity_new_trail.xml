@@ -36,19 +36,8 @@
         app:layout_anchorGravity="bottom"/>
 
     <Button
-        android:id="@+id/recordButton"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginHorizontal="8dp"
-        android:onClick="onRecordPressed"
-        android:text="@string/record_button"
-        app:layout_anchor="@+id/include"
-        app:layout_anchorGravity="right|bottom" />
-
-    <Button
         android:id="@+id/saveButton"
-        android:layout_width="150dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginHorizontal="8dp"
