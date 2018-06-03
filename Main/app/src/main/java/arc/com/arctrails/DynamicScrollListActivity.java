@@ -68,7 +68,7 @@ public abstract class DynamicScrollListActivity
         });
 
         location = (Coordinates) getSupportFragmentManager().findFragmentById(R.id.location);
-        
+
         metaList = new ArrayList<>();
         mTrailMetadata = new ArrayList<>();
 
