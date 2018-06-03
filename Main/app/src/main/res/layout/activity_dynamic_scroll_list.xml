@@ -47,4 +47,10 @@
 
     <include layout="@layout/content_dynamic_scroll_list" />
 
+    <fragment
+        android:id="@+id/location"
+        android:name="arc.com.arctrails.Coordinates"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" />
+
 </android.support.design.widget.CoordinatorLayout>

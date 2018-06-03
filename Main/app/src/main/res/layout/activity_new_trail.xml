@@ -20,6 +20,30 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_new_trail" />
+    <include
+        android:id="@+id/include"
+        layout="@layout/content_new_trail" />
+
+    <View
+        android:id="@+id/blank_filler"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:background="@color/cardview_dark_background"
+        app:layout_anchor="@id/include"
+        app:layout_anchorGravity="bottom"/>
+
+    <Button
+        android:id="@+id/saveButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginHorizontal="8dp"
+        android:onClick="onSavePressed"
+        android:text="@string/new_trail_save"
+        app:layout_anchor="@+id/include"
+        app:layout_anchorGravity="left|bottom" />
 
 </android.support.design.widget.CoordinatorLayout>

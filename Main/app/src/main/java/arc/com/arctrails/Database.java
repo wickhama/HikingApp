@@ -177,6 +177,11 @@ public class Database extends AppCompatActivity {
                 for(DataSnapshot ds : dataSnapshot.getChildren()){
                     Trail.Metadata trail = ds.child("metadata").getValue(Trail.Metadata.class);//ds.child("description").getValue(String.class);
                     trailList.add(trail);
+
+                    if(ds.hasChild("tracks") && ds.child("tracks").child("0").hasChild("trackPoints")) {
+                        trail.setHeadLat(((Number)ds.child("tracks").child("0").child("trackPoints").child("0").child("latitude").getValue()).doubleValue());
+                        trail.setHeadLong(((Number)ds.child("tracks").child("0").child("trackPoints").child("0").child("longitude").getValue()).doubleValue());
+                    }
                 }
 
                 DBlistener.onDataList(trailList);

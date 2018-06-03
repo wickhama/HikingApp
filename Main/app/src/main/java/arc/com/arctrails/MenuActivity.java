@@ -58,6 +58,7 @@ public class MenuActivity extends AppCompatActivity
     public static final int LOAD_LOCAL_FILE_CODE = 0;
     public static final int DATABASE_FILE_CODE = 1;
     public static final int RECORD_TRAIL_CODE = 2;
+    public static final int EDIT_TRAIL_CODE = 3;
 
     //A tag for the preference property recording if the app has been opened before
     //This is used so that assets only get saved to the phone the first time the app is run
@@ -188,6 +189,12 @@ public class MenuActivity extends AppCompatActivity
             //starts the activity with the LOAD_LOCAL_FILE_CODE result code
             startActivityForResult(intent, RECORD_TRAIL_CODE);
 
+        } else if (id == R.id.nav_edit) {
+            //allows a user to download files
+            Intent intent = new Intent(this, EditFileActivity.class);
+            //starts the activity with the LOAD_LOCAL_FILE_CODE result code
+            startActivityForResult(intent, EDIT_TRAIL_CODE);
+
         } else if (id == R.id.nav_info) {
             Intent intent = new Intent(this, InformationActivity.class);
             startActivity(intent);
@@ -247,6 +254,12 @@ public class MenuActivity extends AppCompatActivity
             }
         }
         else if(requestCode == RECORD_TRAIL_CODE)
+        {
+            //if the user enabled permissions while in the recording activity
+            if(hasPermission())
+                requestPermission(this);
+        }
+        else if(requestCode == EDIT_TRAIL_CODE)
         {
             //if the user enabled permissions while in the recording activity
             if(hasPermission())

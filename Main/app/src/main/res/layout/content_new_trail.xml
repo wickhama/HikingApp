@@ -283,11 +283,63 @@ tools:showIn="@layout/activity_new_trail">
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:adjustViewBounds="true"
+        android:background="@color/common_google_signin_btn_text_light_default"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/common_google_signin_btn_text_light_default" />
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageButton
+        android:id="@+id/prevImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="@id/imageView"
+        app:layout_constraintTop_toTopOf="@id/imageView"
+        app:srcCompat="@drawable/baseline_navigate_before_24px" />
+
+    <ImageButton
+        android:id="@+id/nextImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintEnd_toEndOf="@id/imageView"
+        app:layout_constraintTop_toTopOf="@id/imageView"
+        app:srcCompat="@drawable/baseline_navigate_next_24px" />
+
+    <ImageButton
+        android:id="@+id/addCamera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="@id/imageView"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:srcCompat="@drawable/ic_camera_picture" />
+
+    <ImageButton
+        android:id="@+id/addGallery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/addCamera"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:srcCompat="@drawable/ic_gallery_add" />
+
+    <ImageButton
+        android:id="@+id/removePhoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/addGallery"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:srcCompat="@drawable/ic_remove_dark" />
 
     <EditText
         android:id="@+id/TrailNameField"
@@ -300,14 +352,80 @@ tools:showIn="@layout/activity_new_trail">
         android:ems="10"
         android:hint="@string/new_trail_name"
         android:inputType="textPersonName"
-        app:layout_constraintEnd_toStartOf="@+id/removePhoto"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <EditText
+        android:id="@+id/TrailLocationField"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="@string/editLocation"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TrailNameField" />
+
+    <TextView
+        android:id="@+id/labelDifficulty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center_vertical"
+        android:text="Difficulty:"
+        android:textAppearance="@android:style/TextAppearance.Material.Medium"
+        app:layout_constraintBottom_toTopOf="@+id/labelLength"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TrailLocationField" />
+
+    <Spinner
+        android:id="@+id/editDifficulty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:entries="@array/difficulty_array"
+        app:layout_constraintBottom_toTopOf="@id/labelLength"
+        app:layout_constraintStart_toEndOf="@+id/labelDifficulty"
+        app:layout_constraintTop_toBottomOf="@+id/TrailLocationField" />
+
+    <TextView
+        android:id="@+id/labelLength"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center_vertical"
+        android:text="Length:"
+        android:textAppearance="@android:style/TextAppearance.Material.Medium"
+        app:layout_constraintBottom_toTopOf="@+id/TrailDescriptionField"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/labelDifficulty" />
+
+    <Spinner
+        android:id="@+id/editLength"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:entries="@array/length_array"
+        app:layout_constraintBottom_toTopOf="@id/TrailDescriptionField"
+        app:layout_constraintStart_toEndOf="@+id/labelLength"
+        app:layout_constraintTop_toBottomOf="@+id/labelDifficulty" />
+
+    <EditText
         android:id="@+id/TrailDescriptionField"
         android:layout_width="0dp"
-        android:layout_height="300dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
@@ -324,7 +442,7 @@ tools:showIn="@layout/activity_new_trail">
     <EditText
         android:id="@+id/TrailNotesField"
         android:layout_width="0dp"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
@@ -332,94 +450,23 @@ tools:showIn="@layout/activity_new_trail">
         android:gravity="top|left"
         android:hint="@string/stringNotes"
         android:inputType="textMultiLine"
-        app:layout_constraintBottom_toTopOf="@+id/SaveButton"
+        app:layout_constraintBottom_toTopOf="@+id/blank_filler"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/SaveButton"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:onClick="onSavePressed"
-        android:text="@string/new_trail_save"
+    <View
+        android:id="@+id/blank_filler"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/TrailLocationField"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:hint="@string/editLocation"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TrailNameField" />
-
-    <Spinner
-        android:id="@+id/editDifficulty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@id/TrailDescriptionField"
-        app:layout_constraintStart_toEndOf="@+id/labelDifficulty"
-        app:layout_constraintTop_toBottomOf="@+id/TrailLocationField" />
-
-    <TextView
-        android:id="@+id/labelDifficulty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:gravity="center_vertical"
-        android:text="Difficulty:"
-        android:textAlignment="viewEnd"
-        android:textAppearance="@android:style/TextAppearance.Material.Medium"
-        app:layout_constraintBottom_toTopOf="@+id/TrailDescriptionField"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TrailLocationField" />
-
-    <ImageButton
-        android:id="@+id/addCamera"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:srcCompat="@drawable/ic_camera_picture" />
-
-    <ImageButton
-        android:id="@+id/addGallery"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/addCamera"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:srcCompat="@drawable/ic_gallery_add" />
-
-    <ImageButton
-        android:id="@+id/removePhoto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/addGallery"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:srcCompat="@drawable/ic_remove_dark" />
-
 
 </android.support.constraint.ConstraintLayout>
 

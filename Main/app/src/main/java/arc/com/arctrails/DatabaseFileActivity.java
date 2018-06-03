@@ -2,6 +2,8 @@ package arc.com.arctrails;
 
 import android.content.Intent;
 import android.os.Bundle;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseFileActivity extends DynamicScrollListActivity
@@ -18,13 +20,27 @@ public class DatabaseFileActivity extends DynamicScrollListActivity
 
         //loads the initial state of the menu
         trailDB = Database.getDatabase();
+//        trailDB.trailMetaData(new Database.DataListListener() {
+//            @Override
+//            public void onDataList(List<Trail.Metadata> entryIDs) {
+//                buildMenu(entryIDs);
+//            }
+//        });
+
+        /**
+         * Querying Database using locally stored list of Metadata in place of querying using
+         * Firebase implementation.
+         */
         trailDB.trailMetaData(new Database.DataListListener() {
             @Override
             public void onDataList(List<Trail.Metadata> entryIDs) {
-                buildMenu(entryIDs);
+                setMetadataList(entryIDs);
             }
         });
+
     }
+
+
 
     public String getMenuItemTitle(Trail.Metadata metadata) {
         //Sets the rating in the list.
@@ -64,14 +80,6 @@ public class DatabaseFileActivity extends DynamicScrollListActivity
                 setResult(DownloadDataActivity.RESULT_START,data);
                 finish();
             }
-        }
-    }
-
-    @Override
-    public void onDialogPositiveClick(FilterDialog dialog) {
-        if(dialog.useDifficulty()) {
-            //Inset Query code for the db.
-            dialog.getDifficulty();
         }
     }
 }

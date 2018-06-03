@@ -32,7 +32,7 @@ public class LocalFileActivity extends DynamicScrollListActivity
         super.onCreate(savedInstanceState);
 
         //loads the initial state of the menu
-        buildMenu(getMetadataList());
+        setMetadataList(getMetadataList());
     }
 
     public List<Trail.Metadata> getMetadataList()

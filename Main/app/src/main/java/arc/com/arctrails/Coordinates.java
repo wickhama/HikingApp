@@ -146,7 +146,7 @@ public class Coordinates extends Fragment implements LocationListener, LocationP
      */
     public ArrayList<LatLng> stopRecord() {
 
-        if(trackingService.isTrailEmpty()) return new ArrayList();
+        if(trackingService == null || trackingService.isTrailEmpty()) return new ArrayList();
         trail = trackingService.stopRecording();
         getActivity().unbindService(bindConnection);
         service_bounded = false;

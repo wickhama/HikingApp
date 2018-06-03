@@ -21,6 +21,9 @@ import android.widget.ArrayAdapter;
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -37,6 +40,7 @@ public class NewTrailActivity extends AppCompatActivity {
     public static final int RESULT_BACK= 0;
     //result if the user chooses to save the file
     public static final int RESULT_SAVE= 1;
+
     public static final int RESULT_CAPTURE = 2;
     public static final int RESULT_LOAD_IMAGE = 3;
     //result after the image is captured or selected
@@ -44,6 +48,7 @@ public class NewTrailActivity extends AppCompatActivity {
     public static final int PICTURE_REMOVE = 5;
 
     //the IDs used in the result Intent to send back data
+    public static final String EXTRA_FILE_NAME = "arc.com.arctrails.filename";
     public static final String EXTRA_TRAIL_NAME = "arc.com.arctrails.trailname";
     public static final String EXTRA_TRAIL_LOCATION = "arc.com.arctrails.traillocation";
     public static final String EXTRA_TRAIL_DESCRIPTION = "arc.com.arctrails.traildescription";
@@ -57,7 +62,9 @@ public class NewTrailActivity extends AppCompatActivity {
     private static final int GALLERY_CODE = 3;
     private Uri picUri;
 
-
+    private Trail mTrail;
+    private LinkedList<Bitmap> mImages = new LinkedList<>();
+    private int currentImage = -1;
 
     /**
      * Created by Ryley
@@ -80,27 +87,31 @@ public class NewTrailActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertUtils.showConfirm(NewTrailActivity.this, "Closing Trail",
-                        "Exiting without saving will lose all recorded data. Continue?",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                setResult(RESULT_BACK);
-                                finish();
-                            }
-                        });
+                onBackPressed();
             }
         });
 
-        Spinner spinner = (Spinner) findViewById(R.id.editDifficulty);
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.difficulty_array, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
+        String fileName = getIntent().getStringExtra(EXTRA_FILE_NAME);
 
+        if(fileName == null)
+            mTrail = new Trail();
+        else {
+            mTrail = GPXFile.getGPX(fileName, this);
+            updateFields(mTrail.getMetadata());
+        }
+
+        findViewById(R.id.prevImage).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                prevImage();
+            }
+        });
+        findViewById(R.id.nextImage).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nextImage();
+            }
+        });
         findViewById(R.id.addCamera).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,14 +132,48 @@ public class NewTrailActivity extends AppCompatActivity {
         });
     }
 
+    private void updateFields(Trail.Metadata metadata) {
+        EditText nameField = findViewById(R.id.TrailNameField);
+        EditText locationField = findViewById(R.id.TrailLocationField);
+        EditText descriptionField = findViewById(R.id.TrailDescriptionField);
+        EditText notesField = findViewById(R.id.TrailNotesField);
+        Spinner difficultySpinner = findViewById(R.id.editDifficulty);
+
+        mImages.clear();
+        if(!metadata.getImageIDs().isEmpty())
+        {
+            ImageView displayImage = (ImageView) findViewById(R.id.imageView);
+            for(String imageID : metadata.getImageIDs()) {
+                Bitmap bitmap = new ImageFile(this).
+                        setFileName(imageID + ".jpg").
+                        load();
+                if(bitmap != null)
+                    mImages.add(bitmap);
+            }
+
+            if(!mImages.isEmpty()) {
+                displayImage.setImageBitmap(mImages.get(0));
+                displayImage.setMaxHeight(mImages.get(0).getHeight());
+            }
+        }
+
+        nameField.setText(metadata.getName());
+        locationField.setText(metadata.getLocation());
+        descriptionField.setText(metadata.getDescription());
+        notesField.setText(metadata.getNotes());
+        difficultySpinner.setSelection(metadata.getDifficulty());
+    }
+
     @Override
     public void onBackPressed(){
         AlertUtils.showConfirm(NewTrailActivity.this, "Closing Trail",
-                "Exiting without saving will lose all recorded data. Continue?",
+                "You will lose all unsaved changes. Continue?",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         NewTrailActivity.super.onBackPressed();
+                        setResult(RESULT_BACK);
+                        finish();
                     }
                 });
     }
@@ -201,7 +246,14 @@ public class NewTrailActivity extends AppCompatActivity {
         String description = descriptionField.getText().toString().trim();
         String notes = notesField.getText().toString().trim();
         int difficulty = difficultySpinner.getSelectedItemPosition();
-        String id = UUID.randomUUID().toString();
+
+        //only generate a new ID if the trail does not exist
+        //otherwise use the old ID and replace the file
+        String id;
+        if(mTrail == null)
+            id = UUID.randomUUID().toString();
+        else
+            id = mTrail.getMetadata().getTrailID();
 
         Intent intent = new Intent();
         intent.putExtra(EXTRA_TRAIL_NAME,name);
@@ -262,6 +314,14 @@ public class NewTrailActivity extends AppCompatActivity {
 
         }
 
+    }
+
+    public void prevImage() {
+        //move the imageview to the prev image
+    }
+
+    public void nextImage() {
+        //move the imageview to the next image
     }
 
     public void addCamera() {

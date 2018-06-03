@@ -3,6 +3,7 @@ package arc.com.arctrails;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -21,6 +22,7 @@ public class FilterDialog extends DialogFragment {
     /* The activity that creates an instance of this dialog fragment must
     * implement this interface in order to receive event callbacks.
     * Each method passes the DialogFragment in case the host needs to query it. */
+
     public interface FilterDialogListener {
         void onDialogPositiveClick(FilterDialog dialog);
     }
@@ -30,7 +32,7 @@ public class FilterDialog extends DialogFragment {
     View mView;
 
     @Override
-    public void onAttach(Activity activity) {
+    public void onAttach(Context activity) {
         super.onAttach(activity);
         // Verify that the host activity implements the callback interface
         try {
@@ -63,7 +65,7 @@ public class FilterDialog extends DialogFragment {
                                 mListener.onDialogPositiveClick(FilterDialog.this);
                             }
                         })
-                //do nothing if they dont confirm
+                //do nothing if they don't confirm
                 .setNegativeButton(android.R.string.no,
                         new DialogInterface.OnClickListener() {
                             @Override
@@ -97,11 +99,11 @@ public class FilterDialog extends DialogFragment {
                         (Spinner)mView.findViewById(R.id.lengthSpinner)
         ));
 
-        mView.findViewById(R.id.nameSwitch).setOnClickListener(
-                linkSwitchAndEditText(
-                        (Switch)mView.findViewById(R.id.nameSwitch),
-                        (EditText)mView.findViewById(R.id.nameFilterInput)
-                ));
+//        mView.findViewById(R.id.nameSwitch).setOnClickListener(
+//                linkSwitchAndEditText(
+//                        (Switch)mView.findViewById(R.id.nameSwitch),
+//                        (EditText)mView.findViewById(R.id.nameFilterInput)
+//                ));
 
 
 
@@ -129,31 +131,31 @@ public class FilterDialog extends DialogFragment {
         };
     }
 
-    /**
-     *This hides EditText box until the switch is selected.
-     */
-    private View.OnClickListener linkSwitchAndEditText(final Switch toggle, final EditText trailInput) {
-        if(toggle.isChecked()){
-            trailInput.setVisibility(View.VISIBLE);
-        }else{
-            trailInput.setVisibility(View.GONE);
-        }
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(toggle.isChecked()){
-                    trailInput.setVisibility(View.VISIBLE);
-                }else{
-                    trailInput.setVisibility(View.GONE);
-                }
-            }
-        };
-    }
+//    /**
+//     *This hides EditText box until the switch is selected.
+//     */
+//    private View.OnClickListener linkSwitchAndEditText(final Switch toggle, final EditText trailInput) {
+//        if(toggle.isChecked()){
+//            trailInput.setVisibility(View.VISIBLE);
+//        }else{
+//            trailInput.setVisibility(View.GONE);
+//        }
+//        return new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if(toggle.isChecked()){
+//                    trailInput.setVisibility(View.VISIBLE);
+//                }else{
+//                    trailInput.setVisibility(View.GONE);
+//                }
+//            }
+//        };
+//    }
 
 
     /**
      * NONE OF THESE CHANGES HAVE BEEN PUSHED! Including the GUI for the filtering and the following
-     * uses and getters.
+     * checkers and getters.
      */
 
 
@@ -170,10 +172,11 @@ public class FilterDialog extends DialogFragment {
         return spinner.getSelectedItemPosition();
     }
 
+
     /**
      * Rating
      */
-    public boolean usesRating(){
+    public boolean useRating(){
         Switch rateSwitch = mView.findViewById(R.id.ratingSwitch);
         return rateSwitch.isChecked();
 
@@ -187,7 +190,7 @@ public class FilterDialog extends DialogFragment {
     /**
      * Distance
      */
-    public boolean usesDistance(){
+    public boolean useDistance(){
         Switch distSwitch = mView.findViewById(R.id.distanceSwitch);
         return distSwitch.isChecked();
     }
@@ -200,7 +203,7 @@ public class FilterDialog extends DialogFragment {
     /**
      * Length
      */
-    public boolean usesLength(){
+    public boolean useLength(){
         Switch lengthSwitch = mView.findViewById(R.id.lengthSwitch);
         return lengthSwitch.isChecked();
     }
@@ -210,18 +213,20 @@ public class FilterDialog extends DialogFragment {
         return spinner.getSelectedItemPosition();
     }
 
-    /**
-     * TrailName
-     */
-    public boolean usesTrailName(){
-        Switch nameSwitch = mView.findViewById(R.id.nameSwitch);
-        return nameSwitch.isChecked();
-    }
 
-    public String getTrailName(){
-        EditText editText = mView.findViewById(R.id.nameFilterInput);
-        return editText.toString();
-    }
+
+    //    /**
+//     * TrailName
+//     */
+//    public boolean useTrailName(){
+//        Switch nameSwitch = mView.findViewById(R.id.nameSwitch);
+//        return nameSwitch.isChecked();
+//    }
+//
+//    public String getTrailName(){
+//        EditText editText = mView.findViewById(R.id.nameFilterInput);
+//        return editText.toString();
+//    }
 
 
 

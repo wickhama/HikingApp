@@ -33,6 +33,32 @@ public class Trail {
         private double rating;
         private int numRatings;
         private int numFlags;
+        private double headLat, headLong;
+        private int lengthCategory;
+
+        public int getLengthCategory() {
+            return lengthCategory;
+        }
+
+        public void setLengthCategory(int lengthCategory) {
+            this.lengthCategory = lengthCategory;
+        }
+
+        public double getHeadLat() {
+            return headLat;
+        }
+
+        public void setHeadLat(double headLat) {
+            this.headLat = headLat;
+        }
+
+        public double getHeadLong() {
+            return headLong;
+        }
+
+        public void setHeadLong(double headLong) {
+            this.headLong = headLong;
+        }
 
         public Metadata()
         {
