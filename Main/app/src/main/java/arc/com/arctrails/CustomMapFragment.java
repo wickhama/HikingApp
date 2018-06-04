@@ -1,6 +1,7 @@
 package arc.com.arctrails;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -21,6 +22,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -169,19 +171,26 @@ public class CustomMapFragment extends SupportMapFragment implements
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-//        try {
-//            // Customise the styling of the base map using a JSON object defined
-//            // in a raw resource file.
-//            boolean success = googleMap.setMapStyle(
-//                    MapStyleOptions.loadRawResourceStyle(
-//                            this, R.raw.style_json));
-//
-//            if (!success) {
-//                Log.e(TAG, "Style parsing failed.");
-//            }
-//        } catch (Resources.NotFoundException e) {
-//            Log.e(TAG, "Can't find style. Error: ", e);
-//        }
+
+        /**
+         * For Google Maps Styling
+         */
+        try {
+            // Customise the styling of the base map using a JSON object defined
+            // in a raw resource file.
+            boolean success = googleMap.setMapStyle(
+                    MapStyleOptions.loadRawResourceStyle(
+                            this.getContext(), R.raw.mapstyle));
+
+            if (!success) {
+                Log.e("CustomMapFragment", "Style parsing failed.");
+            }
+        } catch (Resources.NotFoundException e) {
+            Log.e("CustomMapFragment", "Can't find style. Error: ", e);
+        }
+
+
+
 
         mMap = googleMap;
         mMap.setOnMarkerClickListener(this);
