@@ -156,7 +156,10 @@ public class Trail {
         private String type;
         private String comment;
 
-        private String imageID;
+        //it was planned for waypoints to allow single images, but this is being
+        //avoided due to time constraints, memory concerns, and difficulty implementing
+        //custom infowindows that allow images
+//        private String imageID;
 
         private double latitude;
         private double longitude;
@@ -169,13 +172,13 @@ public class Trail {
             longitude = lng;
         }
 
-        public String getImageID() {
-            return imageID;
-        }
-
-        public void setImageID(String imageID) {
-            this.imageID = imageID;
-        }
+//        public String getImageID() {
+//            return imageID;
+//        }
+//
+//        public void setImageID(String imageID) {
+//            this.imageID = imageID;
+//        }
 
         public String getWaypointName() {
             return waypointName;

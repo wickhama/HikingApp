@@ -60,7 +60,6 @@ public class NewTrailActivity extends AppCompatActivity {
     public static final String EXTRA_TRAIL_ID = "arc.com.arctrails.id";
     public static final String EXTRA_TRAIL_URI = "arc.com.arctrails.imageUri";
     public static final String EXTRA_TRAIL_HAS_IMAGE = "arc.com.arctrails.hasImage";
-    private static final int GALLERY_CODE = 3;
     private Uri picUri;
 
     private Trail mTrail;

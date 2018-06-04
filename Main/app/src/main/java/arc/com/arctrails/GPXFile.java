@@ -208,7 +208,7 @@ class GPXFile {
                 waypoint.setLongitude(w.getLongitude());
                 waypoint.setComment(w.getComment());
                 waypoint.setWaypointType(w.getType());
-                waypoint.setImageID((String)w.getExtensionData(IMAGE_ID));
+//                waypoint.setImageID((String)w.getExtensionData(IMAGE_ID));
                 waypoints.add(waypoint);
             }
         }
@@ -252,8 +252,8 @@ class GPXFile {
                 waypoint.setLongitude(w.getLongitude());
                 waypoint.setComment(w.getComment());
                 waypoint.setType(w.getWaypointType());
-                if(w.getImageID() != null)
-                    waypoint.addExtensionData(IMAGE_ID, w.getImageID());
+//                if(w.getImageID() != null)
+//                    waypoint.addExtensionData(IMAGE_ID, w.getImageID());
                 gpx.addWaypoint(waypoint);
             }
         }
