@@ -314,16 +314,15 @@ public class RecordingActivity extends AppCompatActivity
                         saveInternal(uri, uuid);
                     }
 
+                    GPXFile.writeGPXFile(recordedTrail, getApplicationContext());
+
                     AlertDialog.Builder uploadtrail = new AlertDialog.Builder(this);
                     uploadtrail.setTitle("Upload trail")
                             .setMessage("Would you like to share your trail with other users?")
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    Map<String, Object> trailmap = new HashMap();
-                                    trailmap.put("Trail", recordedTrail);
-                                    trailmap.put("Context", RecordingActivity.this);
-                                    Data trailData = new Data.Builder().putAll(trailmap).build();
+                                    Data trailData = new Data.Builder().putString("Trail", recordedTrail.getMetadata().getTrailID()).build();
                                     OneTimeWorkRequest uploadData = new OneTimeWorkRequest.Builder(UploadTrailWorker.class).setInputData(trailData).setConstraints(buildUploadConstraints()).build();
                                     WorkManager.getInstance().enqueue(uploadData);
                                 }
@@ -336,7 +335,7 @@ public class RecordingActivity extends AppCompatActivity
                                 }
                             }).
                             show();
-                    GPXFile.writeGPXFile(recordedTrail, getApplicationContext());
+
                 }
             }
             else {
