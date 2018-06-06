@@ -161,12 +161,25 @@ public class RecordingActivity extends AppCompatActivity
         if(result) {
 
             location = (Coordinates) getSupportFragmentManager().findFragmentById(R.id.coordinates);
+            map = (CustomMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 
             //if this is the beginning of a new recording,
+            if(recordedTrail == null) {
             //notifies the fragments about the permission update, so that it will track location data
+                location.onPermissionResult(true);
+                map.onPermissionResult(true);
+                map.getMap().setOnMapClickListener(this);
+                //map.getMap().setLocationSource(new LocationSource());
+
+                //creates a new empty trail
+                recordedTrail = new Trail();
+            }
+
+            //if this is the beginning of a new recording,
+            /*//notifies the fragments about the permission update, so that it will track location data
             location.onPermissionResult(true);
             map.onPermissionResult(true);
-            map.getMap().setOnMapClickListener(this);
+            map.getMap().setOnMapClickListener(this);*/
 
             //Register Reciever to draw path will tracking
             LocationReciever locationReciever = new LocationReciever();
@@ -290,6 +303,7 @@ public class RecordingActivity extends AppCompatActivity
 
                 //make sure there's actually recorded data
                 if (recordedTrail != null) {
+                    System.out.println("RecordedTrail is not NULL");
                     recordedTrail.getMetadata().setName(name);
                     recordedTrail.getMetadata().setLocation(location);
                     recordedTrail.getMetadata().setDifficulty(difficulty);
@@ -299,15 +313,15 @@ public class RecordingActivity extends AppCompatActivity
                     recordedTrail.getMetadata().setLengthCategory(lengthCategory);
                     recordedTrail.getMetadata().setImageIDs(Arrays.asList(imageList));
 
+                    GPXFile.writeGPXFile(recordedTrail, getApplicationContext());
+
                     AlertDialog.Builder uploadtrail = new AlertDialog.Builder(this);
                     uploadtrail.setTitle("Upload trail")
                             .setMessage("Would you like to share your trail with other users?")
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    Map<String, Object> trailmap = new HashMap();
-                                    trailmap.put("Trail", recordedTrail);
-                                    Data trailData = new Data.Builder().putAll(trailmap).build();
+                                    Data trailData = new Data.Builder().putString("Trail", recordedTrail.getMetadata().getTrailID()).build();
                                     OneTimeWorkRequest uploadData = new OneTimeWorkRequest.Builder(UploadTrailWorker.class).setInputData(trailData).setConstraints(buildUploadConstraints()).build();
                                     WorkManager.getInstance().enqueue(uploadData);
                                 }
@@ -316,10 +330,11 @@ public class RecordingActivity extends AppCompatActivity
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     //Do nothing because user does not want to upload trail.
+                                    dialogInterface.dismiss();
                                 }
-                            })
-                            .show();
-                    GPXFile.writeGPXFile(recordedTrail, getApplicationContext());
+                            }).
+                            show();
+
                 }
             }
             //when the activity returns, the trail has to be re-drawn
