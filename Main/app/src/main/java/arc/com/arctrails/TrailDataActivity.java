@@ -120,6 +120,7 @@ public class TrailDataActivity extends AppCompatActivity {
         TextView descriptionView = findViewById(R.id.Description);
         TextView locationView = findViewById(R.id.TrailLocationField);
         TextView difficultyView = findViewById(R.id.Difficulty);
+        TextView lengthView = findViewById(R.id.LengthCategory);
         TextView notesView = findViewById(R.id.Notes);
 
         //if the file could not be parsed, ask them if they would like to delete
@@ -171,6 +172,8 @@ public class TrailDataActivity extends AppCompatActivity {
             locationView.setText("Location: "+trail.getMetadata().getLocation());
             difficultyView.setText("Difficulty: "+
                     getResources().getStringArray(R.array.difficulty_array)[trail.getMetadata().getDifficulty()]);
+            lengthView.setText("Length: "+
+                    getResources().getStringArray(R.array.length_array)[trail.getMetadata().getLengthCategory()]);
             descriptionView.setText(trail.getMetadata().getDescription());
             notesView.setText(trail.getMetadata().getNotes());
 

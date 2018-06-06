@@ -38,6 +38,7 @@ class GPXFile {
             TRAIL_DESCRIPTION = "desc",
             TRAIL_LOCATION = "location",
             TRAIL_DIFFICULTY = "difficulty",
+            TRAIL_LENGTH_CATEGORY = "lengthCategory",
             TRAIL_NOTES = "notes",
             TRAIL_ID = "trailID",
             IMAGE_IDS = "imageIDs",
@@ -101,6 +102,14 @@ class GPXFile {
                                 catch(NumberFormatException e){
                                 }
                         }
+                        if(TRAIL_LENGTH_CATEGORY.equals(currentNode.getNodeName())){
+                            if(currentNode.getFirstChild() != null)
+                                try {
+                                    trail.getMetadata().setLengthCategory(Integer.parseInt(currentNode.getFirstChild().getNodeValue()));
+                                }
+                                catch(NumberFormatException e){
+                                }
+                        }
                         if(TRAIL_NOTES.equals(currentNode.getNodeName())){
                             if(currentNode.getFirstChild() != null)
                                 trail.getMetadata().setNotes(currentNode.getFirstChild().getNodeValue());
@@ -152,6 +161,11 @@ class GPXFile {
                     node.appendChild(doc.createTextNode(""+trail.getMetadata().getDifficulty()));
                     extensionNode.appendChild(node);
                 }
+                if(trail.getMetadata().getLengthCategory() >= 0) {
+                    node = doc.createElement(TRAIL_LENGTH_CATEGORY);
+                    node.appendChild(doc.createTextNode(""+trail.getMetadata().getLengthCategory()));
+                    extensionNode.appendChild(node);
+                }
                 if(trail.getMetadata().getNotes() != null) {
                     node = doc.createElement(TRAIL_NOTES);
                     node.appendChild(doc.createTextNode(trail.getMetadata().getNotes()));
@@ -194,7 +208,7 @@ class GPXFile {
                 waypoint.setLongitude(w.getLongitude());
                 waypoint.setComment(w.getComment());
                 waypoint.setWaypointType(w.getType());
-                waypoint.setImageID((String)w.getExtensionData(IMAGE_ID));
+//                waypoint.setImageID((String)w.getExtensionData(IMAGE_ID));
                 waypoints.add(waypoint);
             }
         }
@@ -238,8 +252,8 @@ class GPXFile {
                 waypoint.setLongitude(w.getLongitude());
                 waypoint.setComment(w.getComment());
                 waypoint.setType(w.getWaypointType());
-                if(w.getImageID() != null)
-                    waypoint.addExtensionData(IMAGE_ID, w.getImageID());
+//                if(w.getImageID() != null)
+//                    waypoint.addExtensionData(IMAGE_ID, w.getImageID());
                 gpx.addWaypoint(waypoint);
             }
         }

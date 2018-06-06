@@ -102,6 +102,7 @@ public class DownloadDataActivity extends AppCompatActivity implements RatingDia
         TextView descriptionView = findViewById(R.id.Description);
         TextView locationView = findViewById(R.id.TrailLocationField);
         TextView difficultyView = findViewById(R.id.Difficulty);
+        TextView lengthView = findViewById(R.id.LengthCategory);
         TextView notesView = findViewById(R.id.Notes);
         TextView flagView = findViewById(R.id.FlagText);
 
@@ -123,6 +124,8 @@ public class DownloadDataActivity extends AppCompatActivity implements RatingDia
             locationView.setText("Location: "+trail.getMetadata().getLocation());
             difficultyView.setText("Difficulty: "+
                     getResources().getStringArray(R.array.difficulty_array)[trail.getMetadata().getDifficulty()]);
+            lengthView.setText("Length: "+
+                    getResources().getStringArray(R.array.length_array)[trail.getMetadata().getLengthCategory()]);
             descriptionView.setText(trail.getMetadata().getDescription());
             notesView.setText(trail.getMetadata().getNotes());
             flagView.setText(""+trail.getMetadata().getNumFlags());

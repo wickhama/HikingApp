@@ -3,6 +3,7 @@ package arc.com.arctrails;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -14,6 +15,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -47,6 +52,9 @@ public abstract class DynamicScrollListActivity
     private List<Trail.Metadata> mTrailMetadata;
     private FilterDialog filterDialog;
 
+    //For current location
+    private LatLng currentLocation;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +76,7 @@ public abstract class DynamicScrollListActivity
         });
 
         location = (Coordinates) getSupportFragmentManager().findFragmentById(R.id.location);
+
         metaList = new ArrayList<>();
         mTrailMetadata = new ArrayList<>();
 
@@ -164,8 +173,26 @@ public abstract class DynamicScrollListActivity
 
     public abstract boolean onTrailSelected(Trail.Metadata metadata);
 
+    /**
+     * Filtering Options
+     */
     @Override
     public void onDialogPositiveClick(FilterDialog dialog) {
+
+        double myX = 0;
+        double myY = 0;
+        if(hasPermission()) {
+            currentLocation = location.getLastLocation();
+            myX = currentLocation.latitude;
+            myY = currentLocation.longitude;
+        }
+
+        //change this and use the Android Location service instead.
+
+        Location currentLocation = new Location("");
+
+
+
         if(dialog.useDifficulty()) {
             //Inset Query code for the db.
             dialog.getDifficulty();
@@ -173,10 +200,11 @@ public abstract class DynamicScrollListActivity
 
         List<Trail.Metadata> filteredList = new ArrayList<>();
         for(Trail.Metadata m : metaList){
-            if((!dialog.useDifficulty() || m.getDifficulty() == dialog.getDifficulty()) &&
-                    (!dialog.useRating() || m.getRating() == dialog.getRating())
-            //(!dialog.useDistance() || matchesCategory())
-            ){
+            System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Distance == " + m.getName());
+            if( (!dialog.useDifficulty() || m.getDifficulty() == dialog.getDifficulty() )
+                    && (!dialog.useRating() || m.getRating() == dialog.getRating() )
+                    && (!dialog.useDistance() || matchesCategory(myX, myY, m.getHeadLat(), m.getHeadLong(), dialog.getDistance()) == true)
+                    && (!dialog.useLength() || m.getLengthCategory() == dialog.getLength() )){
                 filteredList.add(m);
             }
         }
@@ -189,27 +217,38 @@ public abstract class DynamicScrollListActivity
      * in the database. This is calculated 'as a crow flies' and is not 100% accurate.
      */
 
-    public boolean matchesCategory(int myX, int myY, int trailX, int trailY, int categories){
+    public boolean matchesCategory(double myX, double myY, double trailX, double trailY, int categories){
 
         boolean accept = false;
+        Location currentLocation = new Location("");
+        Location destLocation = new Location("");
 
-        //There may be a way to do this using Google libraries?
-        double dist = Math.sqrt( ((myX - trailX)^2) + ((myY - trailY)^2) );
+        currentLocation.setLatitude(myX);
+        currentLocation.setLongitude(myY);
+        destLocation.setLatitude(trailX);
+        destLocation.setLongitude(trailY);
 
-        int distanceCategories = 4;
+        float dist = currentLocation.distanceTo(destLocation);
+        dist = dist/1000;
 
-        switch(distanceCategories){
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Distance == " + dist);
 
-            case 1 : accept = dist < 1;
+
+        switch(categories){
+
+            case 0 : accept = dist < 5;
             break;
 
-            case 2 : accept = dist > 1 && dist < 5;
+            case 1 : accept = dist > 5 && dist < 10;
             break;
 
-            case 3 : accept = dist > 5 && dist < 10;
+            case 2 : accept = dist > 10 && dist < 20;
             break;
 
-            case 4 : accept = dist > 10;
+            case 3 : accept = dist > 20 && dist < 50;
+            break;
+
+            case 4 : accept = dist > 50;
             break;
 
             default: accept = false;
@@ -218,6 +257,7 @@ public abstract class DynamicScrollListActivity
 
         return accept;
     }
+
 
     // Permissions
     /**

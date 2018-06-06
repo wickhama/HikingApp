@@ -93,6 +93,18 @@ tools:showIn="@layout/activity_download_data">
         app:layout_constraintTop_toBottomOf="@+id/TrailLocationField" />
 
     <TextView
+        android:id="@+id/LengthCategory"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Difficulty" />
+
+    <TextView
         android:id="@+id/TrailLocationField"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -114,7 +126,7 @@ tools:showIn="@layout/activity_download_data">
         android:background="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Difficulty" />
+        app:layout_constraintTop_toBottomOf="@+id/LengthCategory" />
 
     <View
         android:id="@+id/data_divider_2"

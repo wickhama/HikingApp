@@ -292,6 +292,7 @@ public class RecordingActivity extends AppCompatActivity
                 String name = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_NAME);
                 String location = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_LOCATION);
                 int difficulty = data.getIntExtra(NewTrailActivity.EXTRA_TRAIL_DIFFICULTY,0);
+                int lengthCategory = data.getIntExtra(NewTrailActivity.EXTRA_TRAIL_LENGTH, 0);
                 String description = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_DESCRIPTION);
                 String notes = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_NOTES);
                 String uuid = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_ID);
@@ -307,6 +308,7 @@ public class RecordingActivity extends AppCompatActivity
                     recordedTrail.getMetadata().setDescription(description);
                     recordedTrail.getMetadata().setNotes(notes);
                     recordedTrail.getMetadata().setTrailID(uuid);
+                    recordedTrail.getMetadata().setLengthCategory(lengthCategory);
                     if(hasImage) {
                         recordedTrail.getMetadata().addImageID(uuid);
                         saveInternal(uri, uuid);
@@ -336,9 +338,6 @@ public class RecordingActivity extends AppCompatActivity
                             show();
                     GPXFile.writeGPXFile(recordedTrail, getApplicationContext());
                 }
-                recordedTrail = null;
-                setResult(RESULT_BACK);
-                finish();
             }
             else {
                 map.makeTrail(recordedTrail);

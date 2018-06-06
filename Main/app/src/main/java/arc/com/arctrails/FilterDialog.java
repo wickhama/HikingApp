@@ -28,8 +28,9 @@ public class FilterDialog extends DialogFragment {
     }
 
     // Use this instance of the interface to deliver action events
-    FilterDialogListener mListener;
-    View mView;
+    private FilterDialogListener mListener;
+    private View mView;
+    private FilterOptions mOptions;
 
     @Override
     public void onAttach(Context activity) {
@@ -57,20 +58,28 @@ public class FilterDialog extends DialogFragment {
         mView = inflater.inflate(R.layout.dialog_filter, null);
         builder.setView(mView);
 
+        if(mOptions == null)
+            mOptions = new FilterOptions();
+
+        setDisplayOptions(mOptions);
+
         //add the Filter if they confirm
         builder.setPositiveButton(R.string.filterButton,
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                mOptions = getOptions();
                                 mListener.onDialogPositiveClick(FilterDialog.this);
                             }
                         })
                 //do nothing if they don't confirm
-                .setNegativeButton(android.R.string.no,
+                .setNegativeButton(R.string.resetButton,
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                FilterDialog.this.getDialog().cancel();
+                                mOptions.reset();
+                                setDisplayOptions(mOptions);
+                                mListener.onDialogPositiveClick(FilterDialog.this);
                             }
                         });
 
@@ -105,8 +114,6 @@ public class FilterDialog extends DialogFragment {
 //                        (EditText)mView.findViewById(R.id.nameFilterInput)
 //                ));
 
-
-
         return builder.create();
     }
 
@@ -131,33 +138,40 @@ public class FilterDialog extends DialogFragment {
         };
     }
 
-//    /**
-//     *This hides EditText box until the switch is selected.
-//     */
-//    private View.OnClickListener linkSwitchAndEditText(final Switch toggle, final EditText trailInput) {
-//        if(toggle.isChecked()){
-//            trailInput.setVisibility(View.VISIBLE);
-//        }else{
-//            trailInput.setVisibility(View.GONE);
-//        }
-//        return new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(toggle.isChecked()){
-//                    trailInput.setVisibility(View.VISIBLE);
-//                }else{
-//                    trailInput.setVisibility(View.GONE);
-//                }
-//            }
-//        };
-//    }
+    private void setDisplayOptions(FilterOptions options) {
+        Switch diffSwitch = mView.findViewById(R.id.difficultySwitch);
+        Spinner diffSpinner = mView.findViewById(R.id.difficultySpinner);
+        Switch rateSwitch = mView.findViewById(R.id.ratingSwitch);
+        Spinner rateSpinner = mView.findViewById(R.id.ratingSpinner);
+        Switch distSwitch = mView.findViewById(R.id.distanceSwitch);
+        Spinner distSpinner = mView.findViewById(R.id.distanceSpinner);
+        Switch lengthSwitch = mView.findViewById(R.id.lengthSwitch);
+        Spinner lengthSpinner = mView.findViewById(R.id.lengthSpinner);
 
+        diffSwitch.setChecked(options.useDifficulty());
+        diffSpinner.setSelection(options.getDifficulty());
+        rateSwitch.setChecked(options.useRating());
+        rateSpinner.setSelection(options.getRating());
+        distSwitch.setChecked(options.useDistance());
+        distSpinner.setSelection(options.getDistance());
+        lengthSwitch.setChecked(options.useLength());
+        lengthSpinner.setSelection(options.getLength());
+    }
 
-    /**
-     * NONE OF THESE CHANGES HAVE BEEN PUSHED! Including the GUI for the filtering and the following
-     * checkers and getters.
-     */
+    private FilterOptions getOptions() {
+        FilterOptions options = new FilterOptions();
 
+        options.setUseDifficulty(useDifficulty());
+        options.setDifficulty(getDifficulty());
+        options.setUseRating(useRating());
+        options.setRating(getRating());
+        options.setUseDistance(useDistance());
+        options.setDistance(getDistance());
+        options.setUseLength(useLength());
+        options.setLength(getLength());
+        
+        return options;
+    }
 
     /**
      * Difficulty
