@@ -180,9 +180,11 @@ class GPXFile {
                     node = doc.createElement(IMAGE_IDS);
                     Node imageNode;
                     for(String imageID : trail.getMetadata().getImageIDs()){
-                        imageNode = doc.createElement(IMAGE_ID);
-                        imageNode.appendChild(doc.createTextNode(imageID));
-                        node.appendChild(imageNode);
+                        if(imageID != null) {
+                            imageNode = doc.createElement(IMAGE_ID);
+                            imageNode.appendChild(doc.createTextNode(imageID));
+                            node.appendChild(imageNode);
+                        }
                     }
                     extensionNode.appendChild(node);
                 }
@@ -296,12 +298,16 @@ class GPXFile {
             }
         } catch(FileNotFoundException e) {
             AlertUtils.showAlert(context,"File not found","Please notify the developers.");
+            throw new RuntimeException("GPX file error");
         } catch (ParserConfigurationException e) {
             AlertUtils.showAlert(context,"Parser Exception","Please notify the developers.");
+            throw new RuntimeException("GPX file error");
         } catch (IOException e) {
             AlertUtils.showAlert(context,"IO Exception","Please notify the developers.");
+            throw new RuntimeException("GPX file error");
         } catch (SAXException e) {
             AlertUtils.showAlert(context,"SAXException","Please notify the developers.");
+            throw new RuntimeException("GPX file error");
         }
 
         return null;
@@ -325,10 +331,13 @@ class GPXFile {
             getParser().writeGPX(gpx, out);
         } catch(FileNotFoundException e) {
             AlertUtils.showAlert(context,"File not found","Please notify the developers.");
+            throw new RuntimeException("GPX file error");
         } catch (TransformerException e) {
             AlertUtils.showAlert(context,"Transformer Exception","Please notify the developers.");
+            throw new RuntimeException("GPX file error");
         } catch (ParserConfigurationException e) {
             AlertUtils.showAlert(context,"Parser Exception","Please notify the developers.");
+            throw new RuntimeException("GPX file error");
         }
     }
 }

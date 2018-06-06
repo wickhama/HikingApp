@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.ArrayAdapter;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.IOException;
@@ -58,12 +59,13 @@ public class NewTrailActivity extends AppCompatActivity {
 
     //For image uploading
     public static final String EXTRA_TRAIL_ID = "arc.com.arctrails.id";
-    public static final String EXTRA_TRAIL_URI = "arc.com.arctrails.imageUri";
-    public static final String EXTRA_TRAIL_HAS_IMAGE = "arc.com.arctrails.hasImage";
+    public static final String EXTRA_IMAGE_LIST = "arc.com.arctrails.imageList";
+    private static final int IMAGE_QUALITY = 25;
     private Uri picUri;
 
     private Trail mTrail;
     private LinkedList<Bitmap> mImages = new LinkedList<>();
+    private LinkedList<String> mImageIDs = new LinkedList<>();
     private int currentImage = -1;
 
     /**
@@ -141,20 +143,24 @@ public class NewTrailActivity extends AppCompatActivity {
         Spinner lengthSpinner = findViewById(R.id.lengthSpinner);
 
         mImages.clear();
+        mImageIDs.clear();
         if(!metadata.getImageIDs().isEmpty())
         {
-            ImageView displayImage = (ImageView) findViewById(R.id.imageView);
+            ImageView displayImage = findViewById(R.id.imageView);
             for(String imageID : metadata.getImageIDs()) {
                 Bitmap bitmap = new ImageFile(this).
                         setFileName(imageID + ".jpg").
                         load();
-                if(bitmap != null)
+                if(bitmap != null) {
+                    mImageIDs.add(imageID);
                     mImages.add(bitmap);
+                }
             }
 
             if(!mImages.isEmpty()) {
+                currentImage = 0;
                 displayImage.setImageBitmap(mImages.get(0));
-                displayImage.setMaxHeight(mImages.get(0).getHeight());
+                //displayImage.setMaxHeight(mImages.get(0).getHeight());
             }
         }
 
@@ -251,13 +257,21 @@ public class NewTrailActivity extends AppCompatActivity {
         int difficulty = difficultySpinner.getSelectedItemPosition();
         int lengthCategory = lengthSpinner.getSelectedItemPosition();
 
-        //only generate a new ID if the trail does not exist
+        //only generate a new ID if the trail does not exist or the name has changed
         //otherwise use the old ID and replace the file
         String id;
-        if(mTrail == null)
-            id = UUID.randomUUID().toString();
+        if(mTrail.getMetadata().getTrailID() == null || !name.equals(mTrail.getMetadata().getName()))
+            id = name+"-"+UUID.randomUUID().toString();
         else
             id = mTrail.getMetadata().getTrailID();
+
+        for(int i = 0; i < mImages.size(); i++) {
+            //if the image is not already in the trail, it is newly taken, and must be saved to a file
+            if(!mTrail.getMetadata().getImageIDs().contains(mImageIDs.get(i))) {
+                saveInternal(mImages.get(i), mImageIDs.get(i));
+                mTrail.getMetadata().addImageID(mImageIDs.get(i));
+            }
+        }
 
         Intent intent = new Intent();
         intent.putExtra(EXTRA_TRAIL_NAME,name);
@@ -267,11 +281,28 @@ public class NewTrailActivity extends AppCompatActivity {
         intent.putExtra(EXTRA_TRAIL_DIFFICULTY, difficulty);
         intent.putExtra(EXTRA_TRAIL_ID, id);
         intent.putExtra(EXTRA_TRAIL_LENGTH, lengthCategory);
-        if(picUri != null)
-            intent.putExtra(EXTRA_TRAIL_URI, picUri.toString());
-        intent.putExtra(EXTRA_TRAIL_HAS_IMAGE, picUri != null);
+        intent.putExtra(EXTRA_IMAGE_LIST, mTrail.getMetadata().getImageIDs().toArray());
+
         setResult(RESULT_SAVE,intent);
         finish();
+    }
+
+    //Save image to internal storage.
+    private void saveInternal(Bitmap bitmap, String fileName){
+        System.out.println("**********************Saving to Internal***************");
+
+        new ImageFile(this).
+                setFileName(fileName+".jpg").
+                save(bitmap);
+    }
+
+    private Bitmap compressBitmap(Bitmap bitmap) {
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, IMAGE_QUALITY, outStream);
+        byte[] byteArray = outStream.toByteArray();
+        Bitmap compressed = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+
+        return compressed;
     }
 
     @Override
@@ -292,28 +323,49 @@ public class NewTrailActivity extends AppCompatActivity {
             Bitmap bitmap = null;
             try {
                 bitmap = getBitmapFromUri(selectedImage);
+
+                if(bitmap != null) {
+                    currentImage = mImages.size();
+                    mImages.add(compressBitmap(bitmap));
+                    mImageIDs.add(UUID.randomUUID().toString());
+                    imageView.setImageBitmap(mImages.get(currentImage));
+
+                    picUri = data.getData();
+                    performCrop();
+                }
             }
             catch (IOException e){
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            imageView.setImageBitmap(bitmap);
-
-            picUri = data.getData();
-            performCrop();
         }
         else if(requestCode == PICTURE_CROP && data != null) {
             Bundle extras = data.getExtras();
             Bitmap bitmap = extras.getParcelable("data");
 
-            imageView.setImageBitmap(bitmap);
+
+
+            if(bitmap != null) {
+                //if the image was cropped, it is a copy of the last image in the bitmap list
+                //we dont need to remove from mImageIDs because the new one will use the same ID
+                mImages.removeLast();
+
+                currentImage = mImages.size();
+                mImages.add(compressBitmap(bitmap));
+                imageView.setImageBitmap(mImages.get(currentImage));
+            }
         }
         else if(requestCode == RESULT_CAPTURE && data != null){
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-            imageView.setImageBitmap(bitmap);
 
-            picUri = data.getData();
-            performCrop();
+            if(bitmap != null) {
+                currentImage = mImages.size();
+                mImages.add(compressBitmap(bitmap));
+                mImageIDs.add(UUID.randomUUID().toString());
+                imageView.setImageBitmap(mImages.get(currentImage));
+
+                picUri = data.getData();
+                performCrop();
+            }
         }
         else {
 
@@ -323,10 +375,22 @@ public class NewTrailActivity extends AppCompatActivity {
 
     public void prevImage() {
         //move the imageview to the prev image
+        if(currentImage > 0)
+        {
+            ImageView displayImage = findViewById(R.id.imageView);
+            currentImage = currentImage - 1;
+            displayImage.setImageBitmap(mImages.get(currentImage));
+        }
     }
 
     public void nextImage() {
         //move the imageview to the next image
+        if(currentImage + 1 < mImages.size())
+        {
+            ImageView displayImage = findViewById(R.id.imageView);
+            currentImage = currentImage + 1;
+            displayImage.setImageBitmap(mImages.get(currentImage));
+        }
     }
 
     public void addCamera() {
@@ -341,8 +405,19 @@ public class NewTrailActivity extends AppCompatActivity {
     }
 
     public void removePhoto() {
-        ImageView imageView = findViewById(R.id.imageView);
-        imageView.setImageBitmap(null);
+        if(mImages.size() > 0) {
+            ImageView displayImage = findViewById(R.id.imageView);
+
+            mImages.remove(currentImage);
+            if(currentImage > 0) {
+                currentImage--;
+                displayImage.setImageBitmap(mImages.get(currentImage));
+            }
+            if(mImages.size() == 0){
+                currentImage = -1;
+                displayImage.setImageBitmap(null);
+            }
+        }
     }
 
     private void performCrop() {

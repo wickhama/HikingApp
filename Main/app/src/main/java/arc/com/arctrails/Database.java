@@ -72,6 +72,10 @@ public class Database extends AppCompatActivity {
         void onComplete(boolean success, long numRatings, double rating);
     }
 
+    public interface TrailTransactionListener{
+        void onComplete(boolean success, Trail trail);
+    }
+
     //a singleton instance of a database
     private static Database singleton;
 
@@ -258,7 +262,7 @@ public class Database extends AppCompatActivity {
 
             @Override
             public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
-                listener.onComplete(b, (long)dataSnapshot.getValue());
+                if( listener != null) listener.onComplete(b, (long)dataSnapshot.getValue());
             }
         });
     }
@@ -279,7 +283,7 @@ public class Database extends AppCompatActivity {
 
             @Override
             public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
-                listener.onComplete(b, (long)dataSnapshot.getValue());
+                if( listener != null) listener.onComplete(b, (long)dataSnapshot.getValue());
             }
         });
     }
@@ -309,7 +313,7 @@ public class Database extends AppCompatActivity {
 
             @Override
             public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
-                listener.onComplete(b,
+                if( listener != null) listener.onComplete(b,
                         (long)dataSnapshot.child("numRatings").getValue(),
                         ((Number)dataSnapshot.child("rating").getValue()).doubleValue());
             }
@@ -347,7 +351,7 @@ public class Database extends AppCompatActivity {
 
             @Override
             public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
-                listener.onComplete(b,
+                if( listener != null) listener.onComplete(b,
                         (long)dataSnapshot.child("numRatings").getValue(),
                         ((Number)dataSnapshot.child("rating").getValue()).doubleValue());
             }
@@ -355,12 +359,39 @@ public class Database extends AppCompatActivity {
     }
 
     public void uploadTrail(String trailID, Trail trail){
+        uploadTrail(trailID, trail, null);
+    }
+
+    //TODO
+    //TODO
+    //TODO
+    //TODO
+    public void uploadTrail(String trailID, Trail trail, final TrailTransactionListener listener){
         trail.printTrail();
         databaseReference = myRef;
         databaseReference.
                 child("Trails").
                 child(trailID).
                 setValue(trail);
+
+//        DatabaseReference trailRef = myRef.child("Trails").child(trailID);
+//
+//        trailRef.runTransaction(new Transaction.Handler() {
+//            @Override
+//            public Transaction.Result doTransaction(MutableData mutableData) {
+//                long currentVotes = 0;
+//                if(mutableData.getValue() != null)
+//                    currentVotes = (long)mutableData.getValue();
+//
+//                mutableData.setValue(currentVotes + 1);
+//                return Transaction.success(mutableData);
+//            }
+//
+//            @Override
+//            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+//                if( listener != null) listener.onComplete(b, dataSnapshot.getValue(Trail.class));
+//            }
+//        });
     }
 
     public void uploadImage(Uri imageUri, Trail trail, final Context context){

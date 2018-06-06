@@ -27,6 +27,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -37,6 +38,8 @@ import androidx.work.Data;
 import androidx.work.NetworkType;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
+
+import static arc.com.arctrails.NewTrailActivity.EXTRA_IMAGE_LIST;
 
 public class RecordingActivity extends AppCompatActivity
         implements LocationRequestListener, LocationPermissionListener,
@@ -282,9 +285,8 @@ public class RecordingActivity extends AppCompatActivity
                 int lengthCategory = data.getIntExtra(NewTrailActivity.EXTRA_TRAIL_LENGTH, 0);
                 String description = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_DESCRIPTION);
                 String notes = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_NOTES);
-                String uuid = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_ID);
-                String uri = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_URI);
-                boolean hasImage = data.getBooleanExtra(NewTrailActivity.EXTRA_TRAIL_HAS_IMAGE, false);
+                String trailID = data.getStringExtra(NewTrailActivity.EXTRA_TRAIL_ID);
+                String[] imageList = data.getStringArrayExtra(EXTRA_IMAGE_LIST);
 
                 //make sure there's actually recorded data
                 if (recordedTrail != null) {
@@ -293,12 +295,9 @@ public class RecordingActivity extends AppCompatActivity
                     recordedTrail.getMetadata().setDifficulty(difficulty);
                     recordedTrail.getMetadata().setDescription(description);
                     recordedTrail.getMetadata().setNotes(notes);
-                    recordedTrail.getMetadata().setTrailID(uuid);
+                    recordedTrail.getMetadata().setTrailID(trailID);
                     recordedTrail.getMetadata().setLengthCategory(lengthCategory);
-                    if(hasImage) {
-                        recordedTrail.getMetadata().addImageID(uuid);
-                        saveInternal(uri, uuid);
-                    }
+                    recordedTrail.getMetadata().setImageIDs(Arrays.asList(imageList));
 
                     AlertDialog.Builder uploadtrail = new AlertDialog.Builder(this);
                     uploadtrail.setTitle("Upload trail")
@@ -308,7 +307,6 @@ public class RecordingActivity extends AppCompatActivity
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     Map<String, Object> trailmap = new HashMap();
                                     trailmap.put("Trail", recordedTrail);
-                                    trailmap.put("Context", RecordingActivity.this);
                                     Data trailData = new Data.Builder().putAll(trailmap).build();
                                     OneTimeWorkRequest uploadData = new OneTimeWorkRequest.Builder(UploadTrailWorker.class).setInputData(trailData).setConstraints(buildUploadConstraints()).build();
                                     WorkManager.getInstance().enqueue(uploadData);
@@ -324,25 +322,8 @@ public class RecordingActivity extends AppCompatActivity
                     GPXFile.writeGPXFile(recordedTrail, getApplicationContext());
                 }
             }
-            else {
-                map.makeTrail(recordedTrail);
-            }
-        }
-    }
-
-    //Save image to internal storage.
-    private void saveInternal(String imageUri, String fileName){
-
-        try {
-            Uri uri = Uri.parse(imageUri);
-            System.out.println("**********************Saving to Internal***************");
-            Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
-            new ImageFile(this).
-                    setFileName(fileName+".jpg").
-                            save(bitmap);
-
-        } catch (IOException e) {
-            e.printStackTrace();
+            //when the activity returns, the trail has to be re-drawn
+            map.makeTrail(recordedTrail);
         }
     }
 
