@@ -31,9 +31,30 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@color/common_google_signin_btn_text_light_default"
-            android:adjustViewBounds="true"
             android:layout_centerInParent="true"
             android:scaleType="centerCrop" />
+
+        <ImageButton
+            android:id="@+id/prevImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView"
+            app:layout_constraintStart_toStartOf="@id/imageView"
+            app:layout_constraintTop_toTopOf="@id/imageView"
+            app:srcCompat="@drawable/baseline_navigate_before_24px" />
+
+        <ImageButton
+            android:id="@+id/nextImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView"
+            app:layout_constraintEnd_toEndOf="@id/imageView"
+            app:layout_constraintTop_toTopOf="@id/imageView"
+            app:srcCompat="@drawable/baseline_navigate_next_24px" />
 
         <TextView
             android:id="@+id/TrailName"

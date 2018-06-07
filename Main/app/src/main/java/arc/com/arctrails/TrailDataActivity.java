@@ -20,6 +20,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
+import java.util.LinkedList;
 
 /**
  * @author Ryley
@@ -53,6 +54,8 @@ public class TrailDataActivity extends AppCompatActivity {
     private Trail trail;
     //Storage Reference to Firebase Storage
     private FirebaseStorage storage = FirebaseStorage.getInstance();
+    private LinkedList<Bitmap> mImages = new LinkedList<>();
+    private int currentImage = -1;
 
     /**
      * Created by Ryley
@@ -91,17 +94,34 @@ public class TrailDataActivity extends AppCompatActivity {
 
             ImageView displayImage = (ImageView) findViewById(R.id.imageView);
 
+            for(String imageID: trail.getMetadata().getImageIDs()) {
 
-            Bitmap bitmap = new ImageFile(TrailDataActivity.this).
-                    setFileName(trail.getMetadata().getImageIDs().get(0) + ".jpg").
-                    load();
+                Bitmap bitmap = new ImageFile(TrailDataActivity.this).
+                        setFileName(imageID + ".jpg").
+                        load();
 
-            if(bitmap != null) {
-                displayImage.setImageBitmap(bitmap);
-                displayImage.setMaxHeight(bitmap.getHeight());
+                if(bitmap != null)
+                    mImages.add(bitmap);
+            }
+
+            if(mImages.size() > 0) {
+                currentImage = 0;
+                displayImage.setImageBitmap(mImages.get(0));
             }
         }
 
+        findViewById(R.id.prevImage).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                prevImage();
+            }
+        });
+        findViewById(R.id.nextImage).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nextImage();
+            }
+        });
     }
 
     /**
@@ -182,6 +202,26 @@ public class TrailDataActivity extends AppCompatActivity {
         }
     }
 
+    public void prevImage() {
+        //move the imageview to the prev image
+        if(currentImage > 0)
+        {
+            ImageView displayImage = findViewById(R.id.imageView);
+            currentImage = currentImage - 1;
+            displayImage.setImageBitmap(mImages.get(currentImage));
+        }
+    }
+
+    public void nextImage() {
+        //move the imageview to the next image
+        if(currentImage + 1 < mImages.size())
+        {
+            ImageView displayImage = findViewById(R.id.imageView);
+            currentImage = currentImage + 1;
+            displayImage.setImageBitmap(mImages.get(currentImage));
+        }
+    }
+
     /**
      * Created by Ryley
      * added for Increment 2
@@ -234,17 +274,13 @@ public class TrailDataActivity extends AppCompatActivity {
                         Snackbar.make(findViewById(R.id.trail_data_layout), "Uploading Trail", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
 
-                        // For Firebase upload.
-                        /**
-                         *
-                         */
-
                         if(trail.getMetadata().getImageIDs().size() > 0){
-                            File uploadFile = new File(getExternalFilesDir(null), trail.getMetadata().getImageIDs().get(0)+".jpg");
-                            database.uploadImage(Uri.parse(uploadFile.toURI().toString()), trail, TrailDataActivity.this);
-
+                            for(String id: trail.getMetadata().getImageIDs()) {
+                                File uploadFile = new File(getExternalFilesDir(null), id + ".jpg");
+                                Uri imageUri = Uri.parse(uploadFile.toURI().toString());
+                                database.uploadImage(imageUri, id);
+                            }
                         }
-
                     }
                 });
     }
@@ -265,11 +301,13 @@ public class TrailDataActivity extends AppCompatActivity {
 
         if(trail.getMetadata().getImageIDs().size() > 0)
         {
-            file = new File(getExternalFilesDir(null),trail.getMetadata().getImageIDs().get(0)+".jpg");
-            try{
-                file.delete();
-            }catch(SecurityException e){
-                AlertUtils.showAlert(this, "SecurityException",e.getLocalizedMessage());
+            for(String id: trail.getMetadata().getImageIDs()) {
+                file = new File(getExternalFilesDir(null), id + ".jpg");
+                try {
+                    file.delete();
+                } catch (SecurityException e) {
+                    AlertUtils.showAlert(this, "SecurityException", e.getLocalizedMessage());
+                }
             }
         }
     }

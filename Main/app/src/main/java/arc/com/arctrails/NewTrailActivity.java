@@ -140,7 +140,7 @@ public class NewTrailActivity extends AppCompatActivity {
         EditText descriptionField = findViewById(R.id.TrailDescriptionField);
         EditText notesField = findViewById(R.id.TrailNotesField);
         Spinner difficultySpinner = findViewById(R.id.editDifficulty);
-        Spinner lengthSpinner = findViewById(R.id.lengthSpinner);
+        Spinner lengthSpinner = findViewById(R.id.editLength);
 
         mImages.clear();
         mImageIDs.clear();
@@ -209,13 +209,22 @@ public class NewTrailActivity extends AppCompatActivity {
             AlertUtils.showAlert(this, "No File Name", "Trails must be given a name before they can be saved.");
             return;
         }
-        //file names cannot contain .
-        if(name.contains(".")){
-            AlertUtils.showAlert(this, "Illegal File Name", "File names cannot contain period (.)");
+        //file names cannot contain | \ ? * < " : > + [ ] / '
+        if(name.matches(".*[|\\\\?*<\\\":>+\\[\\]/'].*")){
+            AlertUtils.showAlert(this, "Illegal File Name", "File name contains illegal characters");
             return;
         }
 
-        File file = new File(getExternalFilesDir(null), name+".gpx");
+        //only generate a new ID if the trail does not exist or the name has changed
+        //otherwise use the old ID and replace the file
+        String id;
+        if(mTrail.getMetadata().getTrailID() == null || !name.equals(mTrail.getMetadata().getName()))
+            id = name+"-"+UUID.randomUUID().toString();
+        else
+            id = mTrail.getMetadata().getTrailID();
+        mTrail.getMetadata().setTrailID(id);
+
+        File file = new File(getExternalFilesDir(null), id+".gpx");
         //if the user is about to overwrite a file, ask if they're sure that's what they want
         if(file.exists())
             AlertUtils.showConfirm(this, "Replace Trail",
@@ -257,31 +266,34 @@ public class NewTrailActivity extends AppCompatActivity {
         int difficulty = difficultySpinner.getSelectedItemPosition();
         int lengthCategory = lengthSpinner.getSelectedItemPosition();
 
-        //only generate a new ID if the trail does not exist or the name has changed
-        //otherwise use the old ID and replace the file
-        String id;
-        if(mTrail.getMetadata().getTrailID() == null || !name.equals(mTrail.getMetadata().getName()))
-            id = name+"-"+UUID.randomUUID().toString();
-        else
-            id = mTrail.getMetadata().getTrailID();
 
         for(int i = 0; i < mImages.size(); i++) {
             //if the image is not already in the trail, it is newly taken, and must be saved to a file
             if(!mTrail.getMetadata().getImageIDs().contains(mImageIDs.get(i))) {
                 saveInternal(mImages.get(i), mImageIDs.get(i));
-                mTrail.getMetadata().addImageID(mImageIDs.get(i));
             }
         }
 
+        for(String oldID: mTrail.getMetadata().getImageIDs()) {
+            //if the image used to be in the trail, but isn't anymore, delete it
+            if(!mImageIDs.contains(oldID))
+                deleteImageFile(oldID);
+        }
+
+        //send the rest of the metadata back to the recording activity, so it can combine this with
+        //the location data and save the trail file.
         Intent intent = new Intent();
         intent.putExtra(EXTRA_TRAIL_NAME,name);
         intent.putExtra(EXTRA_TRAIL_LOCATION,location);
         intent.putExtra(EXTRA_TRAIL_DESCRIPTION, description);
         intent.putExtra(EXTRA_TRAIL_NOTES, notes);
         intent.putExtra(EXTRA_TRAIL_DIFFICULTY, difficulty);
-        intent.putExtra(EXTRA_TRAIL_ID, id);
+        intent.putExtra(EXTRA_TRAIL_ID, mTrail.getMetadata().getTrailID());
         intent.putExtra(EXTRA_TRAIL_LENGTH, lengthCategory);
-        intent.putExtra(EXTRA_IMAGE_LIST, mTrail.getMetadata().getImageIDs().toArray());
+
+        String[] imageArray = new String[mImageIDs.size()];
+        mImageIDs.toArray(imageArray);
+        intent.putExtra(EXTRA_IMAGE_LIST, imageArray);
 
         setResult(RESULT_SAVE,intent);
         finish();
@@ -294,6 +306,15 @@ public class NewTrailActivity extends AppCompatActivity {
         new ImageFile(this).
                 setFileName(fileName+".jpg").
                 save(bitmap);
+    }
+
+    private void deleteImageFile(String imageID){
+        File file = new File(getExternalFilesDir(null), imageID + ".jpg");
+        try {
+            file.delete();
+        } catch (SecurityException e) {
+            AlertUtils.showAlert(this, "SecurityException", e.getLocalizedMessage());
+        }
     }
 
     private Bitmap compressBitmap(Bitmap bitmap) {
@@ -310,7 +331,6 @@ public class NewTrailActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         ImageView imageView = findViewById(R.id.imageView);
-        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
         if(requestCode == RESULT_LOAD_IMAGE && data != null) {
             Uri selectedImage = data.getData();
             String[] filePathColumn = { MediaStore.Images.Media.DATA };
@@ -331,14 +351,14 @@ public class NewTrailActivity extends AppCompatActivity {
                     imageView.setImageBitmap(mImages.get(currentImage));
 
                     picUri = data.getData();
-                    performCrop();
+                    //performCrop();
                 }
             }
             catch (IOException e){
                 e.printStackTrace();
             }
         }
-        else if(requestCode == PICTURE_CROP && data != null) {
+        else if(requestCode == PICTURE_CROP && data != null && data.getExtras() != null) {
             Bundle extras = data.getExtras();
             Bitmap bitmap = extras.getParcelable("data");
 
@@ -354,17 +374,20 @@ public class NewTrailActivity extends AppCompatActivity {
                 imageView.setImageBitmap(mImages.get(currentImage));
             }
         }
-        else if(requestCode == RESULT_CAPTURE && data != null){
+        else if(requestCode == RESULT_CAPTURE && data != null && data.getExtras() != null){
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
 
+
+            //TODO: for some reason, taking images through arctrails produces much lower quality
+            //TODO: than taking images through the camera app directly then adding by gallery????
             if(bitmap != null) {
                 currentImage = mImages.size();
-                mImages.add(compressBitmap(bitmap));
+                mImages.add(bitmap);
                 mImageIDs.add(UUID.randomUUID().toString());
                 imageView.setImageBitmap(mImages.get(currentImage));
 
                 picUri = data.getData();
-                performCrop();
+                //performCrop();
             }
         }
         else {
@@ -409,6 +432,7 @@ public class NewTrailActivity extends AppCompatActivity {
             ImageView displayImage = findViewById(R.id.imageView);
 
             mImages.remove(currentImage);
+            mImageIDs.remove(currentImage);
             if(currentImage > 0) {
                 currentImage--;
                 displayImage.setImageBitmap(mImages.get(currentImage));

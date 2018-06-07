@@ -44,6 +44,7 @@ public class DownloadDataActivity extends AppCompatActivity implements RatingDia
     private Trail mTrail;
     //Storage Instance to Firebase Image Storage
     private FirebaseStorage storage = FirebaseStorage.getInstance();
+    private int currentImage = -1;
 
 
     @Override
@@ -79,7 +80,11 @@ public class DownloadDataActivity extends AppCompatActivity implements RatingDia
                     //DOWNLOADING from Firebase Storage
                     ImageView displayImage = (ImageView) findViewById(R.id.imageView);
                     System.out.println("&&&&&&&&&&&&STARTING&&&&&&");
-                    Database.getDatabase().getImageUrl(mTrail, displayImage, DownloadDataActivity.this);
+
+                    if(mTrail.getMetadata().getImageIDs().size() > 0)
+                        currentImage = 0;
+                        Database.getDatabase().getImageUrl(mTrail.getMetadata().getImageIDs().get(0),
+                                displayImage, DownloadDataActivity.this);
                 }
                 else
                     AlertUtils.showAlert(DownloadDataActivity.this, "Database Error",
@@ -94,6 +99,40 @@ public class DownloadDataActivity extends AppCompatActivity implements RatingDia
             }
         });
 
+        findViewById(R.id.prevImage).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                prevImage();
+            }
+        });
+        findViewById(R.id.nextImage).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                nextImage();
+            }
+        });
+    }
+
+    public void prevImage() {
+        //move the imageview to the prev image
+        if(currentImage > 0)
+        {
+            ImageView displayImage = findViewById(R.id.imageView);
+            currentImage = currentImage - 1;
+            Database.getDatabase().getImageUrl(mTrail.getMetadata().getImageIDs().get(currentImage),
+                    displayImage, DownloadDataActivity.this);
+        }
+    }
+
+    public void nextImage() {
+        //move the imageview to the next image
+        if(currentImage + 1 < mTrail.getMetadata().getImageIDs().size())
+        {
+            ImageView displayImage = findViewById(R.id.imageView);
+            currentImage = currentImage + 1;
+            Database.getDatabase().getImageUrl(mTrail.getMetadata().getImageIDs().get(currentImage),
+                    displayImage, DownloadDataActivity.this);
+        }
     }
 
     private void setInfo(Trail trail)
@@ -168,7 +207,8 @@ public class DownloadDataActivity extends AppCompatActivity implements RatingDia
                 .setAction("Action", null).show();
 
         if(mTrail.getMetadata().getImageIDs().size() > 0)
-            Database.getDatabase().downloadTrailImages(mTrail, this);
+            for(String imageID: mTrail.getMetadata().getImageIDs())
+                Database.getDatabase().downloadImage(imageID, this);
 
         Database.getDatabase().getTrail(trailID, new Database.DataTrailListener() {
             @Override

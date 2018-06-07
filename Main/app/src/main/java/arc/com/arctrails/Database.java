@@ -362,68 +362,54 @@ public class Database extends AppCompatActivity {
         uploadTrail(trailID, trail, null);
     }
 
-    //TODO
-    //TODO
-    //TODO
-    //TODO
     public void uploadTrail(String trailID, Trail trail, final TrailTransactionListener listener){
-        trail.printTrail();
-        databaseReference = myRef;
-        databaseReference.
-                child("Trails").
-                child(trailID).
-                setValue(trail);
+        final Trail newTrail = trail;
+        DatabaseReference trailRef = myRef.child("Trails").child(trailID);
 
-//        DatabaseReference trailRef = myRef.child("Trails").child(trailID);
-//
-//        trailRef.runTransaction(new Transaction.Handler() {
-//            @Override
-//            public Transaction.Result doTransaction(MutableData mutableData) {
-//                long currentVotes = 0;
-//                if(mutableData.getValue() != null)
-//                    currentVotes = (long)mutableData.getValue();
-//
-//                mutableData.setValue(currentVotes + 1);
-//                return Transaction.success(mutableData);
-//            }
-//
-//            @Override
-//            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
-//                if( listener != null) listener.onComplete(b, dataSnapshot.getValue(Trail.class));
-//            }
-//        });
+        trailRef.runTransaction(new Transaction.Handler() {
+            @Override
+            public Transaction.Result doTransaction(MutableData mutableData) {
+
+                System.out.println("mutableData = " + mutableData.getValue());
+
+                if(mutableData.getValue() != null) {
+                    Trail.Metadata oldMetadata = mutableData.child("metadata").getValue(Trail.Metadata.class);
+                    newTrail.getMetadata().setNumRatings(oldMetadata.getNumRatings());
+                    newTrail.getMetadata().setRating(oldMetadata.getRating());
+                    newTrail.getMetadata().setNumFlags(oldMetadata.getNumFlags());
+                }
+
+                mutableData.setValue(newTrail);
+                return Transaction.success(mutableData);
+            }
+
+            @Override
+            public void onComplete(DatabaseError databaseError, boolean b, DataSnapshot dataSnapshot) {
+                if( listener != null) listener.onComplete(b, dataSnapshot.getValue(Trail.class));
+            }
+        });
     }
 
-    public void uploadImage(Uri imageUri, Trail trail, final Context context){
+    public void uploadImage(Uri imageUri, String imageID){
         if (imageUri != null) {
+            System.out.println("@@@@@@@@@@@@@"+imageUri);
+
             //added for UUID
-            String path = "images/" + trail.getMetadata().getTrailID() + ".jpg";
+            String path = "images/" + imageID + ".jpg";
             storageRef = storage.getReference();
             imageRef = storageRef.child(path);
-
-            uploadTask = storageRef.putFile(imageUri);
-
-            imageRef.getName().equals(imageRef.getName());
-            imageRef.getPath().equals(imageRef.getPath());
-
-            Uri file = imageUri;
-
-            //Sets path with UUID
-            imageRef = storageRef.child(path);
-
-            uploadTask = imageRef.putFile(file);
-
+            uploadTask = imageRef.putFile(imageUri);
 
             uploadTask.addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(context, "File Upload Failure.", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(context, "File Upload Failure.", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Toast.makeText(context, "File Upload Success.", Toast.LENGTH_LONG).show();
+                    //Toast.makeText(context, "File Upload Success.", Toast.LENGTH_LONG).show();
 
                     //This will be needed when saving to the Trail object
                             /*
@@ -439,41 +425,33 @@ public class Database extends AppCompatActivity {
 
     //Called from DownloadDataActivity, this returns a working URL from the Trail Image.
     //TODO: fix this so that it can load any image in the image IDs, not just image 0
-    public void getImageUrl(Trail trail, final ImageView displayImage, Context context){
-        System.out.println(trail.getMetadata().getImageIDs());
-        if (trail.getMetadata().getImageIDs() != null
-                && trail.getMetadata().getImageIDs().size() > 0) {
-            storageRef = storage.getReference();
-            imageRef = storageRef.child("images/"+trail.getMetadata().getImageIDs().get(0)+".jpg");
+    public void getImageUrl(String imageID, final ImageView displayImage, Context context){
+        storageRef = storage.getReference();
+        imageRef = storageRef.child("images/"+imageID+".jpg");
 
-            Glide.with(context)
-                            .using(new FirebaseImageLoader())
-                            .load(imageRef)
-                            .into(displayImage);
+        Glide.with(context)
+                        .using(new FirebaseImageLoader())
+                        .load(imageRef)
+                        .into(displayImage);
 
-
-        }
     }
 
-    public void downloadTrailImages(Trail trail, Context context){
+    public void downloadImage(String imageID, Context context){
+        File localFile = new File(context.getExternalFilesDir(null), imageID + ".jpg");
 
-        for(String imageID : trail.getMetadata().getImageIDs()) {
-            File localFile = new File(context.getExternalFilesDir(null), imageID + ".jpg");
+        StorageReference islandRef = storageRef.child("images/" + imageID + ".jpg");
 
-            StorageReference islandRef = storageRef.child("images/" + trail.getMetadata().getImageIDs().get(0) + ".jpg");
-
-            islandRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    // Local temp file has been created
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    // Handle any errors
-                }
-            });
-        }
+        islandRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                // Local temp file has been created
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+            }
+        });
     }
 
 }// end Database

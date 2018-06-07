@@ -25,6 +25,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -321,7 +322,16 @@ public class RecordingActivity extends AppCompatActivity
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    Data trailData = new Data.Builder().putString("Trail", recordedTrail.getMetadata().getTrailID()).build();
+                                    Data.Builder builder = new Data.Builder();
+                                    //include the trail itself
+                                    builder.putString("Trail", recordedTrail.getMetadata().getTrailID());
+                                    //include the file locations of the images
+                                    for(String imageID: recordedTrail.getMetadata().getImageIDs()) {
+                                        File uploadFile = new File(getExternalFilesDir(null), imageID + ".jpg");
+                                        builder.putString(imageID, uploadFile.toURI().toString());
+                                    }
+                                    //start the work request
+                                    Data trailData = builder.build();
                                     OneTimeWorkRequest uploadData = new OneTimeWorkRequest.Builder(UploadTrailWorker.class).setInputData(trailData).setConstraints(buildUploadConstraints()).build();
                                     WorkManager.getInstance().enqueue(uploadData);
                                 }
