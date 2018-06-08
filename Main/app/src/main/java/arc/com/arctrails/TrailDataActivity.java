@@ -270,9 +270,22 @@ public class TrailDataActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                         Database database = Database.getDatabase();
-                        database.uploadTrail(trail.getMetadata().getTrailID(), trail);
+
                         Snackbar.make(findViewById(R.id.trail_data_layout), "Uploading Trail", Snackbar.LENGTH_LONG)
                                 .setAction("Action", null).show();
+
+                        database.uploadTrail(trail.getMetadata().getTrailID(), trail,
+                                new Database.TrailTransactionListener() {
+                                    @Override
+                                    public void onComplete(boolean success, Trail trail) {
+                                        if(success)
+                                            Snackbar.make(findViewById(R.id.trail_data_layout), "Upload Successful!", Snackbar.LENGTH_LONG)
+                                                    .setAction("Action", null).show();
+                                        else
+                                            Snackbar.make(findViewById(R.id.trail_data_layout), "Upload Failed.", Snackbar.LENGTH_LONG)
+                                                    .setAction("Action", null).show();
+                                    }
+                                });
 
                         if(trail.getMetadata().getImageIDs().size() > 0){
                             for(String id: trail.getMetadata().getImageIDs()) {

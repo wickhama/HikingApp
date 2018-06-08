@@ -158,7 +158,7 @@ public abstract class DynamicScrollListActivity
                 mTrailMetadata.add(metadata);
             }
         }else{
-            Snackbar.make(findViewById(R.id.list_content_view), "Error Creating Menu", Snackbar.LENGTH_LONG)
+            Snackbar.make(findViewById(R.id.list_content_view), "Error creating menu. Try reloading.", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
         }
     }

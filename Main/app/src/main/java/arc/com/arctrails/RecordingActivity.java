@@ -142,7 +142,7 @@ public class RecordingActivity extends AppCompatActivity
         else
             //recordedTrail should never be null as of the addition of the update feature
             Snackbar.make(findViewById(R.id.recording_layout),
-                    "Must be recording in order to stop", Snackbar.LENGTH_LONG)
+                    "Must be recording in order to stop", Snackbar.LENGTH_SHORT)
                     .setAction("Action", null).show();
     }
 

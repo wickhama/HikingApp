@@ -213,16 +213,22 @@ public class DownloadDataActivity extends AppCompatActivity implements RatingDia
         Database.getDatabase().getTrail(trailID, new Database.DataTrailListener() {
             @Override
             public void onDataTrail(Trail trail) {
-                mTrail = trail;
+                if(trail != null) {
+                    mTrail = trail;
 
-                GPXFile.writeGPXFile(mTrail,DownloadDataActivity.this);
+                    GPXFile.writeGPXFile(mTrail, DownloadDataActivity.this);
 //                Snackbar.make(findViewById(R.id.downloadDataLayout), "Downloaded "+mTrail.getMetadata().getName(), Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
 
-                Intent intent = new Intent();
-                intent.putExtra(EXTRA_FILE_NAME,mTrail.getMetadata().getTrailID()+".gpx");
-                setResult(RESULT_START,intent);
-                finish();
+                    Intent intent = new Intent();
+                    intent.putExtra(EXTRA_FILE_NAME, mTrail.getMetadata().getTrailID() + ".gpx");
+                    setResult(RESULT_START, intent);
+                    finish();
+                }
+                else {
+                    Snackbar.make(findViewById(R.id.downloadDataLayout), "Could not connect", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
             }
         });
     }
