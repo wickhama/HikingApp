@@ -60,6 +60,9 @@ fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots
 fastlane/test_output
+
+# Firebase dependencies
+functions/node_modules/
 fastlane/readme.md
 
 #Personal file
