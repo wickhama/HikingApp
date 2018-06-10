@@ -180,11 +180,11 @@ public class Database extends AppCompatActivity {
     //ADDED for new Download ScrollView : Read all Trail Meta Data
     public void trailMetaData(final DataListListener DBlistener){
 
-        if(!isConnected) {
+        /*if(!isConnected) {
             if(DBlistener != null)
                 DBlistener.onDataList(null);
             return;
-        }
+        }*/
 
         DatabaseReference rootRef = myRef;
         DatabaseReference ref = rootRef.child("Trails");
@@ -221,11 +221,11 @@ public class Database extends AppCompatActivity {
     public void getTrail(final String trailID, final DataTrailListener DBlistener){
 //        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
 
-        if(!isConnected) {
+        /*if(!isConnected) {
             if(DBlistener != null)
                 DBlistener.onDataTrail(null);
             return;
-        }
+        }*/
 
         DatabaseReference rootRef = myRef;
         DatabaseReference ref = rootRef.child("Trails");
@@ -248,11 +248,11 @@ public class Database extends AppCompatActivity {
     public void getTrailMetadata(final String trailID, final MetadataListener DBlistener){
 //        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
 
-        if(!isConnected) {
+        /*if(!isConnected) {
             if(DBlistener != null)
                 DBlistener.onMetadata(null);
             return;
-        }
+        }*/
 
         DatabaseReference rootRef = myRef;
         DatabaseReference ref = rootRef.child("Trails");
@@ -275,11 +275,11 @@ public class Database extends AppCompatActivity {
 
     public void addFlag(String trailID, final FlagTransactionListener listener) {
 
-        if(!isConnected) {
+        /*if(!isConnected) {
             if(listener != null)
                 listener.onComplete(false, 0);
             return;
-        }
+        }*/
 
         DatabaseReference metadataRef = myRef.child("Trails").child(trailID).child("metadata").child("numFlags");
 
@@ -307,11 +307,11 @@ public class Database extends AppCompatActivity {
     }
 
     public void removeFlag(String trailID, final FlagTransactionListener listener) {
-        if(!isConnected) {
+        /*if(!isConnected) {
             if(listener != null)
                 listener.onComplete(false, 0);
             return;
-        }
+        }*/
 
         DatabaseReference metadataRef = myRef.child("Trails").child(trailID).child("metadata").child("numFlags");
 
@@ -339,11 +339,11 @@ public class Database extends AppCompatActivity {
     }
 
     public void addRating(String trailID, final int rating, final RatingTransactionListener listener) {
-        if(!isConnected) {
+        /*if(!isConnected) {
             if(listener != null)
                 listener.onComplete(false, 0, 0);
             return;
-        }
+        }*/
 
         DatabaseReference metadataRef = myRef.child("Trails").child(trailID).child("metadata");
 
@@ -382,11 +382,11 @@ public class Database extends AppCompatActivity {
     }
 
     public void removeRating(String trailID, final int rating, final RatingTransactionListener listener) {
-        if(!isConnected) {
+        /*if(!isConnected) {
             if(listener != null)
                 listener.onComplete(false, 0, 0);
             return;
-        }
+        }*/
 
         DatabaseReference metadataRef = myRef.child("Trails").child(trailID).child("metadata");
 
@@ -435,11 +435,11 @@ public class Database extends AppCompatActivity {
     }
 
     public void uploadTrail(String trailID, Trail trail, final TrailTransactionListener listener){
-        if(!isConnected) {
+        /*if(!isConnected) {
             if(listener != null)
                 listener.onComplete(false, null);
             return;
-        }
+        }*/
 
         final Trail newTrail = trail;
         DatabaseReference trailRef = myRef.child("Trails").child(trailID);
@@ -474,9 +474,9 @@ public class Database extends AppCompatActivity {
     }
 
     public void uploadImage(Uri imageUri, String imageID){
-        if(!isConnected) {
+        /*if(!isConnected) {
             return;
-        }
+        }*/
 
         if (imageUri != null) {
             System.out.println("@@@@@@@@@@@@@"+imageUri);
@@ -512,9 +512,9 @@ public class Database extends AppCompatActivity {
 
     //Called from DownloadDataActivity, this returns a working URL from the Trail Image.
     public void getImageUrl(String imageID, final ImageView displayImage, Context context){
-        if(!isConnected) {
+        /*if(!isConnected) {
             return;
-        }
+        }*/
 
         storageRef = storage.getReference();
         imageRef = storageRef.child("images/"+imageID+".jpg");
@@ -527,9 +527,9 @@ public class Database extends AppCompatActivity {
     }
 
     public void downloadImage(String imageID, Context context){
-        if(!isConnected) {
+        /*if(!isConnected) {
             return;
-        }
+        }*/
 
         File localFile = new File(context.getExternalFilesDir(null), imageID + ".jpg");
 
