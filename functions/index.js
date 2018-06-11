@@ -50,7 +50,8 @@ exports.onTrailFlagged = functions.database.ref('/Trails/{trailId}/metadata/numF
             to:gmailEmail,
             subject:'"'+trailId+'" has been flagged '+newVal+' time(s)',
             text:'The trail at "'+trailId+'" currently has '+newVal+' flags.\n'+
-                 'https://console.firebase.google.com/project/arctrails-b1a84/database/arctrails-b1a84/data/Trails/'+trailId,
+                 'https://console.firebase.google.com/project/arctrails-b1a84/'+
+                 'database/arctrails-b1a84/data/Trails/'+trailId.split(" ").join("%20"),
         }
         
         return mailTransport.sendMail(mailOptions)
