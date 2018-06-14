@@ -455,6 +455,14 @@ public class Database extends AppCompatActivity {
                     newTrail.getMetadata().setNumRatings(oldMetadata.getNumRatings());
                     newTrail.getMetadata().setRating(oldMetadata.getRating());
                     newTrail.getMetadata().setNumFlags(oldMetadata.getNumFlags());
+
+                    //if the trail is already in the database, either continue allow editing
+                    if(oldMetadata.isAllowEdit()) {
+                        newTrail.getMetadata().setAllowEdit(true);
+                    }
+                    //or prevent the replacement
+                    else
+                        return Transaction.abort();
                 }
 
                 mutableData.setValue(newTrail);

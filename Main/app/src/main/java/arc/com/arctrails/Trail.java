@@ -35,6 +35,7 @@ public class Trail {
         private int numFlags;
         private double headLat, headLong;
         private int lengthCategory;
+        private boolean allowEdit;
 
         public int getLengthCategory() {
             return lengthCategory;
@@ -149,6 +150,14 @@ public class Trail {
         public void setNumFlags(int numFlags) {
             this.numFlags = numFlags;
         }
+
+        public boolean isAllowEdit() {
+            return allowEdit;
+        }
+
+        public void setAllowEdit(boolean allowEdit) {
+            this.allowEdit = allowEdit;
+        }
     }
 
     public static class Waypoint {
@@ -159,6 +168,7 @@ public class Trail {
         //it was planned for waypoints to allow single images, but this is being
         //avoided due to time constraints, memory concerns, and difficulty implementing
         //custom infowindows that allow images
+
 //        private String imageID;
 
         private double latitude;

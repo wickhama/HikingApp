@@ -24,6 +24,10 @@ public class UploadTrailWorker extends Worker {
         Database database = Database.getDatabase();
         String fileName = ((String) data.getKeyValueMap().get("Trail"))+".gpx";
         Trail trail = GPXFile.getGPX(fileName, this.getApplicationContext());
+        boolean allowEdit = data.getBoolean("allowEdit", false);
+
+        trail.getMetadata().setAllowEdit(allowEdit);
+
         database.uploadTrail(trail.getMetadata().getTrailID(), trail);
 
         //aside from the trail ID, the data map should contain parsable Uri Strings for locally stored images

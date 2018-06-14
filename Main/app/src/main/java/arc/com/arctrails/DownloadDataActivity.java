@@ -81,10 +81,11 @@ public class DownloadDataActivity extends AppCompatActivity implements RatingDia
                     ImageView displayImage = (ImageView) findViewById(R.id.imageView);
                     System.out.println("&&&&&&&&&&&&STARTING&&&&&&");
 
-                    if(mTrail.getMetadata().getImageIDs().size() > 0)
+                    if(mTrail.getMetadata().getImageIDs().size() > 0) {
                         currentImage = 0;
                         Database.getDatabase().getImageUrl(mTrail.getMetadata().getImageIDs().get(0),
                                 displayImage, DownloadDataActivity.this);
+                    }
                 }
                 else
                     AlertUtils.showAlert(DownloadDataActivity.this, "Database Error",

@@ -1,6 +1,7 @@
 package arc.com.arctrails;
 
 import android.app.AlertDialog;
+import android.arch.persistence.room.Database;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -44,7 +45,8 @@ import static arc.com.arctrails.NewTrailActivity.EXTRA_IMAGE_LIST;
 
 public class RecordingActivity extends AppCompatActivity
         implements LocationRequestListener, LocationPermissionListener,
-        GoogleMap.OnMapClickListener, WaypointDialog.WaypointDialogListener, OnMapReadyCallback{
+        GoogleMap.OnMapClickListener, WaypointDialog.WaypointDialogListener, OnMapReadyCallback,
+        DatabaseEditDialog.DatabaseEditDialogListener{
 
     //Identifies the type of permission requests to identify which ones were granted
     //although we only need need fine location for this specific case
@@ -322,18 +324,8 @@ public class RecordingActivity extends AppCompatActivity
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
-                                    Data.Builder builder = new Data.Builder();
-                                    //include the trail itself
-                                    builder.putString("Trail", recordedTrail.getMetadata().getTrailID());
-                                    //include the file locations of the images
-                                    for(String imageID: recordedTrail.getMetadata().getImageIDs()) {
-                                        File uploadFile = new File(getExternalFilesDir(null), imageID + ".jpg");
-                                        builder.putString(imageID, uploadFile.toURI().toString());
-                                    }
-                                    //start the work request
-                                    Data trailData = builder.build();
-                                    OneTimeWorkRequest uploadData = new OneTimeWorkRequest.Builder(UploadTrailWorker.class).setInputData(trailData).setConstraints(buildUploadConstraints()).build();
-                                    WorkManager.getInstance().enqueue(uploadData);
+
+                                    (new DatabaseEditDialog()).show(getFragmentManager(), "edit");
                                 }
                             })
                             .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -350,6 +342,32 @@ public class RecordingActivity extends AppCompatActivity
             //when the activity returns, the trail has to be re-drawn
             map.makeTrail(recordedTrail);
         }
+    }
+
+    @Override
+    public void onDialogPositiveClick(DatabaseEditDialog dialog) {
+        recordedTrail.getMetadata().setAllowEdit(dialog.allowEdit());
+        scheduleTrailWorker(recordedTrail);
+    }
+
+    private void scheduleTrailWorker(Trail trail) {
+        Data.Builder builder = new Data.Builder();
+        //include the trail itself
+        builder.putString("Trail", trail.getMetadata().getTrailID());
+
+        //include whether the trail may be edited separately,
+        //as it is not stored in the local file format
+        builder.putBoolean("allowEdit", trail.getMetadata().isAllowEdit());
+
+        //include the file locations of the images
+        for(String imageID: trail.getMetadata().getImageIDs()) {
+            File uploadFile = new File(getExternalFilesDir(null), imageID + ".jpg");
+            builder.putString(imageID, uploadFile.toURI().toString());
+        }
+        //start the work request
+        Data trailData = builder.build();
+        OneTimeWorkRequest uploadData = new OneTimeWorkRequest.Builder(UploadTrailWorker.class).setInputData(trailData).setConstraints(buildUploadConstraints()).build();
+        WorkManager.getInstance().enqueue(uploadData);
     }
 
     private void addTrack(ArrayList<LatLng> data){

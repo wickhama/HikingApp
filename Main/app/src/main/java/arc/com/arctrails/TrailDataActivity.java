@@ -36,7 +36,8 @@ import java.util.LinkedList;
  *      an option, the data had to be moved to the top level of the GPX file, and this activity
  *      had to be modified to read from the new location.
  */
-public class TrailDataActivity extends AppCompatActivity {
+public class TrailDataActivity extends AppCompatActivity
+        implements DatabaseEditDialog.DatabaseEditDialogListener {
     //result codes
     //the user did nothing
     public static final int RESULT_BACK= 0;
@@ -269,31 +270,42 @@ public class TrailDataActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        Database database = Database.getDatabase();
+                        (new DatabaseEditDialog()).show(getFragmentManager(), "edit");
+                    }
+                });
+    }
 
-                        Snackbar.make(findViewById(R.id.trail_data_layout), "Uploading Trail", Snackbar.LENGTH_LONG)
-                                .setAction("Action", null).show();
+    @Override
+    public void onDialogPositiveClick(DatabaseEditDialog dialog) {
+        trail.getMetadata().setAllowEdit(dialog.allowEdit());
+        uploadTrail(trail);
+    }
 
-                        database.uploadTrail(trail.getMetadata().getTrailID(), trail,
-                                new Database.TrailTransactionListener() {
-                                    @Override
-                                    public void onComplete(boolean success, Trail trail) {
-                                        if(success)
-                                            Snackbar.make(findViewById(R.id.trail_data_layout), "Upload Successful!", Snackbar.LENGTH_LONG)
-                                                    .setAction("Action", null).show();
-                                        else
-                                            Snackbar.make(findViewById(R.id.trail_data_layout), "Upload Failed.", Snackbar.LENGTH_LONG)
-                                                    .setAction("Action", null).show();
-                                    }
-                                });
+    private void uploadTrail(Trail trail) {
+        final Database database = Database.getDatabase();
 
-                        if(trail.getMetadata().getImageIDs().size() > 0){
-                            for(String id: trail.getMetadata().getImageIDs()) {
-                                File uploadFile = new File(getExternalFilesDir(null), id + ".jpg");
-                                Uri imageUri = Uri.parse(uploadFile.toURI().toString());
-                                database.uploadImage(imageUri, id);
+        Snackbar.make(findViewById(R.id.trail_data_layout), "Uploading Trail", Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+
+        database.uploadTrail(trail.getMetadata().getTrailID(), trail,
+                new Database.TrailTransactionListener() {
+                    @Override
+                    public void onComplete(boolean success, Trail trail) {
+                        if(success) {
+                            if(trail.getMetadata().getImageIDs().size() > 0){
+                                for(String id: trail.getMetadata().getImageIDs()) {
+                                    File uploadFile = new File(getExternalFilesDir(null), id + ".jpg");
+                                    Uri imageUri = Uri.parse(uploadFile.toURI().toString());
+                                    database.uploadImage(imageUri, id);
+                                }
                             }
+
+                            Snackbar.make(findViewById(R.id.trail_data_layout), "Upload Successful!", Snackbar.LENGTH_LONG)
+                                    .setAction("Action", null).show();
                         }
+                        else
+                            Snackbar.make(findViewById(R.id.trail_data_layout), "Could not upload this trail.", Snackbar.LENGTH_LONG)
+                                    .setAction("Action", null).show();
                     }
                 });
     }
