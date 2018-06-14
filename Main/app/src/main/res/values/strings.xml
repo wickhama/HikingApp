@@ -143,10 +143,10 @@
     <string name="database_edit_checkbox_text">Allow this trail to be edited</string>
     <string name="database_edit_title">Trail Editing</string>
     <string name="database_edit_content">
-        "Many trails can be improved through new paths, markers, and descriptions. "
-        "By allowing trail editing, other users are allowed to add more information "
-        "and replace your trail in the database.\n"
-        "Warning: This cannot be changed later. If this trail is already in the database, "
+        "Many trails can be improved through new paths, markers, and descriptions."
+        "By allowing trail editing, other users are allowed to add more information"
+        "and replace your trail in the database."
+        "\nWarning: This cannot be changed later. If this trail is already in the database,"
         "this option is ignored."
     </string>
 </resources>
