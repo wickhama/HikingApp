@@ -56,11 +56,11 @@
     <string name="picture_capture">Launch Camera</string>
 
     <string-array name="difficulty_array">
-        <item>Easiest</item>
-        <item>Easy</item>
-        <item>More Difficult</item>
-        <item>Very Difficult</item>
-        <item>Extremely Difficult</item>
+        <item>○  - Easiest</item>
+        <item>●  - Easy</item>
+        <item>■  - More Difficult</item>
+        <item>◆  - Very Difficult</item>
+        <item>◆◆ - Extremely Difficult</item>
     </string-array>
 
     <string-array name="distance_array">
