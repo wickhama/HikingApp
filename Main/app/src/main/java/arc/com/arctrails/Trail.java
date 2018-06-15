@@ -37,33 +37,10 @@ public class Trail {
         private int lengthCategory;
         private boolean allowEdit;
 
-        public int getLengthCategory() {
-            return lengthCategory;
-        }
-
-        public void setLengthCategory(int lengthCategory) {
-            this.lengthCategory = lengthCategory;
-        }
-
-        public double getHeadLat() {
-            return headLat;
-        }
-
-        public void setHeadLat(double headLat) {
-            this.headLat = headLat;
-        }
-
-        public double getHeadLong() {
-            return headLong;
-        }
-
-        public void setHeadLong(double headLong) {
-            this.headLong = headLong;
-        }
-
         public Metadata()
         {
             imageIDs = new ArrayList<>();
+            allowEdit = true;
         }
 
         public String getTrailID() {
@@ -157,6 +134,30 @@ public class Trail {
 
         public void setAllowEdit(boolean allowEdit) {
             this.allowEdit = allowEdit;
+        }
+
+        public int getLengthCategory() {
+            return lengthCategory;
+        }
+
+        public void setLengthCategory(int lengthCategory) {
+            this.lengthCategory = lengthCategory;
+        }
+
+        public double getHeadLat() {
+            return headLat;
+        }
+
+        public void setHeadLat(double headLat) {
+            this.headLat = headLat;
+        }
+
+        public double getHeadLong() {
+            return headLong;
+        }
+
+        public void setHeadLong(double headLong) {
+            this.headLong = headLong;
         }
     }
 

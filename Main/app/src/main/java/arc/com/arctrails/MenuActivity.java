@@ -50,6 +50,13 @@ public class MenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         LocationRequestListener, LocationPermissionListener{
 
+    //This toggles the ability for users to mark trails as non-editable in the database,
+    //preventing other users from replacing the file with an updated version
+    //Currently, this feature is disabled, because we believe that no trail will be
+    //in a 100% completed state, and we can rely on the honour system to stop people from
+    //corrupting the data. If at any point this is no longer true, this feature can be re-enabled.
+    public static final boolean ALLOW_EDIT_OPTION = false;
+
     //Identifies the type of permission requests to identify which ones were granted
     //although we only need need fine location for this specific case
     public static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 99;

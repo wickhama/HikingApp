@@ -325,7 +325,11 @@ public class RecordingActivity extends AppCompatActivity
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
 
-                                    (new DatabaseEditDialog()).show(getFragmentManager(), "edit");
+                                    //See ALLOW_EDIT_OPTION for an explanation
+                                    if(MenuActivity.ALLOW_EDIT_OPTION)
+                                        (new DatabaseEditDialog()).show(getFragmentManager(), "edit");
+                                    else
+                                        scheduleTrailWorker(recordedTrail);
                                 }
                             })
                             .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
